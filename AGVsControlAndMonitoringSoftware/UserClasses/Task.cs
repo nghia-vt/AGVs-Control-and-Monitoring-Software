@@ -41,7 +41,7 @@ namespace AGVsControlAndMonitoringSoftware
         // Information list of simulation Task
         public static List<Task> SimListTask = new List<Task>();
 
-        // Add first path to each AGV of list AGV
+        // Add first path to each AGV of list AGV (only Simulation Mode)
         public static void AddFirstPathOfAGVs(List<AGV> listAGV)
         {
             foreach (AGV agv in listAGV)
@@ -59,21 +59,21 @@ namespace AGVsControlAndMonitoringSoftware
                 // Current node of agv is pick node, add path form pick node to drop node
                 if (agv.ExitNode != agv.Tasks[0].PickNode)
                 {
-                    agv.Path.Add(Algorithm.A_starFindPath(agv.ExitNode, agv.Tasks[0].PickNode));
+                    agv.Path = Algorithm.A_starFindPath(agv.ExitNode, agv.Tasks[0].PickNode);
                 }
                 else
                 {
-                    agv.Path.Add(Algorithm.A_starFindPath(agv.Tasks[0].PickNode, agv.Tasks[0].DropNode));
+                    agv.Path = Algorithm.A_starFindPath(agv.Tasks[0].PickNode, agv.Tasks[0].DropNode);
                     agv.Tasks[0].Status = "Doing";
                 }
 
                 // Set init navigation array, first path is agv.Path[0]
-                string frame = Navigation.GetNavigationFrame(agv.Path[0], agv.Orientation, agv.DistanceToExitNode);
+                string frame = Navigation.GetNavigationFrame(agv.Path, agv.Orientation, agv.DistanceToExitNode);
                 agv.navigationArr = frame.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
         }
 
-        // Add next path to agv when previous path reach goal (agv.ExitNode is being goal)
+        // Add next path to agv when previous path reach goal (agv.ExitNode is being goal) (only Simulation Mode)
         public static void AddNextPathOfAGV(AGV agv)
         {
             // Remove old path, next path will be at agv.Path[0] again
@@ -81,7 +81,7 @@ namespace AGVsControlAndMonitoringSoftware
             agv.Path.RemoveAt(0);
 
             // Remove old task
-            if (agv.ExitNode == agv.Tasks[0].DropNode)
+            if (agv.Tasks.Count != 0 && agv.ExitNode == agv.Tasks[0].DropNode)
             {
                 // Store pallet code to SimListColumn at this goal node
                 RackColumn column = RackColumn.SimListColumn.Find(c => c.AtNode == agv.ExitNode);
@@ -92,20 +92,45 @@ namespace AGVsControlAndMonitoringSoftware
                 agv.Tasks.RemoveAt(0);
             }
 
-            // Do nothing when don't have task
-            if (agv.Tasks.Count == 0) return;
+            // Add path to parking when don't have any task
+            if (agv.Tasks.Count == 0)
+            {
+                // find all ID parking node
+                List<Node> parkingNode = new List<Node>();
+                List<int> parkingNodeID = new List<int>();
+                foreach (Node n in Node.ListNode)
+                {
+                    if (n.LocationCode.Length == 0) continue;
+                    if (n.LocationCode[0] == 'P')
+                    {
+                        parkingNode.Add(n);
+                        parkingNodeID.Add(n.ID);
+                    }
+                }
+                // if current node is parking node or don't have parking node for this agv, do nothing
+                // otherwise, add path to prark agv (agv#i will park at location "P-i")
+                if (parkingNodeID.Contains(agv.ExitNode)) return;
+                Node parkAtNode = parkingNode.Find(n => n.LocationCode[2].ToString() == agv.ID.ToString());
+                if (parkAtNode == null) return;
+                agv.Path = Algorithm.A_starFindPath(agv.ExitNode, parkAtNode.ID);
+
+                // Add next navigation frame of next path
+                string fr = Navigation.GetNavigationFrame(agv.Path, agv.Orientation, agv.DistanceToExitNode);
+                agv.navigationArr = fr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                return;
+            }
 
             // Add next path
             if (agv.ExitNode != agv.Tasks[0].PickNode)
-                agv.Path.Add(Algorithm.A_starFindPath(agv.ExitNode, agv.Tasks[0].PickNode));
+                agv.Path = Algorithm.A_starFindPath(agv.ExitNode, agv.Tasks[0].PickNode);
             else
             {
-                agv.Path.Add(Algorithm.A_starFindPath(agv.Tasks[0].PickNode, agv.Tasks[0].DropNode));
+                agv.Path = Algorithm.A_starFindPath(agv.Tasks[0].PickNode, agv.Tasks[0].DropNode);
                 agv.Tasks[0].Status = "Doing";
             }
 
             // Add next navigation frame of next path
-            string frame = Navigation.GetNavigationFrame(agv.Path[0], agv.Orientation, agv.DistanceToExitNode);
+            string frame = Navigation.GetNavigationFrame(agv.Path, agv.Orientation, agv.DistanceToExitNode);
             agv.navigationArr = frame.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }

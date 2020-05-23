@@ -100,7 +100,7 @@ namespace AGVsControlAndMonitoringSoftware
                 // Update location of AGV icon (label)
                 foreach (AGV agv in AGV.SimListAGV)
                 {
-                    if (agv.Tasks.Count != 0) agv.Velocity = 5; else agv.Velocity = 0;
+                    if (agv.Path.Count != 0) agv.Velocity = 5; else agv.Velocity = 0;
                     Display.SimLabelAGV[agv.ID].Location = Display.SimUpdatePositionAGV(agv.ID, (int)agv.Velocity);
 
                     //  Display agv carrying pallet
@@ -210,12 +210,12 @@ namespace AGVsControlAndMonitoringSoftware
                 case "Real Time":
                     int i = AGV.ListAGV.FindIndex(a => a.ID == agvID);
                     if (AGV.ListAGV[i].Path.Count == 0) return;
-                    Display.AddPath(pnFloor, AGV.ListAGV[i].Path[0], Color.Blue, 4);
+                    Display.AddPath(pnFloor, AGV.ListAGV[i].Path, Color.Blue, 4);
                     break;
                 case "Simulation":
                     int j = AGV.SimListAGV.FindIndex(a => a.ID == agvID);
                     if (AGV.SimListAGV[j].Path.Count == 0) return;
-                    Display.AddPath(pnFloor, AGV.SimListAGV[j].Path[0], Color.Blue, 4);
+                    Display.AddPath(pnFloor, AGV.SimListAGV[j].Path, Color.Blue, 4);
                     break;
             } 
         }

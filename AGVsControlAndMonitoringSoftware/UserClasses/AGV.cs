@@ -14,14 +14,13 @@ namespace AGVsControlAndMonitoringSoftware
         public int DistanceToExitNode { get; set; }
         public string Status { get; set; }
         public float Velocity { get; set; }
-        //public string CurrentTask { get; set; }
+        
         public List<Task> Tasks = new List<Task>();
 
-        // List of paths of an AGV, the Path[0] completed will be removed,
-        // then next path will be at Path[0] because of List<> characteristic 
-        public List<List<int>> Path = new List<List<int>>();
+        // Current path of an AGV, will be removed when completed
+        public List<int> Path = new List<int>();
 
-        // This feild will be changed automatically whem a path in list Path removed
+        // This must be created immediately after assigning Path
         public string[] navigationArr = new string[] { };
 
         // Constructor of AGV with some initial information

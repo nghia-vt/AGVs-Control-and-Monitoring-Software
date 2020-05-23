@@ -110,10 +110,8 @@ namespace AGVsControlAndMonitoringSoftware
             string[] navigationArr = agv.navigationArr;
 
             // return old point when agv has no task
-            if (agv.Tasks.Count == 0) return location;
-
-            // Get path of AGV
-            List<int> Path = agv.Path[0];
+            //if (agv.Tasks.Count == 0) return location;
+            if (agv.Path.Count == 0) return location;
 
             char orient = new char();
             int sp = new int();
@@ -127,7 +125,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Current point is not a node and current position is start node, 
             // it means initDistance to start node != 0, so go backward once then keep go ahead
-            if (node == null && agv.ExitNode == Path[0])
+            if (node == null && agv.ExitNode == agv.Path[0])
             {
                 switch (navigationArr[0])
                 {
@@ -144,7 +142,7 @@ namespace AGVsControlAndMonitoringSoftware
             // so keep go ahead
             else if (node == null) orient = UpdateOrient(agv.Orientation, "A");
             // If goal was reached, no update location, remove old path, get next path (if exist)
-            else if (node.ID == Path.LastOrDefault())
+            else if (node.ID == agv.Path.LastOrDefault())
             {
                 // Update AGV information
                 agv.ExitNode = node.ID;  // Update ExitNode
@@ -160,7 +158,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
             // Current point is at start node and initDistance to start node == 0
             // Turn direction once then keep go ahead
-            else if (node.ID == Path[0] && agv.DistanceToExitNode == 0)
+            else if (node.ID == agv.Path[0] && agv.DistanceToExitNode == 0)
             {
                 switch (navigationArr[0])
                 {
@@ -182,7 +180,7 @@ namespace AGVsControlAndMonitoringSoftware
                 }
 
                 // If this node is pick node, remove pallet code that was picked
-                if (node.ID == agv.Tasks[0].PickNode)
+                if (agv.Tasks.Count != 0 && node.ID == agv.Tasks[0].PickNode)
                 {
                     RackColumn column = RackColumn.SimListColumn.Find(c => c.AtNode == agv.ExitNode);
                     column.PalletCodes[agv.Tasks[0].PickLevel - 1] = null;
@@ -197,22 +195,22 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             // Modify speed to make sure AGV icon can reach next node
-            int i = Path.FindIndex(n => n == agv.ExitNode);
-            int nextNode = Path[i + 1];
+            int i = agv.Path.FindIndex(n => n == agv.ExitNode);
+            int nextNode = agv.Path[i + 1];
             int dnx = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[nextNode].X;
             int dny = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[nextNode].Y;
             int nd = (int)Math.Sqrt(dnx * dnx + dny * dny);
             
-            if (agv.ExitNode == Path[0])
+            if (agv.ExitNode == agv.Path[0])
             {
                 // At first node of path, having 4 cases of agv location
-                // (dnx * dny != 0) for 2 cases and nd > nd0 for the others
-                int dnx0 = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[Path[0]].X;
-                int dny0 = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[Path[0]].Y;
+                // (dnx * dny != 0) for 2 cases and (dnx * dnx0 > 0 || dny * dny0 > 0) for the others
+                int dnx0 = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[agv.Path[0]].X;
+                int dny0 = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[agv.Path[0]].Y;
                 int nd0 = (int)Math.Sqrt(dnx0 * dnx0 + dny0 * dny0);
-                if (dnx * dny != 0 || nd > nd0)
+                if (dnx * dny != 0 || dnx * dnx0 > 0 || dny * dny0 > 0)
                 {
-                    nextNode = Path[0];
+                    nextNode = agv.Path[0];
                     nd = nd0;
                 }
             }
