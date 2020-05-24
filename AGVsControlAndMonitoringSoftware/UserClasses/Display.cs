@@ -109,8 +109,7 @@ namespace AGVsControlAndMonitoringSoftware
             // so any change in navigationArr is also in AGV.SimListAGV[index].navigationArr
             string[] navigationArr = agv.navigationArr;
 
-            // return old point when agv has no task
-            //if (agv.Tasks.Count == 0) return location;
+            // return old point when agv has no path
             if (agv.Path.Count == 0) return location;
 
             char orient = new char();

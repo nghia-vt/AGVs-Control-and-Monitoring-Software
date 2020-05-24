@@ -67,7 +67,7 @@ namespace AGVsControlAndMonitoringSoftware
                     agv.Tasks[0].Status = "Doing";
                 }
 
-                // Set init navigation array, first path is agv.Path[0]
+                // Set init navigation array, first path is agv.Path
                 string frame = Navigation.GetNavigationFrame(agv.Path, agv.Orientation, agv.DistanceToExitNode);
                 agv.navigationArr = frame.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             }
@@ -76,9 +76,8 @@ namespace AGVsControlAndMonitoringSoftware
         // Add next path to agv when previous path reach goal (agv.ExitNode is being goal) (only Simulation Mode)
         public static void AddNextPathOfAGV(AGV agv)
         {
-            // Remove old path, next path will be at agv.Path[0] again
-            // because of List<> characteristic
-            agv.Path.RemoveAt(0);
+            // Clear old path
+            agv.Path.Clear();
 
             // Remove old task
             if (agv.Tasks.Count != 0 && agv.ExitNode == agv.Tasks[0].DropNode)
@@ -95,28 +94,24 @@ namespace AGVsControlAndMonitoringSoftware
             // Add path to parking when don't have any task
             if (agv.Tasks.Count == 0)
             {
-                // find all ID parking node
-                List<Node> parkingNode = new List<Node>();
-                List<int> parkingNodeID = new List<int>();
+                // find all parking node
+                List<int> parkingNode = new List<int>();
                 foreach (Node n in Node.ListNode)
                 {
                     if (n.LocationCode.Length == 0) continue;
-                    if (n.LocationCode[0] == 'P')
-                    {
-                        parkingNode.Add(n);
-                        parkingNodeID.Add(n.ID);
-                    }
+                    if (n.LocationCode[0] == 'P') parkingNode.Add(n.ID);
                 }
-                // if current node is parking node or don't have parking node for this agv, do nothing
-                // otherwise, add path to prark agv (agv#i will park at location "P-i")
-                if (parkingNodeID.Contains(agv.ExitNode)) return;
-                Node parkAtNode = parkingNode.Find(n => n.LocationCode[2].ToString() == agv.ID.ToString());
-                if (parkAtNode == null) return;
-                agv.Path = Algorithm.A_starFindPath(agv.ExitNode, parkAtNode.ID);
+                // If current node is parking node or don't have parking node for this agv, do nothing,
+                // otherwise, add path to park agv (agv will park at location in order of index)
+                if (parkingNode.Contains(agv.ExitNode)) return;
+                int parkAtNode = parkingNode.Find(n => parkingNode.IndexOf(n) == AGV.SimListAGV.IndexOf(agv));
+                if (parkAtNode == 0) return; // be careful: in my node definition, parking nodes don't have node 0
+                agv.Path = Algorithm.A_starFindPath(agv.ExitNode, parkAtNode);
 
-                // Add next navigation frame of next path
+                // Add navigation frame of parking path
                 string fr = Navigation.GetNavigationFrame(agv.Path, agv.Orientation, agv.DistanceToExitNode);
                 agv.navigationArr = fr.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+
                 return;
             }
 
