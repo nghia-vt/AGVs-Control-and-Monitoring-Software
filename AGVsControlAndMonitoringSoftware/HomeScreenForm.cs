@@ -31,6 +31,7 @@ namespace AGVsControlAndMonitoringSoftware
             rdbtnSimulation.ForeColor = SystemColors.ActiveCaptionText;
             rdbtnRealTime.BackColor = Color.MintCream;
             rdbtnSimulation.BackColor = Color.Lavender;
+            btnPauseRun.Visible = false;
             Display.Mode = "Real Time";
 
             // Add label of columns at node
@@ -54,6 +55,7 @@ namespace AGVsControlAndMonitoringSoftware
             rdbtnRealTime.ForeColor = SystemColors.ActiveCaptionText;
             rdbtnSimulation.BackColor = Color.MintCream;
             rdbtnRealTime.BackColor = Color.Lavender;
+            btnPauseRun.Visible = true;
             Display.Mode = "Simulation";
 
             // Add label of columns at node
@@ -97,11 +99,14 @@ namespace AGVsControlAndMonitoringSoftware
                 // Update column color of SimListColumn
                 RackColumn.UpdateColumnColor(RackColumn.SimListColumn);
 
+                // If pause simulation is selected
+                if (Display.SimPause == true) return;
+
                 // Update location of AGV icon (label)
                 foreach (AGV agv in AGV.SimListAGV)
                 {
-                    if (agv.Path.Count != 0) agv.Velocity = 5; else agv.Velocity = 0;
-                    Display.SimLabelAGV[agv.ID].Location = Display.SimUpdatePositionAGV(agv.ID, (int)agv.Velocity);
+                    if (agv.Path.Count != 0) agv.Velocity = 20f; else agv.Velocity = 0f;
+                    Display.SimLabelAGV[agv.ID].Location = Display.SimUpdatePositionAGV(agv.ID, agv.Velocity);
 
                     //  Display agv carrying pallet
                     if (agv.Tasks.Count != 0 && agv.Tasks[0].Status == "Doing")
@@ -224,6 +229,21 @@ namespace AGVsControlAndMonitoringSoftware
         {
             Display.Points = new Point[] { new Point(), new Point() };
             pnFloor.Refresh();
+        }
+
+        private void btnPauseRun_Click(object sender, EventArgs e)
+        {
+            btnPauseRun.Text = btnPauseRun.Text == "Pause" ? btnPauseRun.Text = "Run" : btnPauseRun.Text = "Pause";
+            if (btnPauseRun.Text == "Pause")
+            {
+                btnPauseRun.ImageIndex = 2;
+                Display.SimPause = false;
+            }
+            else
+            {
+                btnPauseRun.ImageIndex = 3;
+                Display.SimPause = true;
+            }
         }
     }
 }

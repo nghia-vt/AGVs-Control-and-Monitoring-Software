@@ -16,6 +16,8 @@ namespace AGVsControlAndMonitoringSoftware
         public static Point[] Points = new Point[2];
         public static Label[] LabelAGV = new Label[AGV.MaxNumOfAGVs]; // LabelAGV[i] for AGV ID = i
         public static Label[] SimLabelAGV = new Label[AGV.MaxNumOfAGVs];
+        public static float Scale = 583f / 235; // pixel/cm (2.480851f)
+        public static bool SimPause = true; // pause simulation
 
         // Draw the path from start to goal on panel by updatting the Points array
         public static void AddPath(Panel panel, List<int> path, Color color, float width)
@@ -33,7 +35,7 @@ namespace AGVsControlAndMonitoringSoftware
         }
         
         // Create AGV icon by using Label control, LabelAGV[i] for AGV ID = i
-        public static void AddLabelAGV(Panel panel, int agvID, int initExitNode, char initOrientation, int initDistanceToExitNode)
+        public static void AddLabelAGV(Panel panel, int agvID, int initExitNode, char initOrientation, float initDistanceToExitNode)
         {
             Label lbAGV = new Label();
             lbAGV.BackColor = Color.Silver;
@@ -46,21 +48,22 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Init the Location of new AGV
             List<Node> Nodes = Node.ListNode;
+            int initPixelDistance = (int)Math.Round(initDistanceToExitNode * Display.Scale);
             int x = Nodes[initExitNode].X - lbAGV.Size.Width / 2;
             int y = Nodes[initExitNode].Y - lbAGV.Size.Height / 2;
             switch (initOrientation)
             {
                 case 'E':
-                    lbAGV.Location = new Point(x + initDistanceToExitNode, y);
+                    lbAGV.Location = new Point(x + initPixelDistance, y);
                     break;
                 case 'W':
-                    lbAGV.Location = new Point(x - initDistanceToExitNode, y);
+                    lbAGV.Location = new Point(x - initPixelDistance, y);
                     break;
                 case 'N':
-                    lbAGV.Location = new Point(x, y - initDistanceToExitNode);
+                    lbAGV.Location = new Point(x, y - initPixelDistance);
                     break;
                 case 'S':
-                    lbAGV.Location = new Point(x, y + initDistanceToExitNode);
+                    lbAGV.Location = new Point(x, y + initPixelDistance);
                     break;
             }
 
@@ -97,23 +100,21 @@ namespace AGVsControlAndMonitoringSoftware
             }
         }
 
-        // Update position AGV icon in simulation mode
-        public static Point SimUpdatePositionAGV(int agvID, int speed)
+        // Update position AGV icon in simulation mode (speed: cm/s)
+        public static Point SimUpdatePositionAGV(int agvID, float speed)
         {
             // Find AGV in SimListAGV, get current point
             var index = AGV.SimListAGV.FindIndex(a => a.ID == agvID);
             AGV agv = AGV.SimListAGV[index];
             Point location = Display.SimLabelAGV[agvID].Location;
 
-            // Get navigation frame array. Note: string is a reference type,
-            // so any change in navigationArr is also in AGV.SimListAGV[index].navigationArr
-            string[] navigationArr = agv.navigationArr;
-
             // return old point when agv has no path
             if (agv.Path.Count == 0) return location;
 
-            char orient = new char();
-            int sp = new int();
+            // Get navigation frame array. Note: string is a reference type,
+            // so any change in navigationArr is also in AGV.SimListAGV[index].navigationArr
+            string[] navigationArr = agv.navigationArr;            
+
             // Check whether current point is a node or not 
             // Note: shift location of label to center (+LabelAGV[].Width/2, +LabelAGV[].Height/2)
             var node = Node.ListNode.FirstOrDefault(n =>
@@ -124,6 +125,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Current point is not a node and current position is start node, 
             // it means initDistance to start node != 0, so go backward once then keep go ahead
+            char orient = new char();
             if (node == null && agv.ExitNode == agv.Path[0])
             {
                 switch (navigationArr[0])
@@ -147,7 +149,7 @@ namespace AGVsControlAndMonitoringSoftware
                 agv.ExitNode = node.ID;  // Update ExitNode
                 orient = UpdateOrient(agv.Orientation, "A");
                 agv.Orientation = orient;  // Update Orientation
-                agv.DistanceToExitNode = 0; // Update Distance to ExitNode
+                agv.DistanceToExitNode = 0f; // Update Distance to ExitNode
                 agv.Status = "Stop"; // Update Status
 
                 // Add next path
@@ -157,7 +159,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
             // Current point is at start node and initDistance to start node == 0
             // Turn direction once then keep go ahead
-            else if (node.ID == agv.Path[0] && agv.DistanceToExitNode == 0)
+            else if (node.ID == agv.Path[0] && agv.DistanceToExitNode == 0f)
             {
                 switch (navigationArr[0])
                 {
@@ -213,7 +215,8 @@ namespace AGVsControlAndMonitoringSoftware
                     nd = nd0;
                 }
             }
-            sp = (nd % speed == 0) ? speed : (nd % speed);            
+            int sp = (int)Math.Round(speed * Display.Scale * (100.0 / 1000)); // timer1.Interval = 100ms
+            int step = (nd % sp == 0) ? sp : (nd % sp);            
 
             // Update AGV information before update location
             if (node != null) agv.ExitNode = node.ID;  // Update ExitNode
@@ -221,23 +224,23 @@ namespace AGVsControlAndMonitoringSoftware
             int exitNode = agv.ExitNode;
             int dx = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[exitNode].X;
             int dy = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[exitNode].Y;
-            agv.DistanceToExitNode = (int)Math.Sqrt(dx * dx + dy * dy); // Update Distance to ExitNode
+            agv.DistanceToExitNode = (float)Math.Sqrt(dx * dx + dy * dy) / Display.Scale; // Update Distance to ExitNode
             agv.Status = "Running"; // Update Status
 
             // Update next location of AGV icon in panel
             switch (orient)
             {
                 case 'E':
-                    location = new Point(location.X + sp, location.Y);
+                    location = new Point(location.X + step, location.Y);
                     break;
                 case 'W':
-                    location = new Point(location.X - sp, location.Y);
+                    location = new Point(location.X - step, location.Y);
                     break;
                 case 'S':
-                    location = new Point(location.X, location.Y + sp);
+                    location = new Point(location.X, location.Y + step);
                     break;
                 case 'N':
-                    location = new Point(location.X, location.Y - sp);
+                    location = new Point(location.X, location.Y - step);
                     break;
             }
 
@@ -290,8 +293,8 @@ namespace AGVsControlAndMonitoringSoftware
                     listView.Items[listView.Items.Count - 1].SubItems.Add(agv.Status);
                     listView.Items[listView.Items.Count - 1].SubItems.Add(agv.ExitNode.ToString());
                     listView.Items[listView.Items.Count - 1].SubItems.Add(agv.Orientation.ToString());
-                    listView.Items[listView.Items.Count - 1].SubItems.Add(agv.DistanceToExitNode.ToString());
-                    listView.Items[listView.Items.Count - 1].SubItems.Add(agv.Velocity.ToString());
+                    listView.Items[listView.Items.Count - 1].SubItems.Add(Math.Round(agv.DistanceToExitNode, 1).ToString() + " cm");
+                    listView.Items[listView.Items.Count - 1].SubItems.Add(agv.Velocity.ToString() + " cm/s");
                 }
                 else
                 {
@@ -299,8 +302,8 @@ namespace AGVsControlAndMonitoringSoftware
                     listView.Items[listData.IndexOf(agv)].SubItems[1].Text = agv.Status.ToString();
                     listView.Items[listData.IndexOf(agv)].SubItems[2].Text = agv.ExitNode.ToString();
                     listView.Items[listData.IndexOf(agv)].SubItems[3].Text = agv.Orientation.ToString();
-                    listView.Items[listData.IndexOf(agv)].SubItems[4].Text = agv.DistanceToExitNode.ToString();
-                    listView.Items[listData.IndexOf(agv)].SubItems[5].Text = agv.Velocity.ToString();
+                    listView.Items[listData.IndexOf(agv)].SubItems[4].Text = Math.Round(agv.DistanceToExitNode, 1).ToString() + " cm";
+                    listView.Items[listData.IndexOf(agv)].SubItems[5].Text = agv.Velocity.ToString() + " cm/s";
                     
                     if (agv.Status == "Running")
                         listView.Items[listData.IndexOf(agv)].BackColor = Color.PaleGreen;

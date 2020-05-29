@@ -474,7 +474,7 @@
             // 
             this.imageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList.ImageStream")));
             this.imageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList.Images.SetKeyName(0, "icon_task.ico");
+            this.imageList.Images.SetKeyName(0, "icon_task.png");
             // 
             // groupBox2
             // 

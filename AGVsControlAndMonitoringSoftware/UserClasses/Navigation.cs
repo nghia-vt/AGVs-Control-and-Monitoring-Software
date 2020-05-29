@@ -9,7 +9,7 @@ namespace AGVsControlAndMonitoringSoftware
     class Navigation
     {
         // Create the navigation frame will be sent to actuator system
-        public static string GetNavigationFrame(List<int> path, char initOrient, int initDistance)
+        public static string GetNavigationFrame(List<int> path, char initOrient, float initDistance)
         {
             List<Node> nodes = Node.ListNode;
             // Foreach node in path, calculate the vector to next node
@@ -25,7 +25,7 @@ namespace AGVsControlAndMonitoringSoftware
             // Determin turn-direction of start node and add it to frame
             string frame = null;
             char startOrient = ConvertToOrient(vector[0, 0].ToString() + vector[0, 1].ToString());
-            if (initDistance == 0 || startOrient == initOrient)
+            if (initDistance == 0f || startOrient == initOrient)
             {
                 frame += GetDir(initOrient, startOrient) + ",";
             }

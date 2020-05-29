@@ -93,7 +93,7 @@ namespace AGVsControlAndMonitoringSoftware
             return min_index;
         }
 
-        // Caculate heuristic function (Manhattan distance for 4 direction of moving)
+        // Calculate heuristic function (Manhattan distance for 4 direction of moving)
         private static int heuristic(List<Node> Nodes, int current, int goal)
         {
             int dx = Math.Abs(Nodes[current].X - Nodes[goal].X);

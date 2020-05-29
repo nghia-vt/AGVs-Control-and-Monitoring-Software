@@ -11,10 +11,11 @@ namespace AGVsControlAndMonitoringSoftware
         public int ID { get; set; }
         public int ExitNode { get; set; }
         public char Orientation { get; set; }
-        public int DistanceToExitNode { get; set; }
+        public float DistanceToExitNode { get; set; } // unit: cm
         public string Status { get; set; }
-        public float Velocity { get; set; }
+        public float Velocity { get; set; } // unit: cm/s
         
+        // List of tasks, current task is Task[0], next tasks is after Task[0]
         public List<Task> Tasks = new List<Task>();
 
         // Current path of an AGV, will be removed when completed
@@ -24,7 +25,7 @@ namespace AGVsControlAndMonitoringSoftware
         public string[] navigationArr = new string[] { };
 
         // Constructor of AGV with some initial information
-        public AGV(int id, int initExitNode, char initOrientation, int distanceToExitNode, string status)
+        public AGV(int id, int initExitNode, char initOrientation, float distanceToExitNode, string status)
         {
             this.ID = id;
             this.ExitNode = initExitNode;
@@ -32,6 +33,9 @@ namespace AGVsControlAndMonitoringSoftware
             this.DistanceToExitNode = distanceToExitNode;
             this.Status = status;
         }
+
+        // Length of AGV (unit: cm)
+        public static float Length = 30;
 
         // Assume that max mumber of AGV is 100
         public static int MaxNumOfAGVs = 100;

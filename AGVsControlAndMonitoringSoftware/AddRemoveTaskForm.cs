@@ -262,7 +262,7 @@ namespace AGVsControlAndMonitoringSoftware
             {
                 if (txbTaskName.Text == t.Name)
                 {
-                    MessageBox.Show("Task Name already exists.\nPlease choose other Task Name", "Error",
+                    MessageBox.Show("Task Name already exists.\nPlease choose other Task Name.", "Error",
                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -275,7 +275,7 @@ namespace AGVsControlAndMonitoringSoftware
                 {
                     if (txbPalletCode.Text == t.PalletCode)
                     {
-                        MessageBox.Show("Pallet Code already exists.\nPlease choose other Pallet Code", "Error",
+                        MessageBox.Show("Pallet Code already exists.\nPlease choose other Pallet Code.", "Error",
                                          MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -299,7 +299,7 @@ namespace AGVsControlAndMonitoringSoftware
                         if (column.PalletCodes[i] == null) continue;
                         if (column.PalletCodes[i] == txbPalletCode.Text)
                         {
-                            MessageBox.Show("Pallet Code already exists.\nPlease choose other Pallet Code", "Error",
+                            MessageBox.Show("Pallet Code already exists.\nPlease choose other Pallet Code.", "Error",
                                          MessageBoxButtons.OK, MessageBoxIcon.Error);
                             return;
                         }

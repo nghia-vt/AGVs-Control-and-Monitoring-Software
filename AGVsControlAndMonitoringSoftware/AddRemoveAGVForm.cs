@@ -50,7 +50,7 @@ namespace AGVsControlAndMonitoringSoftware
             {
                 if (Convert.ToInt16(txbID.Text) == a.ID)
                 {
-                    MessageBox.Show("AGV ID already exists.\nPlease choose other AGV ID", "Error",
+                    MessageBox.Show("AGV ID already exists.\nPlease choose other AGV ID.", "Error",
                                      MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -58,7 +58,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // If not exist, add new AGV into listNewAGV
             AGV agv = new AGV(Convert.ToInt16(txbID.Text), Convert.ToInt16(cbbExitNode.Text),
-                              Convert.ToChar(cbbOrientation.Text), Convert.ToInt16(txbDistance.Text), "Stop");
+                              Convert.ToChar(cbbOrientation.Text), Convert.ToSingle(txbDistance.Text), "Stop");
             listNewAGV.Add(agv);
 
             // Put new AGV ID in listView
@@ -131,16 +131,22 @@ namespace AGVsControlAndMonitoringSoftware
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
-                MessageBox.Show("Only allow digit", "AGV ID Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Only allow integer number.", "AGV ID Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
         private void txbDistance_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            if (!char.IsDigit(e.KeyChar) && (e.KeyChar != 46) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
-                MessageBox.Show("Only allow digit", "AGV ID Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Only allow a decimal number.", "Distance Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            // checks to make sure only 1 decimal is allowed
+            if (e.KeyChar == 46)
+            {
+                if ((sender as TextBox).Text.IndexOf(e.KeyChar) != -1)
+                    e.Handled = true;
             }
         }
     }

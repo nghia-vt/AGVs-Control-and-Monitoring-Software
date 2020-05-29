@@ -23,7 +23,7 @@ namespace AGVsControlAndMonitoringSoftware
         // Orient Matrix of nodes
         public static char[,] MatrixNodeOrient = Node.CreateOrientMatrix(ListNode);
 
-        // This method return the matrix of distance from node to other node
+        // This method return the matrix of distance (pixel) from node to other node
         // d[i,j] = 0 indicate that no linking from node i to j
         private static int[,] CreateAdjacencyMatrix(List<Node> Nodes)
         {

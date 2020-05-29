@@ -128,7 +128,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACG
-        BAAAAk1TRnQBSQFMAwEBAAFYAQABWAEAARIBAAESAQAE/wERAQAI/wFCAU0BNgcAATYDAAEoAwABSAMA
+        BAAAAk1TRnQBSQFMAwEBAAFgAQABYAEAARIBAAESAQAE/wERAQAI/wFCAU0BNgcAATYDAAEoAwABSAMA
         ARIDAAEBAQABEAUAASABChgAAf8BfwG6AXsBLQFzAQgBcwEGAXMBBwFzAQkBcwFOAXcB3AF7fAAB/gF/
         AVABdwEGAXMBBgFzAQcBcwEsAXMBKwFzAQYBcwEGAXMBBgFzAXQBdwH/AX92AAH/AX8BLQF3AQYBcwEq
         AXMBuQF7Af8BfwQAAf8BfwGWAXcBCAFzAQYBcwFQAXcB/wF/dAABUQF3AQYBcwEsAXcB/wF/AgAB/wF/
@@ -150,9 +150,6 @@
         AfwBOAoAAf8B+AHACQAB/wH+AcAJAAs=
 </value>
   </data>
-  <metadata name="myToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>117, 21</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>75</value>
   </metadata>

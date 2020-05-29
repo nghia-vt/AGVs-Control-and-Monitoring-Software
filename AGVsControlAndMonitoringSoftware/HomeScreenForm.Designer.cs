@@ -46,6 +46,8 @@
             this.operationManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnPauseRun = new System.Windows.Forms.Button();
+            this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.lbTime = new System.Windows.Forms.Label();
             this.rdbtnSimulation = new System.Windows.Forms.RadioButton();
             this.rdbtnRealTime = new System.Windows.Forms.RadioButton();
@@ -59,7 +61,6 @@
             this.Orient = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DistanceToExitNode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Velocity = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.listViewTasks = new System.Windows.Forms.ListView();
             this.TaskName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -210,6 +211,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.Color.Lavender;
+            this.groupBox1.Controls.Add(this.btnPauseRun);
             this.groupBox1.Controls.Add(this.lbTime);
             this.groupBox1.Controls.Add(this.rdbtnSimulation);
             this.groupBox1.Controls.Add(this.rdbtnRealTime);
@@ -224,12 +226,44 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode Setting";
             // 
+            // btnPauseRun
+            // 
+            this.btnPauseRun.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnPauseRun.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnPauseRun.FlatAppearance.BorderColor = System.Drawing.Color.Lavender;
+            this.btnPauseRun.FlatAppearance.BorderSize = 0;
+            this.btnPauseRun.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPauseRun.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.btnPauseRun.ForeColor = System.Drawing.Color.Navy;
+            this.btnPauseRun.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnPauseRun.ImageIndex = 3;
+            this.btnPauseRun.ImageList = this.imgList;
+            this.btnPauseRun.Location = new System.Drawing.Point(281, 24);
+            this.btnPauseRun.Name = "btnPauseRun";
+            this.btnPauseRun.Size = new System.Drawing.Size(70, 30);
+            this.btnPauseRun.TabIndex = 7;
+            this.btnPauseRun.Text = "Run";
+            this.btnPauseRun.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnPauseRun.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnPauseRun.UseVisualStyleBackColor = false;
+            this.btnPauseRun.Visible = false;
+            this.btnPauseRun.Click += new System.EventHandler(this.btnPauseRun_Click);
+            // 
+            // imgList
+            // 
+            this.imgList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgList.ImageStream")));
+            this.imgList.TransparentColor = System.Drawing.Color.Transparent;
+            this.imgList.Images.SetKeyName(0, "icon_agv.ico");
+            this.imgList.Images.SetKeyName(1, "icon_task.png");
+            this.imgList.Images.SetKeyName(2, "icon_pause.png");
+            this.imgList.Images.SetKeyName(3, "icon_run.png");
+            // 
             // lbTime
             // 
             this.lbTime.AutoSize = true;
             this.lbTime.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.lbTime.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbTime.Location = new System.Drawing.Point(70, 60);
+            this.lbTime.Location = new System.Drawing.Point(79, 60);
             this.lbTime.Name = "lbTime";
             this.lbTime.Size = new System.Drawing.Size(227, 19);
             this.lbTime.TabIndex = 6;
@@ -240,7 +274,7 @@
             this.rdbtnSimulation.AutoSize = true;
             this.rdbtnSimulation.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.rdbtnSimulation.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.rdbtnSimulation.Location = new System.Drawing.Point(172, 28);
+            this.rdbtnSimulation.Location = new System.Drawing.Point(181, 28);
             this.rdbtnSimulation.Name = "rdbtnSimulation";
             this.rdbtnSimulation.Size = new System.Drawing.Size(91, 23);
             this.rdbtnSimulation.TabIndex = 5;
@@ -254,7 +288,7 @@
             this.rdbtnRealTime.BackColor = System.Drawing.Color.Lavender;
             this.rdbtnRealTime.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.rdbtnRealTime.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.rdbtnRealTime.Location = new System.Drawing.Point(74, 27);
+            this.rdbtnRealTime.Location = new System.Drawing.Point(83, 27);
             this.rdbtnRealTime.Name = "rdbtnRealTime";
             this.rdbtnRealTime.Size = new System.Drawing.Size(85, 23);
             this.rdbtnRealTime.TabIndex = 4;
@@ -267,7 +301,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.Navy;
-            this.label2.Location = new System.Drawing.Point(15, 60);
+            this.label2.Location = new System.Drawing.Point(24, 60);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 19);
             this.label2.TabIndex = 3;
@@ -278,7 +312,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.Navy;
-            this.label1.Location = new System.Drawing.Point(15, 30);
+            this.label1.Location = new System.Drawing.Point(24, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 19);
             this.label1.TabIndex = 3;
@@ -350,13 +384,6 @@
             // 
             this.Velocity.Text = "Velocity";
             this.Velocity.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // imgList
-            // 
-            this.imgList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imgList.ImageStream")));
-            this.imgList.TransparentColor = System.Drawing.Color.Transparent;
-            this.imgList.Images.SetKeyName(0, "icon_agv.ico");
-            this.imgList.Images.SetKeyName(1, "icon_task.ico");
             // 
             // groupBox3
             // 
@@ -557,6 +584,7 @@
         private System.Windows.Forms.ToolStripMenuItem showPathToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hidePathToolStripMenuItem;
         private System.Windows.Forms.Label lbTime;
+        private System.Windows.Forms.Button btnPauseRun;
     }
 }
 
