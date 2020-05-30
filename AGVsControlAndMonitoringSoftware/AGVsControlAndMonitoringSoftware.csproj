@@ -72,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserClasses\AGV.cs" />
     <Compile Include="UserClasses\Algorithm.cs" />
+    <Compile Include="UserClasses\Collision.cs" />
     <Compile Include="UserClasses\DBUtility.cs" />
     <Compile Include="UserClasses\Display.cs" />
     <Compile Include="UserClasses\Navigation.cs" />

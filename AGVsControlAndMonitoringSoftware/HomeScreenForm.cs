@@ -102,6 +102,9 @@ namespace AGVsControlAndMonitoringSoftware
                 // If pause simulation is selected
                 if (Display.SimPause == true) return;
 
+                // Detect collision
+                Collision.DerectCross(AGV.SimListAGV);
+
                 // Update location of AGV icon (label)
                 foreach (AGV agv in AGV.SimListAGV)
                 {

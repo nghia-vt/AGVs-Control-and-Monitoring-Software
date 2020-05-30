@@ -108,6 +108,17 @@ namespace AGVsControlAndMonitoringSoftware
             AGV agv = AGV.SimListAGV[index];
             Point location = Display.SimLabelAGV[agvID].Location;
 
+            // Handle (waiting method) cross collision if it happens
+            CollisionStatus status = Collision.SimHandleCross(agv, Collision.SimListCollision);
+            if (status == CollisionStatus.Handling)
+            {
+                // Update agv status and velocity
+                agv.Velocity = 0;
+                agv.Status = "Stop";
+
+                return location;
+            }
+
             // return old point when agv has no path
             if (agv.Path.Count == 0) return location;
 
@@ -151,6 +162,7 @@ namespace AGVsControlAndMonitoringSoftware
                 agv.Orientation = orient;  // Update Orientation
                 agv.DistanceToExitNode = 0f; // Update Distance to ExitNode
                 agv.Status = "Stop"; // Update Status
+                agv.Velocity = 0; // Update Velocity
 
                 // Add next path
                 Task.AddNextPathOfAGV(agv);
