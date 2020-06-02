@@ -103,12 +103,12 @@ namespace AGVsControlAndMonitoringSoftware
                 if (Display.SimPause == true) return;
 
                 // Detect collision
-                Collision.DerectCross(AGV.SimListAGV);
+                Collision.Detect(AGV.SimListAGV);
 
                 // Update location of AGV icon (label)
                 foreach (AGV agv in AGV.SimListAGV)
                 {
-                    if (agv.Path.Count != 0) agv.Velocity = 20f; else agv.Velocity = 0f;
+                    if (agv.Path.Count != 0) agv.Velocity = AGV.SimSpeed; else agv.Velocity = 0f;
                     Display.SimLabelAGV[agv.ID].Location = Display.SimUpdatePositionAGV(agv.ID, agv.Velocity);
 
                     //  Display agv carrying pallet

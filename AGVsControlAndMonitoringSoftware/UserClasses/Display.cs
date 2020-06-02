@@ -108,8 +108,8 @@ namespace AGVsControlAndMonitoringSoftware
             AGV agv = AGV.SimListAGV[index];
             Point location = Display.SimLabelAGV[agvID].Location;
 
-            // Handle (waiting method) cross collision if it happens
-            CollisionStatus status = Collision.SimHandleCross(agv, Collision.SimListCollision);
+            // Handle (waiting method) collision if it happens
+            CollisionStatus status = Collision.SimHandle(agv, Collision.SimListCollision);
             if (status == CollisionStatus.Handling)
             {
                 // Update agv status and velocity
@@ -202,13 +202,13 @@ namespace AGVsControlAndMonitoringSoftware
             // Current point is a node but start node
             else
             {
-                int idx = Array.FindIndex(navigationArr, item => item == node.ID.ToString());
+                int idx = Array.IndexOf(navigationArr, node.ID.ToString());
                 string dir = navigationArr[idx + 1];
                 orient = UpdateOrient(agv.Orientation, dir);
             }
 
             // Modify speed to make sure AGV icon can reach next node
-            int i = agv.Path.FindIndex(n => n == agv.ExitNode);
+            int i = agv.Path.IndexOf(agv.ExitNode);
             int nextNode = agv.Path[i + 1];
             int dnx = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[nextNode].X;
             int dny = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[nextNode].Y;
