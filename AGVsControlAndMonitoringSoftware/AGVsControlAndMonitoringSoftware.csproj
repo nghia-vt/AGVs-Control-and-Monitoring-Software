@@ -62,6 +62,12 @@
     <Compile Include="AddRemoveTaskForm.Designer.cs">
       <DependentUpon>AddRemoveTaskForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="COMSettingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="COMSettingForm.Designer.cs">
+      <DependentUpon>COMSettingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="HomeScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -73,6 +79,7 @@
     <Compile Include="UserClasses\AGV.cs" />
     <Compile Include="UserClasses\Algorithm.cs" />
     <Compile Include="UserClasses\Collision.cs" />
+    <Compile Include="UserClasses\Communicator.cs" />
     <Compile Include="UserClasses\DBUtility.cs" />
     <Compile Include="UserClasses\Display.cs" />
     <Compile Include="UserClasses\Navigation.cs" />
@@ -84,6 +91,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddRemoveTaskForm.resx">
       <DependentUpon>AddRemoveTaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="COMSettingForm.resx">
+      <DependentUpon>COMSettingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="HomeScreenForm.resx">
       <DependentUpon>HomeScreenForm.cs</DependentUpon>

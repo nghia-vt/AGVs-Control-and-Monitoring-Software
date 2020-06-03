@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO.Ports;
 
 namespace AGVsControlAndMonitoringSoftware
 {
@@ -15,6 +16,7 @@ namespace AGVsControlAndMonitoringSoftware
         public HomeScreenForm()
         {
             InitializeComponent();
+            Communicator.SerialPort.DataReceived += new SerialDataReceivedEventHandler(this.SerialPort_ReceiveData);
         }
 
         private void HomeScreenForm_Load(object sender, EventArgs e)
@@ -32,6 +34,14 @@ namespace AGVsControlAndMonitoringSoftware
             rdbtnRealTime.BackColor = Color.MintCream;
             rdbtnSimulation.BackColor = Color.Lavender;
             btnPauseRun.Visible = false;
+            if (Communicator.SerialPort.IsOpen)
+                lbModeStatus.Text = "     Connection: " + Communicator.SerialPort.PortName + " ["
+                                                   + Communicator.SerialPort.BaudRate.ToString() + "-"
+                                                   + Communicator.SerialPort.Parity + "-"
+                                                   + Communicator.SerialPort.DataBits.ToString() + "-"
+                                                   + Communicator.SerialPort.StopBits + "]";
+            else lbModeStatus.Text = "     Please set communication to run.";
+
             Display.Mode = "Real Time";
 
             // Add label of columns at node
@@ -56,6 +66,8 @@ namespace AGVsControlAndMonitoringSoftware
             rdbtnSimulation.BackColor = Color.MintCream;
             rdbtnRealTime.BackColor = Color.Lavender;
             btnPauseRun.Visible = true;
+            lbModeStatus.Text = "     Simulation mode is running.";
+
             Display.Mode = "Simulation";
 
             // Add label of columns at node
@@ -247,6 +259,31 @@ namespace AGVsControlAndMonitoringSoftware
                 btnPauseRun.ImageIndex = 3;
                 Display.SimPause = true;
             }
+        }
+
+        private void communicationToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (rdbtnRealTime.Checked == true)
+            {
+                using (COMSettingForm SettingForm = new COMSettingForm())
+                {
+                    SettingForm.ShowDialog();
+                }
+
+                if (Communicator.SerialPort.IsOpen)
+                    lbModeStatus.Text = "     Connection: " + Communicator.SerialPort.PortName + " ["
+                                                       + Communicator.SerialPort.BaudRate.ToString() + "-"
+                                                       + Communicator.SerialPort.Parity + "-"
+                                                       + Communicator.SerialPort.DataBits.ToString() + "-"
+                                                       + Communicator.SerialPort.StopBits + "]";
+                else lbModeStatus.Text = "     Disconnected. Please set communication to run.";
+            }
+        }
+
+        private void SerialPort_ReceiveData(object sender, SerialDataReceivedEventArgs e)
+        {
+            string dataReceived = Communicator.SerialPort.ReadLine();
+            Console.Write(dataReceived);
         }
     }
 }

@@ -32,8 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeScreenForm));
             this.mnstrHomeScr = new System.Windows.Forms.MenuStrip();
             this.communicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cOMSettingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.informationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRemoveTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +74,7 @@
             this.showPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.lbModeStatus = new System.Windows.Forms.Label();
             this.mnstrHomeScr.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -103,34 +102,20 @@
             // 
             // communicationToolStripMenuItem
             // 
-            this.communicationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cOMSettingToolStripMenuItem,
-            this.informationToolStripMenuItem});
+            this.communicationToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("communicationToolStripMenuItem.Image")));
             this.communicationToolStripMenuItem.Name = "communicationToolStripMenuItem";
-            this.communicationToolStripMenuItem.Size = new System.Drawing.Size(118, 23);
+            this.communicationToolStripMenuItem.Size = new System.Drawing.Size(134, 23);
             this.communicationToolStripMenuItem.Text = "&Communication";
-            // 
-            // cOMSettingToolStripMenuItem
-            // 
-            this.cOMSettingToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cOMSettingToolStripMenuItem.Image")));
-            this.cOMSettingToolStripMenuItem.Name = "cOMSettingToolStripMenuItem";
-            this.cOMSettingToolStripMenuItem.Size = new System.Drawing.Size(158, 24);
-            this.cOMSettingToolStripMenuItem.Text = "COM &Setting";
-            // 
-            // informationToolStripMenuItem
-            // 
-            this.informationToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("informationToolStripMenuItem.Image")));
-            this.informationToolStripMenuItem.Name = "informationToolStripMenuItem";
-            this.informationToolStripMenuItem.Size = new System.Drawing.Size(158, 24);
-            this.informationToolStripMenuItem.Text = "&Information";
+            this.communicationToolStripMenuItem.Click += new System.EventHandler(this.communicationToolStripMenuItem_Click);
             // 
             // taskToolStripMenuItem
             // 
             this.taskToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addRemoveTaskToolStripMenuItem,
             this.taskManagementToolStripMenuItem});
+            this.taskToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("taskToolStripMenuItem.Image")));
             this.taskToolStripMenuItem.Name = "taskToolStripMenuItem";
-            this.taskToolStripMenuItem.Size = new System.Drawing.Size(54, 23);
+            this.taskToolStripMenuItem.Size = new System.Drawing.Size(70, 23);
             this.taskToolStripMenuItem.Text = "&Tasks";
             // 
             // addRemoveTaskToolStripMenuItem
@@ -153,8 +138,9 @@
             this.aGVsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addRemoveAGVToolStripMenuItem,
             this.aGVManagementToolStripMenuItem});
+            this.aGVsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aGVsToolStripMenuItem.Image")));
             this.aGVsToolStripMenuItem.Name = "aGVsToolStripMenuItem";
-            this.aGVsToolStripMenuItem.Size = new System.Drawing.Size(55, 23);
+            this.aGVsToolStripMenuItem.Size = new System.Drawing.Size(71, 23);
             this.aGVsToolStripMenuItem.Text = "&AGVs";
             // 
             // addRemoveAGVToolStripMenuItem
@@ -174,14 +160,16 @@
             // 
             // ordersToolStripMenuItem
             // 
+            this.ordersToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ordersToolStripMenuItem.Image")));
             this.ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
-            this.ordersToolStripMenuItem.Size = new System.Drawing.Size(123, 23);
+            this.ordersToolStripMenuItem.Size = new System.Drawing.Size(139, 23);
             this.ordersToolStripMenuItem.Text = "&Warehouse Data";
             // 
             // reportToolStripMenuItem
             // 
+            this.reportToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("reportToolStripMenuItem.Image")));
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
-            this.reportToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
+            this.reportToolStripMenuItem.Size = new System.Drawing.Size(78, 23);
             this.reportToolStripMenuItem.Text = "&Report";
             // 
             // helpToolStripMenuItem
@@ -189,8 +177,9 @@
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.operationManualToolStripMenuItem,
             this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem.Image")));
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(49, 23);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 23);
             this.helpToolStripMenuItem.Text = "&Help";
             // 
             // operationManualToolStripMenuItem
@@ -202,6 +191,7 @@
             // 
             // aboutToolStripMenuItem
             // 
+            this.aboutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aboutToolStripMenuItem.Image")));
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(190, 24);
             this.aboutToolStripMenuItem.Text = "&About...";
@@ -211,6 +201,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.BackColor = System.Drawing.Color.Lavender;
+            this.groupBox1.Controls.Add(this.lbModeStatus);
             this.groupBox1.Controls.Add(this.btnPauseRun);
             this.groupBox1.Controls.Add(this.lbTime);
             this.groupBox1.Controls.Add(this.rdbtnSimulation);
@@ -221,7 +212,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox1.Location = new System.Drawing.Point(757, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(382, 92);
+            this.groupBox1.Size = new System.Drawing.Size(382, 110);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode Setting";
@@ -238,7 +229,7 @@
             this.btnPauseRun.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnPauseRun.ImageIndex = 3;
             this.btnPauseRun.ImageList = this.imgList;
-            this.btnPauseRun.Location = new System.Drawing.Point(281, 24);
+            this.btnPauseRun.Location = new System.Drawing.Point(281, 47);
             this.btnPauseRun.Name = "btnPauseRun";
             this.btnPauseRun.Size = new System.Drawing.Size(70, 30);
             this.btnPauseRun.TabIndex = 7;
@@ -263,7 +254,7 @@
             this.lbTime.AutoSize = true;
             this.lbTime.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.lbTime.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lbTime.Location = new System.Drawing.Point(79, 60);
+            this.lbTime.Location = new System.Drawing.Point(79, 82);
             this.lbTime.Name = "lbTime";
             this.lbTime.Size = new System.Drawing.Size(227, 19);
             this.lbTime.TabIndex = 6;
@@ -274,7 +265,7 @@
             this.rdbtnSimulation.AutoSize = true;
             this.rdbtnSimulation.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.rdbtnSimulation.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.rdbtnSimulation.Location = new System.Drawing.Point(181, 28);
+            this.rdbtnSimulation.Location = new System.Drawing.Point(178, 50);
             this.rdbtnSimulation.Name = "rdbtnSimulation";
             this.rdbtnSimulation.Size = new System.Drawing.Size(91, 23);
             this.rdbtnSimulation.TabIndex = 5;
@@ -288,7 +279,7 @@
             this.rdbtnRealTime.BackColor = System.Drawing.Color.Lavender;
             this.rdbtnRealTime.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.rdbtnRealTime.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.rdbtnRealTime.Location = new System.Drawing.Point(83, 27);
+            this.rdbtnRealTime.Location = new System.Drawing.Point(82, 50);
             this.rdbtnRealTime.Name = "rdbtnRealTime";
             this.rdbtnRealTime.Size = new System.Drawing.Size(85, 23);
             this.rdbtnRealTime.TabIndex = 4;
@@ -301,7 +292,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.Navy;
-            this.label2.Location = new System.Drawing.Point(24, 60);
+            this.label2.Location = new System.Drawing.Point(24, 81);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 19);
             this.label2.TabIndex = 3;
@@ -312,7 +303,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.label1.ForeColor = System.Drawing.Color.Navy;
-            this.label1.Location = new System.Drawing.Point(24, 30);
+            this.label1.Location = new System.Drawing.Point(24, 52);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 19);
             this.label1.TabIndex = 3;
@@ -326,7 +317,7 @@
             this.groupBox2.Controls.Add(this.listViewAGVs);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
-            this.groupBox2.Location = new System.Drawing.Point(757, 125);
+            this.groupBox2.Location = new System.Drawing.Point(757, 143);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(382, 187);
             this.groupBox2.TabIndex = 2;
@@ -393,7 +384,7 @@
             this.groupBox3.Controls.Add(this.listViewTasks);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.ForeColor = System.Drawing.Color.DarkRed;
-            this.groupBox3.Location = new System.Drawing.Point(757, 318);
+            this.groupBox3.Location = new System.Drawing.Point(757, 336);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(382, 231);
             this.groupBox3.TabIndex = 2;
@@ -508,6 +499,20 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // lbModeStatus
+            // 
+            this.lbModeStatus.AutoSize = true;
+            this.lbModeStatus.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
+            this.lbModeStatus.ForeColor = System.Drawing.Color.Navy;
+            this.lbModeStatus.Image = ((System.Drawing.Image)(resources.GetObject("lbModeStatus.Image")));
+            this.lbModeStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbModeStatus.Location = new System.Drawing.Point(25, 25);
+            this.lbModeStatus.Name = "lbModeStatus";
+            this.lbModeStatus.Size = new System.Drawing.Size(146, 19);
+            this.lbModeStatus.TabIndex = 8;
+            this.lbModeStatus.Text = "     Please select mode.";
+            this.lbModeStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // HomeScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -542,8 +547,6 @@
         private System.Windows.Forms.MenuStrip mnstrHomeScr;
         private System.Windows.Forms.ToolStripMenuItem communicationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem taskToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cOMSettingToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem informationToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addRemoveTaskToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem taskManagementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aGVsToolStripMenuItem;
@@ -585,6 +588,7 @@
         private System.Windows.Forms.ToolStripMenuItem hidePathToolStripMenuItem;
         private System.Windows.Forms.Label lbTime;
         private System.Windows.Forms.Button btnPauseRun;
+        private System.Windows.Forms.Label lbModeStatus;
     }
 }
 
