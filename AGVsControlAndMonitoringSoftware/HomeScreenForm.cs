@@ -282,8 +282,60 @@ namespace AGVsControlAndMonitoringSoftware
 
         private void SerialPort_ReceiveData(object sender, SerialDataReceivedEventArgs e)
         {
-            string dataReceived = Communicator.SerialPort.ReadLine();
-            Console.Write(dataReceived);
+            int rxBufferSize = 25;
+            byte[] rxBuffer = new byte[rxBufferSize];
+            int rxBufferCount = Communicator.SerialPort.Read(rxBuffer, 0, rxBufferSize); //return the number of bytes read
+            // Console.WriteLine(BitConverter.ToString(rxBuffer));
+
+            // check header
+            if (rxBuffer[0] != 0xAA && rxBuffer[1] != 0xFF) return;
+
+            if (rxBuffer[2] == 0x01) // function code
+            {
+                AGVInfoReceivePacket frame = AGVInfoReceivePacket.FromArray(rxBuffer);
+
+                // check crc ------add action for this if it wrong------------
+                ushort crc = 0;
+                for (int i = 0; i < Communicator.AGVInfoReceivePacketSize - 4; i++)
+                    crc += rxBuffer[i];
+                if (crc != frame.CheckSum) return;
+
+                // update AGV info to lists of AGVs (real-time mode)
+                var agv = AGV.ListAGV.Find(a => a.ID == frame.AGVID);
+                if (agv == null) return;
+                switch(Convert.ToChar(frame.Status).ToString()) 
+                {
+                    case "R": agv.Status = "Running"; break;
+                    case "S": agv.Status = "Stop"; break;
+                    case "P": agv.Status = "Picking"; break;
+                    case "D": agv.Status = "Dropping"; break;
+                }
+                switch (Convert.ToChar(frame.Orient).ToString())
+                {
+                    case "R": agv.Status = "Running"; break;
+                    case "S": agv.Status = "Stop"; break;
+                    case "P": agv.Status = "Picking"; break;
+                    case "D": agv.Status = "Dropping"; break;
+                }
+                agv.ExitNode = frame.ExitNode;
+                agv.DistanceToExitNode = frame.DisToExitNode;
+                agv.Velocity = frame.Velocity;
+                agv.Battery = frame.Battery;
+
+                //----------for testing-------------------
+                //Array.ForEach(frame.Header, b => { Console.Write(b); Console.WriteLine(); });
+                //Console.WriteLine(frame.AGVID);
+                //Console.WriteLine(frame.Status);
+                //Console.WriteLine(frame.ExitNode);
+                //Console.WriteLine(frame.DisToExitNode);
+                //Console.WriteLine(frame.Orient);
+                //Console.WriteLine(frame.Velocity);
+                //Console.WriteLine(frame.Battery);
+                //Console.WriteLine(frame.CheckSum);
+                //Array.ForEach(frame.EndOfFrame, b => { Console.Write(b); Console.WriteLine(); });
+                //-------------------------------------------
+            }
+
         }
     }
 }

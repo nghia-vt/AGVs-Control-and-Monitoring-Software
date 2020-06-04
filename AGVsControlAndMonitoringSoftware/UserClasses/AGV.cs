@@ -14,6 +14,7 @@ namespace AGVsControlAndMonitoringSoftware
         public float DistanceToExitNode { get; set; } // unit: cm
         public string Status { get; set; }
         public float Velocity { get; set; } // unit: cm/s
+        public int Battery { get; set; }  // uint: %
         
         // List of tasks, current task is Task[0], next tasks is after Task[0]
         public List<Task> Tasks = new List<Task>();
