@@ -38,12 +38,13 @@
             this.aGVsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRemoveAGVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aGVManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ordersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.warehouseDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.operationManualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbModeStatus = new System.Windows.Forms.Label();
             this.btnPauseRun = new System.Windows.Forms.Button();
             this.imgList = new System.Windows.Forms.ImageList(this.components);
             this.lbTime = new System.Windows.Forms.Label();
@@ -74,7 +75,6 @@
             this.showPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.lbModeStatus = new System.Windows.Forms.Label();
             this.mnstrHomeScr.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -90,7 +90,7 @@
             this.communicationToolStripMenuItem,
             this.taskToolStripMenuItem,
             this.aGVsToolStripMenuItem,
-            this.ordersToolStripMenuItem,
+            this.warehouseDataToolStripMenuItem,
             this.reportToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.mnstrHomeScr.Location = new System.Drawing.Point(0, 0);
@@ -158,12 +158,12 @@
             this.aGVManagementToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.aGVManagementToolStripMenuItem.Text = "&Monitoring";
             // 
-            // ordersToolStripMenuItem
+            // warehouseDataToolStripMenuItem
             // 
-            this.ordersToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("ordersToolStripMenuItem.Image")));
-            this.ordersToolStripMenuItem.Name = "ordersToolStripMenuItem";
-            this.ordersToolStripMenuItem.Size = new System.Drawing.Size(139, 23);
-            this.ordersToolStripMenuItem.Text = "&Warehouse Data";
+            this.warehouseDataToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("warehouseDataToolStripMenuItem.Image")));
+            this.warehouseDataToolStripMenuItem.Name = "warehouseDataToolStripMenuItem";
+            this.warehouseDataToolStripMenuItem.Size = new System.Drawing.Size(139, 23);
+            this.warehouseDataToolStripMenuItem.Text = "&Warehouse Data";
             // 
             // reportToolStripMenuItem
             // 
@@ -216,6 +216,20 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Mode Setting";
+            // 
+            // lbModeStatus
+            // 
+            this.lbModeStatus.AutoSize = true;
+            this.lbModeStatus.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
+            this.lbModeStatus.ForeColor = System.Drawing.Color.Navy;
+            this.lbModeStatus.Image = ((System.Drawing.Image)(resources.GetObject("lbModeStatus.Image")));
+            this.lbModeStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbModeStatus.Location = new System.Drawing.Point(25, 25);
+            this.lbModeStatus.Name = "lbModeStatus";
+            this.lbModeStatus.Size = new System.Drawing.Size(146, 19);
+            this.lbModeStatus.TabIndex = 8;
+            this.lbModeStatus.Text = "     Please select mode.";
+            this.lbModeStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnPauseRun
             // 
@@ -499,20 +513,6 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // lbModeStatus
-            // 
-            this.lbModeStatus.AutoSize = true;
-            this.lbModeStatus.Font = new System.Drawing.Font("Segoe UI Semilight", 10F);
-            this.lbModeStatus.ForeColor = System.Drawing.Color.Navy;
-            this.lbModeStatus.Image = ((System.Drawing.Image)(resources.GetObject("lbModeStatus.Image")));
-            this.lbModeStatus.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbModeStatus.Location = new System.Drawing.Point(25, 25);
-            this.lbModeStatus.Name = "lbModeStatus";
-            this.lbModeStatus.Size = new System.Drawing.Size(146, 19);
-            this.lbModeStatus.TabIndex = 8;
-            this.lbModeStatus.Text = "     Please select mode.";
-            this.lbModeStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // HomeScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -552,7 +552,7 @@
         private System.Windows.Forms.ToolStripMenuItem aGVsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addRemoveAGVToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aGVManagementToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ordersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem warehouseDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem operationManualToolStripMenuItem;

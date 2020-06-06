@@ -64,35 +64,35 @@ namespace AGVsControlAndMonitoringSoftware
                     Communicator.queueRXData.Dequeue();
 
                 // put data in a struct data of this function code
-                AGVInfoReceivePacket frame = AGVInfoReceivePacket.FromArray(data);
+                AGVInfoReceivePacket receiveFrame = AGVInfoReceivePacket.FromArray(data);
 
                 // check sum
                 ushort crc = 0;
                 for (int i = 0; i < AGVInfoReceivePacketSize - 4; i++)
                     crc += data[i];
-                if (crc != frame.CheckSum) return;
+                if (crc != receiveFrame.CheckSum) return;
 
                 // update AGV info to lists of AGVs (real-time mode)
-                var agv = AGV.ListAGV.Find(a => a.ID == frame.AGVID);
+                var agv = AGV.ListAGV.Find(a => a.ID == receiveFrame.AGVID);
                 if (agv == null) return;
-                switch (Convert.ToChar(frame.Status).ToString())
+                switch (Convert.ToChar(receiveFrame.Status).ToString())
                 {
                     case "R": agv.Status = "Running"; break;
                     case "S": agv.Status = "Stop"; break;
                     case "P": agv.Status = "Picking"; break;
                     case "D": agv.Status = "Dropping"; break;
                 }
-                switch (Convert.ToChar(frame.Orient).ToString())
+                switch (Convert.ToChar(receiveFrame.Orient).ToString())
                 {
                     case "E": agv.Orientation = 'E'; break;
                     case "W": agv.Orientation = 'W'; break;
                     case "S": agv.Orientation = 'S'; break;
                     case "N": agv.Orientation = 'N'; break;
                 }
-                agv.ExitNode = frame.ExitNode;
-                agv.DistanceToExitNode = frame.DisToExitNode;
-                agv.Velocity = frame.Velocity;
-                agv.Battery = frame.Battery;
+                agv.ExitNode = receiveFrame.ExitNode;
+                agv.DistanceToExitNode = receiveFrame.DisToExitNode;
+                agv.Velocity = receiveFrame.Velocity;
+                agv.Battery = receiveFrame.Battery;
             }
         }
 
@@ -111,35 +111,35 @@ namespace AGVsControlAndMonitoringSoftware
 
             if (rxBuffer[2] == 0x01) // function code
             {
-                AGVInfoReceivePacket frame = AGVInfoReceivePacket.FromArray(rxBuffer);
+                AGVInfoReceivePacket receiveFrame = AGVInfoReceivePacket.FromArray(rxBuffer);
 
                 // check crc ------add action for this if it wrong------------
                 ushort crc = 0;
                 for (int i = 0; i < AGVInfoReceivePacketSize - 4; i++)
                     crc += rxBuffer[i];
-                if (crc != frame.CheckSum) return;
+                if (crc != receiveFrame.CheckSum) return;
 
                 // update AGV info to lists of AGVs (real-time mode)
-                var agv = AGV.ListAGV.Find(a => a.ID == frame.AGVID);
+                var agv = AGV.ListAGV.Find(a => a.ID == receiveFrame.AGVID);
                 if (agv == null) return;
-                switch (Convert.ToChar(frame.Status).ToString())
+                switch (Convert.ToChar(receiveFrame.Status).ToString())
                 {
                     case "R": agv.Status = "Running"; break;
                     case "S": agv.Status = "Stop"; break;
                     case "P": agv.Status = "Picking"; break;
                     case "D": agv.Status = "Dropping"; break;
                 }
-                switch (Convert.ToChar(frame.Orient).ToString())
+                switch (Convert.ToChar(receiveFrame.Orient).ToString())
                 {
                     case "E": agv.Orientation = 'E'; break;
                     case "W": agv.Orientation = 'W'; break;
                     case "S": agv.Orientation = 'S'; break;
                     case "N": agv.Orientation = 'N'; break;
                 }
-                agv.ExitNode = frame.ExitNode;
-                agv.DistanceToExitNode = frame.DisToExitNode;
-                agv.Velocity = frame.Velocity;
-                agv.Battery = frame.Battery;
+                agv.ExitNode = receiveFrame.ExitNode;
+                agv.DistanceToExitNode = receiveFrame.DisToExitNode;
+                agv.Velocity = receiveFrame.Velocity;
+                agv.Battery = receiveFrame.Battery;
 
                 //----------for testing-------------------
                 //Array.ForEach(frame.Header, b => { Console.Write(b); Console.WriteLine(); });
@@ -155,7 +155,54 @@ namespace AGVsControlAndMonitoringSoftware
                 //-------------------------------------------
             }
         }
+
+        // Send path information packet
+        public static void SendPathData(uint agvID, bool isPick, int pickLevel, string strNavigationFrame, bool isDrop, int dropLevel)
+        {
+            PathInfoSendPacket sendFrame = new PathInfoSendPacket();
+
+            // get path info (to byte array)
+            string[] arrNavigationFrame = strNavigationFrame.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            byte[] arrPathFrame = new byte[arrNavigationFrame.Length + 4]; // 4 bytes of pick/drop info
+
+            if (isPick == true) arrPathFrame[0] = (byte)'P';
+            else arrPathFrame[0] = (byte)'N';
+            arrPathFrame[1] = Convert.ToByte(pickLevel);
+
+            if (isDrop == true) arrPathFrame[arrNavigationFrame.Length + 2] = (byte)'D';
+            else arrPathFrame[arrNavigationFrame.Length + 2] = (byte)'N';
+            arrPathFrame[arrNavigationFrame.Length + 3] = Convert.ToByte(dropLevel);
+
+            for (int i = 0; i < arrNavigationFrame.Length; i++)
+            {
+                if (i % 2 == 0) arrPathFrame[i + 2] = (byte)(arrNavigationFrame[i][0]);
+                else arrPathFrame[i + 2] = Convert.ToByte(arrNavigationFrame[i]);
+            }
+
+            // set frame to send as struct
+            // note: send reversed Header and End-of-frame because of Intel processors (in my laptop) use little endian
+            sendFrame.Header = new byte[2] { 0xAA, 0xFF };
+            sendFrame.FunctionCode = 0xA1;
+            sendFrame.AGVID = Convert.ToByte(agvID);
+            sendFrame.PathByteCount = Convert.ToByte(arrPathFrame.Length);
+            sendFrame.Path = arrPathFrame;
+            // calculate check sum
+            ushort crc = 0;
+            crc += sendFrame.Header[0];
+            crc += sendFrame.Header[1];
+            crc += sendFrame.FunctionCode;
+            crc += sendFrame.AGVID;
+            crc += sendFrame.PathByteCount;
+            Array.ForEach(arrPathFrame, x => crc += x);
+            sendFrame.CheckSum = crc;
+            sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
+
+            // send data via serial port
+            Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length);
+        }
     }
+
+    #region Receive and Send Packet Structure
 
     /* AGV information packet (21 bytes):
      * Header		2 byte  -> 0xFFAA
@@ -184,7 +231,7 @@ namespace AGVsControlAndMonitoringSoftware
         public ushort CheckSum;
         public byte[] EndOfFrame;
 
-        // Converting Structs to Byte Arrays (method 1)
+        // Convert Byte Arrays to Structs (method 1)
         public static AGVInfoReceivePacket FromArray(byte[] bytes)
         {
             var reader = new System.IO.BinaryReader(new System.IO.MemoryStream(bytes));
@@ -206,7 +253,7 @@ namespace AGVsControlAndMonitoringSoftware
             return s;
         }
 
-        // Converting Structs to Byte Arrays (method 2)
+        // Convert Byte Arrays to Structs (method 2)
         public static AGVInfoReceivePacket GetFromArray(byte[] bytes) 
         {
             AGVInfoReceivePacket packet = new AGVInfoReceivePacket();
@@ -224,26 +271,44 @@ namespace AGVsControlAndMonitoringSoftware
 
             return packet;
         }
+    }
 
-        /* maybe won't use
+    /* Path information packet
+         * Header		    2 byte  -> 0xFFAA
+         * FunctionCode	    1 byte  -> 0xA1
+         * AGVID 		    1 byte
+         * Path Byte Count  1 byte
+         * Path             (dynamic)
+         * CheckSum	        2 byte  -> sum of bytes from Header to Path
+         * EndOfFrame	    2 byte  -> 0x0D0A
+         */
+    public struct PathInfoSendPacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public byte PathByteCount;
+        public byte[] Path;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Structs to Byte Arrays
         public byte[] ToArray()
         {
             var stream = new System.IO.MemoryStream();
             var writer = new System.IO.BinaryWriter(stream);
 
-            writer.Write(this.header);
-            writer.Write(this.agvID);
-            writer.Write(this.status);
-            writer.Write(this.exitNode);
-            writer.Write(this.disToExitNode);
-            writer.Write(this.orient);
-            writer.Write(this.velocity);
-            writer.Write(this.battery);
-            writer.Write(this.checkSum);
-            writer.Write(this.endOfFrame);
+            writer.Write(this.Header);
+            writer.Write(this.FunctionCode);
+            writer.Write(this.AGVID);
+            writer.Write(this.PathByteCount);
+            writer.Write(this.Path);
+            writer.Write(this.CheckSum);
+            writer.Write(this.EndOfFrame);
 
             return stream.ToArray();
         }
-        */
     }
+
+    #endregion
 }
