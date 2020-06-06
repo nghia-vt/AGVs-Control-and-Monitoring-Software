@@ -46,7 +46,7 @@ namespace AGVsControlAndMonitoringSoftware
             lbAGV.TextAlign = ContentAlignment.MiddleCenter;
             lbAGV.Name = "AGV" + agvID.ToString();
 
-            // Init the Location of new AGV
+            // Init the position of new AGV
             List<Node> Nodes = Node.ListNode;
             int initPixelDistance = (int)Math.Round(initDistanceToExitNode * Display.Scale);
             int x = Nodes[initExitNode].X - lbAGV.Size.Width / 2;
@@ -101,12 +101,42 @@ namespace AGVsControlAndMonitoringSoftware
         }
 
         // Update position AGV icon in simulation mode (speed: cm/s)
+        public static Point UpdatePositionAGV(int agvID)
+        {
+            // Find AGV in ListAGV
+            var index = AGV.ListAGV.FindIndex(a => a.ID == agvID);
+            AGV agv = AGV.ListAGV[index];
+            Point position = new Point();
+            
+            List<Node> Nodes = Node.ListNode;
+            int pixelDistance = (int)Math.Round(agv.DistanceToExitNode * Display.Scale);
+            int x = Nodes[agv.ExitNode].X - Display.LabelAGV[agvID].Size.Width / 2;
+            int y = Nodes[agv.ExitNode].Y - Display.LabelAGV[agvID].Size.Height / 2;
+            switch (agv.Orientation)
+            {
+                case 'E':
+                    position.X = x + pixelDistance; position.Y = y;
+                    break;
+                case 'W':
+                    position.X = x - pixelDistance; position.Y = y;
+                    break;
+                case 'N':
+                    position.X = x; position.Y = y - pixelDistance;
+                    break;
+                case 'S':
+                    position.X = x; position.Y = y + pixelDistance;
+                    break;
+            }
+            return position;
+        }
+
+        // Update position AGV icon in simulation mode (speed: cm/s)
         public static Point SimUpdatePositionAGV(int agvID, float speed)
         {
             // Find AGV in SimListAGV, get current point
             var index = AGV.SimListAGV.FindIndex(a => a.ID == agvID);
             AGV agv = AGV.SimListAGV[index];
-            Point location = Display.SimLabelAGV[agvID].Location;
+            Point position = Display.SimLabelAGV[agvID].Location;
 
             // Handle (waiting method) collision if it happens
             CollisionStatus status = Collision.SimHandle(agv, Collision.SimListCollision);
@@ -116,22 +146,22 @@ namespace AGVsControlAndMonitoringSoftware
                 agv.Velocity = 0;
                 agv.Status = "Stop";
 
-                return location;
+                return position;
             }
 
             // return old point when agv has no path
-            if (agv.Path.Count == 0) return location;
+            if (agv.Path.Count == 0) return position;
 
             // Get navigation frame array. Note: string is a reference type,
             // so any change in navigationArr is also in AGV.SimListAGV[index].navigationArr
             string[] navigationArr = agv.navigationArr;            
 
             // Check whether current point is a node or not 
-            // Note: shift location of label to center (+LabelAGV[].Width/2, +LabelAGV[].Height/2)
+            // Note: shift position of label to center (+LabelAGV[].Width/2, +LabelAGV[].Height/2)
             var node = Node.ListNode.FirstOrDefault(n =>
             {
-                return (n.X == location.X + SimLabelAGV[agvID].Width / 2)
-                    && (n.Y == location.Y + SimLabelAGV[agvID].Height / 2);
+                return (n.X == position.X + SimLabelAGV[agvID].Width / 2)
+                    && (n.Y == position.Y + SimLabelAGV[agvID].Height / 2);
             });
 
             // Current point is not a node and current position is start node, 
@@ -153,7 +183,7 @@ namespace AGVsControlAndMonitoringSoftware
             // Current point is not a node and current position is not start node,
             // so keep go ahead
             else if (node == null) orient = UpdateOrient(agv.Orientation, "A");
-            // If goal was reached, no update location, remove old path, get next path (if exist)
+            // If goal was reached, no update position, remove old path, get next path (if exist)
             else if (node.ID == agv.Path.LastOrDefault())
             {
                 // Update AGV information
@@ -167,7 +197,7 @@ namespace AGVsControlAndMonitoringSoftware
                 // Add next path
                 Task.AddNextPathOfAGV(agv);
                 
-                return location;
+                return position;
             }
             // Current point is at start node and initDistance to start node == 0
             // Turn direction once then keep go ahead
@@ -210,16 +240,16 @@ namespace AGVsControlAndMonitoringSoftware
             // Modify speed to make sure AGV icon can reach next node
             int i = agv.Path.IndexOf(agv.ExitNode);
             int nextNode = agv.Path[i + 1];
-            int dnx = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[nextNode].X;
-            int dny = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[nextNode].Y;
+            int dnx = (position.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[nextNode].X;
+            int dny = (position.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[nextNode].Y;
             int nd = (int)Math.Sqrt(dnx * dnx + dny * dny);
             
             if (agv.ExitNode == agv.Path[0])
             {
-                // At first node of path, having 4 cases of agv location
+                // At first node of path, having 4 cases of agv position
                 // (dnx * dny != 0) for 2 cases and (dnx * dnx0 > 0 || dny * dny0 > 0) for the others
-                int dnx0 = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[agv.Path[0]].X;
-                int dny0 = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[agv.Path[0]].Y;
+                int dnx0 = (position.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[agv.Path[0]].X;
+                int dny0 = (position.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[agv.Path[0]].Y;
                 int nd0 = (int)Math.Sqrt(dnx0 * dnx0 + dny0 * dny0);
                 if (dnx * dny != 0 || dnx * dnx0 > 0 || dny * dny0 > 0)
                 {
@@ -230,33 +260,33 @@ namespace AGVsControlAndMonitoringSoftware
             int sp = (int)Math.Round(speed * Display.Scale * (100.0 / 1000)); // timer1.Interval = 100ms
             int step = (nd % sp == 0) ? sp : (nd % sp);            
 
-            // Update AGV information before update location
+            // Update AGV information before update position
             if (node != null) agv.ExitNode = node.ID;  // Update ExitNode
             agv.Orientation = orient;  // Update Orientation
             int exitNode = agv.ExitNode;
-            int dx = (location.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[exitNode].X;
-            int dy = (location.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[exitNode].Y;
+            int dx = (position.X + SimLabelAGV[agvID].Width / 2) - Node.ListNode[exitNode].X;
+            int dy = (position.Y + SimLabelAGV[agvID].Height / 2) - Node.ListNode[exitNode].Y;
             agv.DistanceToExitNode = (float)Math.Sqrt(dx * dx + dy * dy) / Display.Scale; // Update Distance to ExitNode
             agv.Status = "Running"; // Update Status
 
-            // Update next location of AGV icon in panel
+            // Update next position of AGV icon in panel
             switch (orient)
             {
                 case 'E':
-                    location = new Point(location.X + step, location.Y);
+                    position = new Point(position.X + step, position.Y);
                     break;
                 case 'W':
-                    location = new Point(location.X - step, location.Y);
+                    position = new Point(position.X - step, position.Y);
                     break;
                 case 'S':
-                    location = new Point(location.X, location.Y + step);
+                    position = new Point(position.X, position.Y + step);
                     break;
                 case 'N':
-                    location = new Point(location.X, location.Y - step);
+                    position = new Point(position.X, position.Y - step);
                     break;
             }
 
-            return location;
+            return position;
         }
 
         // Update new orient for next move direction
