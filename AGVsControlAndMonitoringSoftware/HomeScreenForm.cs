@@ -106,14 +106,21 @@ namespace AGVsControlAndMonitoringSoftware
                 foreach (AGV agv in AGV.ListAGV)
                 {
                     Display.LabelAGV[agv.ID].Location = Display.UpdatePositionAGV(agv.ID);
+
+                    //  Display agv carrying pallet
+                    if (agv.Tasks.Count != 0 && agv.Tasks[0].Status == "Doing")
+                        Display.LabelAGV[agv.ID].BackColor = Color.CornflowerBlue;
+                    else Display.LabelAGV[agv.ID].BackColor = Color.Silver;
+
+                    // If goal was reached, remove old path, get next path (if exist)
+                    if (agv.Path.Count == 0) continue;
+                    if (agv.ExitNode == agv.Path.LastOrDefault()) Task.AddNextPathOfAGV(agv);
                 }
 
-                // --------------------Add later----------------
-
-                // -------test send data-------
-                if (Communicator.SerialPort.IsOpen)
-                    Communicator.SendPathData(2, true, 2, "B,50,A,29,L,28,L,35,G", true, 3);
-                // ----------------------------
+                //// -------test send data-------
+                //if (Communicator.SerialPort.IsOpen)
+                //    Communicator.SendPathData(2, true, 2, "B,50,A,29,L,28,L,35,G", true, 3);
+                //// ----------------------------
 
             }
             else if (Display.Mode == "Simulation")
@@ -205,12 +212,10 @@ namespace AGVsControlAndMonitoringSoftware
             switch (Display.Mode)
             {
                 case "Real Time":
-
-                    // -----------Add later----------------------
-
+                    Task.AddFirstPathOfAGVs();
                     break;
                 case "Simulation":
-                    Task.AddFirstPathOfAGVs(AGV.SimListAGV);
+                    Task.AddFirstPathOfSimAGVs();
                     break;
             }
         }

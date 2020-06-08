@@ -100,6 +100,8 @@ namespace AGVsControlAndMonitoringSoftware
             }
         }
 
+        #region Update position AGV icon for Real-time Mode
+
         // Update position AGV icon in simulation mode (speed: cm/s)
         public static Point UpdatePositionAGV(int agvID)
         {
@@ -129,6 +131,10 @@ namespace AGVsControlAndMonitoringSoftware
             }
             return position;
         }
+
+        #endregion
+
+        #region Update position AGV icon for Simulation Mode
 
         // Update position AGV icon in simulation mode (speed: cm/s)
         public static Point SimUpdatePositionAGV(int agvID, float speed)
@@ -195,7 +201,7 @@ namespace AGVsControlAndMonitoringSoftware
                 agv.Velocity = 0; // Update Velocity
 
                 // Add next path
-                Task.AddNextPathOfAGV(agv);
+                Task.AddNextPathOfSimAGV(agv);
                 
                 return position;
             }
@@ -318,6 +324,8 @@ namespace AGVsControlAndMonitoringSoftware
             }
             return orient;
         }
+
+        #endregion
 
         // Update data in listView AGVs
         public static void UpdateListViewAGVs(ListView listView, List<AGV> listData)
