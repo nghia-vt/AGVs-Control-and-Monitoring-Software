@@ -37,7 +37,7 @@
             this.taskManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aGVsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRemoveAGVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aGVManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.agvMonitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.warehouseDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -137,7 +137,7 @@
             // 
             this.aGVsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addRemoveAGVToolStripMenuItem,
-            this.aGVManagementToolStripMenuItem});
+            this.agvMonitoringToolStripMenuItem});
             this.aGVsToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aGVsToolStripMenuItem.Image")));
             this.aGVsToolStripMenuItem.Name = "aGVsToolStripMenuItem";
             this.aGVsToolStripMenuItem.Size = new System.Drawing.Size(71, 23);
@@ -151,12 +151,13 @@
             this.addRemoveAGVToolStripMenuItem.Text = "&Add/Remove AGV";
             this.addRemoveAGVToolStripMenuItem.Click += new System.EventHandler(this.AddRemoveAGV_Click);
             // 
-            // aGVManagementToolStripMenuItem
+            // agvMonitoringToolStripMenuItem
             // 
-            this.aGVManagementToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("aGVManagementToolStripMenuItem.Image")));
-            this.aGVManagementToolStripMenuItem.Name = "aGVManagementToolStripMenuItem";
-            this.aGVManagementToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
-            this.aGVManagementToolStripMenuItem.Text = "&Monitoring";
+            this.agvMonitoringToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("agvMonitoringToolStripMenuItem.Image")));
+            this.agvMonitoringToolStripMenuItem.Name = "agvMonitoringToolStripMenuItem";
+            this.agvMonitoringToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
+            this.agvMonitoringToolStripMenuItem.Text = "&Monitoring";
+            this.agvMonitoringToolStripMenuItem.Click += new System.EventHandler(this.agvMonitoringToolStripMenuItem_Click);
             // 
             // warehouseDataToolStripMenuItem
             // 
@@ -551,7 +552,7 @@
         private System.Windows.Forms.ToolStripMenuItem taskManagementToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aGVsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addRemoveAGVToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem aGVManagementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem agvMonitoringToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem warehouseDataToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;

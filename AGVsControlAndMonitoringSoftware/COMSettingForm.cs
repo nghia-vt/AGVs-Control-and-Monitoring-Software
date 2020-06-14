@@ -75,7 +75,7 @@ namespace AGVsControlAndMonitoringSoftware
             else
             {
                 DialogResult result = MessageBox.Show("This action will probably stop the AGVs are runnig.\nDo you want to Disconnect ?",
-                                                      "Waring", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                                                      "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     btnConnect.Text = "Connect";
@@ -93,11 +93,6 @@ namespace AGVsControlAndMonitoringSoftware
             cbbCOMPort.Items.Clear();
             string[] ports = SerialPort.GetPortNames();
             cbbCOMPort.Items.AddRange(ports);
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            this.Close();
         }
     }
 }

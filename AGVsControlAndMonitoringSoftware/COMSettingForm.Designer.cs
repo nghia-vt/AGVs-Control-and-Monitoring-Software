@@ -42,10 +42,9 @@
             this.cbbParity = new System.Windows.Forms.ComboBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnConnect = new System.Windows.Forms.Button();
-            this.btnReScan = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.myToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.myImageList = new System.Windows.Forms.ImageList(this.components);
+            this.btnReScan = new System.Windows.Forms.Button();
+            this.myToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -256,6 +255,13 @@
             this.btnConnect.UseVisualStyleBackColor = true;
             this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
             // 
+            // myImageList
+            // 
+            this.myImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("myImageList.ImageStream")));
+            this.myImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.myImageList.Images.SetKeyName(0, "icon_connect.png");
+            this.myImageList.Images.SetKeyName(1, "icon_disconnect.png");
+            // 
             // btnReScan
             // 
             this.btnReScan.Font = new System.Drawing.Font("Segoe UI", 10.25F);
@@ -271,38 +277,18 @@
             this.btnReScan.UseVisualStyleBackColor = true;
             this.btnReScan.Click += new System.EventHandler(this.btnReScan_Click);
             // 
-            // btnOK
-            // 
-            this.btnOK.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
-            this.btnOK.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.btnOK.Location = new System.Drawing.Point(76, 237);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(85, 27);
-            this.btnOK.TabIndex = 26;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
-            // 
             // myToolTip
             // 
             this.myToolTip.AutoPopDelay = 5000;
             this.myToolTip.InitialDelay = 100;
             this.myToolTip.ReshowDelay = 100;
             // 
-            // myImageList
-            // 
-            this.myImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("myImageList.ImageStream")));
-            this.myImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.myImageList.Images.SetKeyName(0, "icon_connect.png");
-            this.myImageList.Images.SetKeyName(1, "icon_disconnect.png");
-            // 
             // COMSettingForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lavender;
-            this.ClientSize = new System.Drawing.Size(235, 276);
-            this.Controls.Add(this.btnOK);
+            this.ClientSize = new System.Drawing.Size(235, 244);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -333,7 +319,6 @@
         private System.Windows.Forms.ComboBox cbbStopBits;
         private System.Windows.Forms.ComboBox cbbParity;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnReScan;
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.ToolTip myToolTip;

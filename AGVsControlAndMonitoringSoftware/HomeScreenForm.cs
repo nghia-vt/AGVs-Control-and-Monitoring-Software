@@ -305,5 +305,11 @@ namespace AGVsControlAndMonitoringSoftware
         {
             Communicator.GetData();
         }
+
+        private void agvMonitoringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AGVMonitoringForm agvMonitoringForm = new AGVMonitoringForm();
+            agvMonitoringForm.Show();
+        }
     }
 }

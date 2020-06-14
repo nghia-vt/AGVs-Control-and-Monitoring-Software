@@ -48,6 +48,12 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="ZedGraph">
+      <HintPath>..\zedgraph_dll_v5.1.5\ZedGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="ZedGraph.Web">
+      <HintPath>..\zedgraph_dll_v5.1.5\ZedGraph.Web.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddRemoveAGVForm.cs">
@@ -61,6 +67,12 @@
     </Compile>
     <Compile Include="AddRemoveTaskForm.Designer.cs">
       <DependentUpon>AddRemoveTaskForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AGVMonitoringForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AGVMonitoringForm.Designer.cs">
+      <DependentUpon>AGVMonitoringForm.cs</DependentUpon>
     </Compile>
     <Compile Include="COMSettingForm.cs">
       <SubType>Form</SubType>
@@ -91,6 +103,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddRemoveTaskForm.resx">
       <DependentUpon>AddRemoveTaskForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AGVMonitoringForm.resx">
+      <DependentUpon>AGVMonitoringForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="COMSettingForm.resx">
       <DependentUpon>COMSettingForm.cs</DependentUpon>
