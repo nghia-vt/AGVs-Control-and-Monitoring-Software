@@ -105,6 +105,9 @@ namespace AGVsControlAndMonitoringSoftware
                 // Update location of AGV icon (label)
                 foreach (AGV agv in AGV.ListAGV)
                 {
+                    // Send AGV Info Request to AGV (except Line tracking error)
+                    Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+
                     Display.LabelAGV[agv.ID].Location = Display.UpdatePositionAGV(agv.ID);
 
                     //  Display agv carrying pallet
@@ -116,12 +119,6 @@ namespace AGVsControlAndMonitoringSoftware
                     if (agv.Path.Count == 0) continue;
                     if (agv.ExitNode == agv.Path.LastOrDefault()) Task.AddNextPathOfAGV(agv);
                 }
-
-                //// -------test send data-------
-                //if (Communicator.SerialPort.IsOpen)
-                //    Communicator.SendPathData(2, true, 2, "B,50,A,29,L,28,L,35,G", true, 3);
-                //// ----------------------------
-
             }
             else if (Display.Mode == "Simulation")
             {

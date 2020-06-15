@@ -50,17 +50,17 @@ namespace AGVsControlAndMonitoringSoftware
             }
         }
 
-        private void timerGraph_Tick(object sender, EventArgs e)
+        private void timerGraph_Tick(object sender, EventArgs e) // 100ms
         {
-
             if (Display.Mode == "Real Time")
             {
                 if (AGV.ListAGV.Count == 0) return;
                 AGV agv = AGV.ListAGV.Find(a => a.ID == selectedAGVID);
 
-                //---------add later-----------------
                 // send line tracking error request to agv
-                UpdateMonitoringData(agv, 0);
+                Communicator.SendAGVInfoRequest((uint)agv.ID, 'L');
+
+                UpdateMonitoringData(agv, Communicator.lineTrackError);
             }
             else if (Display.Mode == "Simulation")
             {

@@ -17,6 +17,8 @@ namespace AGVsControlAndMonitoringSoftware
         }
 
         private const ushort AGVInfoReceivePacketSize = 21;
+        private const ushort AGVLineTrackErrorReceivePacketSize = 12;
+        public static float lineTrackError; // temp value to draw graph (in AGV Monitoring Form)
         public static Queue<byte> queueRXData = new Queue<byte>();
 
         // Get desired data, put in struct packet, and take appropriate action
@@ -109,11 +111,11 @@ namespace AGVsControlAndMonitoringSoftware
             // check header
             if (rxBuffer[0] != 0xAA && rxBuffer[1] != 0xFF) return;
 
-            if (rxBuffer[2] == 0x01) // function code
+            if (rxBuffer[2] == 0x01) // function code: receive AGV info except line tracking error
             {
                 AGVInfoReceivePacket receiveFrame = AGVInfoReceivePacket.FromArray(rxBuffer);
 
-                // check crc ------add action for this if it wrong------------
+                // check crc
                 ushort crc = 0;
                 for (int i = 0; i < AGVInfoReceivePacketSize - 4; i++)
                     crc += rxBuffer[i];
@@ -140,20 +142,44 @@ namespace AGVsControlAndMonitoringSoftware
                 agv.DistanceToExitNode = receiveFrame.DisToExitNode;
                 agv.Velocity = receiveFrame.Velocity;
                 agv.Battery = receiveFrame.Battery;
-
-                //----------for testing-------------------
-                //Array.ForEach(frame.Header, b => { Console.Write(b); Console.WriteLine(); });
-                //Console.WriteLine(frame.AGVID);
-                //Console.WriteLine(frame.Status);
-                //Console.WriteLine(frame.ExitNode);
-                //Console.WriteLine(frame.DisToExitNode);
-                //Console.WriteLine(frame.Orient);
-                //Console.WriteLine(frame.Velocity);
-                //Console.WriteLine(frame.Battery);
-                //Console.WriteLine(frame.CheckSum);
-                //Array.ForEach(frame.EndOfFrame, b => { Console.Write(b); Console.WriteLine(); });
-                //-------------------------------------------
             }
+            else if (rxBuffer[2] == 0x11) // receive Line tracking error
+            {
+                AGVLineTrackErrorReceivePacket receiveFrame = AGVLineTrackErrorReceivePacket.FromArray(rxBuffer);
+
+                // check crc
+                ushort crc = 0;
+                for (int i = 0; i < AGVLineTrackErrorReceivePacketSize - 4; i++)
+                    crc += rxBuffer[i];
+                if (crc != receiveFrame.CheckSum) return;
+
+                // update Line tracking error value
+                lineTrackError = receiveFrame.LineTrackError;
+            }
+        }
+
+        // Send AGV info request packet (InfoType = 'A' for all except line tracking error, 'L' for line tracking error)
+        public static void SendAGVInfoRequest(uint agvID, char InfoType)
+        {
+            AGVInfoRequestPacket requestFrame = new AGVInfoRequestPacket();
+
+            requestFrame.Header = new byte[2] { 0xAA, 0xFF };
+            requestFrame.FunctionCode = 0xA0;
+            requestFrame.AGVID = Convert.ToByte(agvID);
+            requestFrame.InformationType = (byte)InfoType;
+            // calculate check sum
+            ushort crc = 0;
+            crc += requestFrame.Header[0];
+            crc += requestFrame.Header[1];
+            crc += requestFrame.FunctionCode;
+            crc += requestFrame.AGVID;
+            crc += requestFrame.InformationType;
+            requestFrame.CheckSum = crc;
+            requestFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
+
+            // send data via serial port
+            if (!Communicator.SerialPort.IsOpen) return;
+            Communicator.SerialPort.Write(requestFrame.ToArray(), 0, requestFrame.ToArray().Length);
         }
 
         // Send path information packet
@@ -198,13 +224,48 @@ namespace AGVsControlAndMonitoringSoftware
             sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
 
             // send data via serial port
+            if (!Communicator.SerialPort.IsOpen) return;
             Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length);
         }
     }
 
     #region Receive and Send Packet Structure
 
-    /* AGV information packet (21 bytes):
+    /* AGV information request packet (send):
+     * Header		    2 byte  -> 0xFFAA
+     * FunctionCode	    1 byte  -> 0xA0
+     * AGVID 		    1 byte
+     * Information type 1 byte  -> 'A' for all except Line tracking error, 'L' for Line tracking error
+     * CheckSum	        2 byte  -> sum of bytes from Header to Information type
+     * EndOfFrame	    2 byte  -> 0x0D0A
+     */
+    public struct AGVInfoRequestPacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public byte InformationType;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Structs to Byte Arrays
+        public byte[] ToArray()
+        {
+            var stream = new System.IO.MemoryStream();
+            var writer = new System.IO.BinaryWriter(stream);
+
+            writer.Write(this.Header);
+            writer.Write(this.FunctionCode);
+            writer.Write(this.AGVID);
+            writer.Write(this.InformationType);
+            writer.Write(this.CheckSum);
+            writer.Write(this.EndOfFrame);
+
+            return stream.ToArray();
+        }
+    }
+
+    /* AGV information packet (receive):
      * Header		2 byte  -> 0xFFAA
      * FunctionCode	1 byte  -> 0x01
      * AGVID 		1 byte	
@@ -273,15 +334,50 @@ namespace AGVsControlAndMonitoringSoftware
         }
     }
 
-    /* Path information packet
-         * Header		    2 byte  -> 0xFFAA
-         * FunctionCode	    1 byte  -> 0xA1
-         * AGVID 		    1 byte
-         * Path Byte Count  1 byte
-         * Path             (dynamic)
-         * CheckSum	        2 byte  -> sum of bytes from Header to Path
-         * EndOfFrame	    2 byte  -> 0x0D0A
-         */
+    /* AGV line tracking error packet (receive):
+     * Header		        2 byte  -> 0xFFAA
+     * FunctionCode	        1 byte  -> 0x11
+     * AGVID 		        1 byte		
+     * Line tracking error  4 byte		
+     * CheckSum	            2 byte  -> sum of bytes from Header to Line tracking error
+     * EndOfFrame	        2 byte  -> 0x0D0A
+     */
+    public struct AGVLineTrackErrorReceivePacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public float LineTrackError;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Byte Arrays to Structs
+        public static AGVLineTrackErrorReceivePacket FromArray(byte[] bytes)
+        {
+            var reader = new System.IO.BinaryReader(new System.IO.MemoryStream(bytes));
+
+            var s = default(AGVLineTrackErrorReceivePacket);
+
+            s.Header = reader.ReadBytes(2);
+            s.FunctionCode = reader.ReadByte();
+            s.AGVID = reader.ReadByte();
+            s.LineTrackError = reader.ReadSingle();
+            s.CheckSum = reader.ReadUInt16();
+            s.EndOfFrame = reader.ReadBytes(2);
+
+            return s;
+        }
+    }
+
+    /* Path information packet (send):
+     * Header		    2 byte  -> 0xFFAA
+     * FunctionCode	    1 byte  -> 0xA1
+     * AGVID 		    1 byte
+     * Path Byte Count  1 byte
+     * Path             (dynamic)
+     * CheckSum	        2 byte  -> sum of bytes from Header to Path
+     * EndOfFrame	    2 byte  -> 0x0D0A
+     */
     public struct PathInfoSendPacket
     {
         public byte[] Header;
@@ -307,6 +403,41 @@ namespace AGVsControlAndMonitoringSoftware
             writer.Write(this.EndOfFrame);
 
             return stream.ToArray();
+        }
+    }
+
+    /* Path information response packet (receive):
+     * Header           2 byte  -> 0xFFAA
+     * FunctionCode	    1 byte  -> 0x02
+     * AGVID 		    1 byte		
+     * ACK              1 byte  -> 'Y' or 'N'		
+     * CheckSum	        2 byte  -> sum of bytes from Header to ACK
+     * EndOfFrame	    2 byte  -> 0x0D0A
+     */
+    public struct PathInfoACKReceivePacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public byte ACK;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Byte Arrays to Structs
+        public static PathInfoACKReceivePacket FromArray(byte[] bytes)
+        {
+            var reader = new System.IO.BinaryReader(new System.IO.MemoryStream(bytes));
+
+            var s = default(PathInfoACKReceivePacket);
+
+            s.Header = reader.ReadBytes(2);
+            s.FunctionCode = reader.ReadByte();
+            s.AGVID = reader.ReadByte();
+            s.ACK = reader.ReadByte();
+            s.CheckSum = reader.ReadUInt16();
+            s.EndOfFrame = reader.ReadBytes(2);
+
+            return s;
         }
     }
 
