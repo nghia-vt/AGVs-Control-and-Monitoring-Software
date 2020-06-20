@@ -26,7 +26,7 @@ namespace AGVsControlAndMonitoringSoftware
             byte[] rxOneByte = new byte[1];
             Communicator.SerialPort.Read(rxOneByte, 0, 1); //return the number of bytes read
             bytesReceived.Add(rxOneByte[0]);
-
+            //Console.WriteLine(BitConverter.ToString(bytesReceived.ToArray()));
             int startIndex = 0;
             byte functionCode = new byte();
 

@@ -27,7 +27,12 @@ namespace AGVsControlAndMonitoringSoftware
             switch (Display.Mode)
             {
                 case "Real Time":
-                    if (AGV.ListAGV.Count != 0) cbbAGV.Text = "AGV#" + AGV.ListAGV[0].ID.ToString();
+                    if (AGV.ListAGV.Count != 0)
+                    {
+                        cbbAGV.Text = "AGV#" + AGV.ListAGV[0].ID.ToString();
+                        // Send AGV Info Request to AGV (include Line tracking error)
+                        Communicator.SendAGVInfoRequest((uint)AGV.ListAGV[0].ID, 'L');
+                    }
                     break;
                 case "Simulation":
                     if (AGV.SimListAGV.Count != 0) cbbAGV.Text = "AGV#" + AGV.SimListAGV[0].ID.ToString();
@@ -56,9 +61,6 @@ namespace AGVsControlAndMonitoringSoftware
             {
                 if (AGV.ListAGV.Count == 0) return;
                 AGV agv = AGV.ListAGV.Find(a => a.ID == selectedAGVID);
-
-                // send line tracking error request to agv
-                Communicator.SendAGVInfoRequest((uint)agv.ID, 'L');
 
                 UpdateMonitoringData(agv, Communicator.lineTrackError);
             }
@@ -231,6 +233,9 @@ namespace AGVsControlAndMonitoringSoftware
             if (String.IsNullOrEmpty(cbbAGV.Text)) return;
             string[] arr = cbbAGV.Text.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
             selectedAGVID = Convert.ToInt16(arr[1]);
+
+            // Send AGV Info Request to AGV (include Line tracking error)
+            Communicator.SendAGVInfoRequest((uint)selectedAGVID, 'L');
         }
 
         private void cbbAGV_KeyDown(object sender, KeyEventArgs e)
@@ -243,6 +248,15 @@ namespace AGVsControlAndMonitoringSoftware
         {
             // This will discard the keypress (can also use e.Handled = true)
             e.KeyChar = (char)Keys.None;
+        }
+
+        private void AGVMonitoringForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Send AGV Info Request to AGV (except Line tracking error)
+            if (Communicator.SerialPort.IsOpen)
+            {
+                foreach(AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+            }
         }
     }
 }

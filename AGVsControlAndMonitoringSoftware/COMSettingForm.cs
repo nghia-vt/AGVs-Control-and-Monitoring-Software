@@ -86,6 +86,12 @@ namespace AGVsControlAndMonitoringSoftware
                     Communicator.SerialPort.Close();
                 }
             }
+
+            // Send AGV Info Request to AGV (except Line tracking error)
+            if (Communicator.SerialPort.IsOpen)
+            {
+                foreach (AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+            }
         }
 
         private void btnReScan_Click(object sender, EventArgs e)
