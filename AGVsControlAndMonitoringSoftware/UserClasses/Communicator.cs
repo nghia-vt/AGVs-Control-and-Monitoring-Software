@@ -16,146 +16,96 @@ namespace AGVsControlAndMonitoringSoftware
             set { _serialPort = value; }
         }
 
+        private static List<byte> bytesReceived = new List<byte>();
         private const ushort AGVInfoReceivePacketSize = 21;
         private const ushort AGVLineTrackErrorReceivePacketSize = 12;
         public static float lineTrackError; // temp value to draw graph (in AGV Monitoring Form)
-        public static Queue<byte> queueRXData = new Queue<byte>();
 
-        // Get desired data, put in struct packet, and take appropriate action
-        /* (Method 1) Use Queue, so can save data after handling this event
-         * Note: in case receive agv info, if we receive $77$AA$FF$01$01 $AA$FF$01$02$53....$AF$05$0A$0D (for example)
-         * we will lose the $AA$FF$01$02$53$...$AF$05$0A$0D (desired information)
-         */
-        public static void GetDataUseQueue()
+        public static void GetData()
         {
-            int rxBufferSize = Communicator.SerialPort.BytesToRead;
-            byte[] rxBuffer = new byte[rxBufferSize];
-            Communicator.SerialPort.Read(rxBuffer, 0, rxBufferSize);
-
-            // put all received data into a queue, and a array of queue
-            rxBuffer.ToList().ForEach(b => Communicator.queueRXData.Enqueue(b));
-            byte[] arrQueueRXData = Communicator.queueRXData.ToArray();
+            byte[] rxOneByte = new byte[1];
+            Communicator.SerialPort.Read(rxOneByte, 0, 1); //return the number of bytes read
+            bytesReceived.Add(rxOneByte[0]);
 
             int startIndex = 0;
             byte functionCode = new byte();
 
-            // waitting for 3 bytes to check header and get function code
-            if (Communicator.queueRXData.Count < 3) return;
-
-            // check header and get function code if header is detected
-            for (int i = 0; i < arrQueueRXData.Length - 3; i++)
+            if (bytesReceived.Count < 3) return;
+            for (int i = 0; i < bytesReceived.Count - 3; i++)
             {
-                if (arrQueueRXData[i] == 0xAA && arrQueueRXData[i + 1] == 0xFF)
+                if (bytesReceived[i] == 0xAA && bytesReceived[i + 1] == 0xFF)
                 {
                     startIndex = i;
-                    functionCode = arrQueueRXData[i + 2];
-                    break;
+                    functionCode = bytesReceived[i + 2];
+
+                    if (functionCode == 0x01) // receive AGV info except line tracking error
+                    {
+                        // waitting for receive enough frame data of this function code
+                        if (bytesReceived.Count - startIndex < AGVInfoReceivePacketSize) return;
+
+                        // put data in an array
+                        byte[] data = new byte[AGVInfoReceivePacketSize];
+                        for (int j = 0; j < AGVInfoReceivePacketSize; j++)
+                            data[j] = bytesReceived[startIndex + j];
+
+                        AGVInfoReceivePacket receiveFrame = AGVInfoReceivePacket.FromArray(data);
+
+                        // check sum
+                        ushort crc = 0;
+                        for (int j = 0; j < AGVInfoReceivePacketSize - 4; j++)
+                            crc += data[j];
+                        if (crc != receiveFrame.CheckSum) continue;
+
+                        bytesReceived.RemoveRange(0, startIndex + AGVInfoReceivePacketSize - 1);
+
+                        // update AGV info to lists of AGVs (real-time mode)
+                        var agv = AGV.ListAGV.Find(a => a.ID == receiveFrame.AGVID);
+                        if (agv == null) continue;
+                        switch (Convert.ToChar(receiveFrame.Status).ToString())
+                        {
+                            case "R": agv.Status = "Running"; break;
+                            case "S": agv.Status = "Stop"; break;
+                            case "P": agv.Status = "Picking"; break;
+                            case "D": agv.Status = "Dropping"; break;
+                        }
+                        switch (Convert.ToChar(receiveFrame.Orient).ToString())
+                        {
+                            case "E": agv.Orientation = 'E'; break;
+                            case "W": agv.Orientation = 'W'; break;
+                            case "S": agv.Orientation = 'S'; break;
+                            case "N": agv.Orientation = 'N'; break;
+                        }
+                        agv.ExitNode = receiveFrame.ExitNode;
+                        agv.DistanceToExitNode = receiveFrame.DisToExitNode;
+                        agv.Velocity = receiveFrame.Velocity;
+                        agv.Battery = receiveFrame.Battery;
+                    }
+                    else if (functionCode == 0x11) // receive Line tracking error
+                    {
+                        // waitting for receive enough frame data of this function code
+                        if (bytesReceived.Count - startIndex < AGVLineTrackErrorReceivePacketSize) return;
+
+                        // get data and take it out of the queue
+                        byte[] data = new byte[AGVLineTrackErrorReceivePacketSize];
+                        for (int j = 0; j < AGVLineTrackErrorReceivePacketSize; j++)
+                            data[j] = bytesReceived[startIndex + j];
+
+                        AGVLineTrackErrorReceivePacket receiveFrame = AGVLineTrackErrorReceivePacket.FromArray(data);
+
+                        // check sum
+                        ushort crc = 0;
+                        for (int j = 0; j < AGVLineTrackErrorReceivePacketSize - 4; j++)
+                            crc += data[j];
+                        if (crc != receiveFrame.CheckSum) continue;
+
+                        bytesReceived.RemoveRange(0, startIndex + AGVLineTrackErrorReceivePacketSize - 1);
+
+                        // update Line tracking error value
+                        lineTrackError = receiveFrame.LineTrackError;
+                    }
                 }
             }
 
-            if (functionCode == 0x01) // receive agv info
-            {
-                // waitting for receive enough frame data of this function code
-                if (arrQueueRXData.Length - startIndex < AGVInfoReceivePacketSize) return;
-
-                // get data and take it out of the queue
-                byte[] data = new byte[AGVInfoReceivePacketSize];
-                for (int i = 0; i < AGVInfoReceivePacketSize; i++)
-                    data[i] = arrQueueRXData[startIndex + i];
-                for (int i = 0; i < AGVInfoReceivePacketSize + startIndex; i++)
-                    Communicator.queueRXData.Dequeue();
-
-                // put data in a struct data of this function code
-                AGVInfoReceivePacket receiveFrame = AGVInfoReceivePacket.FromArray(data);
-
-                // check sum
-                ushort crc = 0;
-                for (int i = 0; i < AGVInfoReceivePacketSize - 4; i++)
-                    crc += data[i];
-                if (crc != receiveFrame.CheckSum) return;
-
-                // update AGV info to lists of AGVs (real-time mode)
-                var agv = AGV.ListAGV.Find(a => a.ID == receiveFrame.AGVID);
-                if (agv == null) return;
-                switch (Convert.ToChar(receiveFrame.Status).ToString())
-                {
-                    case "R": agv.Status = "Running"; break;
-                    case "S": agv.Status = "Stop"; break;
-                    case "P": agv.Status = "Picking"; break;
-                    case "D": agv.Status = "Dropping"; break;
-                }
-                switch (Convert.ToChar(receiveFrame.Orient).ToString())
-                {
-                    case "E": agv.Orientation = 'E'; break;
-                    case "W": agv.Orientation = 'W'; break;
-                    case "S": agv.Orientation = 'S'; break;
-                    case "N": agv.Orientation = 'N'; break;
-                }
-                agv.ExitNode = receiveFrame.ExitNode;
-                agv.DistanceToExitNode = receiveFrame.DisToExitNode;
-                agv.Velocity = receiveFrame.Velocity;
-                agv.Battery = receiveFrame.Battery;
-            }
-        }
-
-        /* (Method 2) Not use Queue
-         * So data will be discarded after finish handle event
-         */
-        public static void GetData()
-        {
-            int rxBufferSize = 25;
-            byte[] rxBuffer = new byte[rxBufferSize];
-            int rxBufferCount = Communicator.SerialPort.Read(rxBuffer, 0, rxBufferSize); //return the number of bytes read
-            // Console.WriteLine(BitConverter.ToString(rxBuffer));
-
-            // check header
-            if (rxBuffer[0] != 0xAA && rxBuffer[1] != 0xFF) return;
-
-            if (rxBuffer[2] == 0x01) // function code: receive AGV info except line tracking error
-            {
-                AGVInfoReceivePacket receiveFrame = AGVInfoReceivePacket.FromArray(rxBuffer);
-
-                // check crc
-                ushort crc = 0;
-                for (int i = 0; i < AGVInfoReceivePacketSize - 4; i++)
-                    crc += rxBuffer[i];
-                if (crc != receiveFrame.CheckSum) return;
-
-                // update AGV info to lists of AGVs (real-time mode)
-                var agv = AGV.ListAGV.Find(a => a.ID == receiveFrame.AGVID);
-                if (agv == null) return;
-                switch (Convert.ToChar(receiveFrame.Status).ToString())
-                {
-                    case "R": agv.Status = "Running"; break;
-                    case "S": agv.Status = "Stop"; break;
-                    case "P": agv.Status = "Picking"; break;
-                    case "D": agv.Status = "Dropping"; break;
-                }
-                switch (Convert.ToChar(receiveFrame.Orient).ToString())
-                {
-                    case "E": agv.Orientation = 'E'; break;
-                    case "W": agv.Orientation = 'W'; break;
-                    case "S": agv.Orientation = 'S'; break;
-                    case "N": agv.Orientation = 'N'; break;
-                }
-                agv.ExitNode = receiveFrame.ExitNode;
-                agv.DistanceToExitNode = receiveFrame.DisToExitNode;
-                agv.Velocity = receiveFrame.Velocity;
-                agv.Battery = receiveFrame.Battery;
-            }
-            else if (rxBuffer[2] == 0x11) // receive Line tracking error
-            {
-                AGVLineTrackErrorReceivePacket receiveFrame = AGVLineTrackErrorReceivePacket.FromArray(rxBuffer);
-
-                // check crc
-                ushort crc = 0;
-                for (int i = 0; i < AGVLineTrackErrorReceivePacketSize - 4; i++)
-                    crc += rxBuffer[i];
-                if (crc != receiveFrame.CheckSum) return;
-
-                // update Line tracking error value
-                lineTrackError = receiveFrame.LineTrackError;
-            }
         }
 
         // Send AGV info request packet (InfoType = 'A' for all except line tracking error, 'L' for line tracking error)
