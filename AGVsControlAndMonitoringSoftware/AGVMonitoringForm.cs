@@ -14,7 +14,7 @@ namespace AGVsControlAndMonitoringSoftware
     public partial class AGVMonitoringForm : Form
     {
         private int tickStart;
-        private int selectedAGVID;
+        public static int selectedAGVID;
 
         public AGVMonitoringForm()
         {
@@ -30,8 +30,9 @@ namespace AGVsControlAndMonitoringSoftware
                     if (AGV.ListAGV.Count != 0)
                     {
                         cbbAGV.Text = "AGV#" + AGV.ListAGV[0].ID.ToString();
+                        selectedAGVID = AGV.ListAGV[0].ID;
                         // Send AGV Info Request to AGV (include Line tracking error)
-                        Communicator.SendAGVInfoRequest((uint)AGV.ListAGV[0].ID, 'L');
+                        Communicator.SendAGVInfoRequest((uint)selectedAGVID, 'L');
                     }
                     break;
                 case "Simulation":

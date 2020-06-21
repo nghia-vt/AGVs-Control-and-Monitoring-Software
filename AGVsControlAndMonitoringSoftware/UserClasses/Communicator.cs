@@ -23,13 +23,17 @@ namespace AGVsControlAndMonitoringSoftware
 
         public static void GetData()
         {
-            byte[] rxOneByte = new byte[1];
-            Communicator.SerialPort.Read(rxOneByte, 0, 1); //return the number of bytes read
-            bytesReceived.Add(rxOneByte[0]);
-            //Console.WriteLine(BitConverter.ToString(bytesReceived.ToArray()));
+            int rxBufferSize = 25;
+            byte[] rxBuffer = new byte[rxBufferSize];
+            int rxByteCount = Communicator.SerialPort.Read(rxBuffer, 0, rxBufferSize);
+
+            // add to a list of bytes received
+            for (int i = 0; i < rxByteCount; i++) bytesReceived.Add(rxBuffer[i]);
+            
             int startIndex = 0;
             byte functionCode = new byte();
 
+            // check header
             if (bytesReceived.Count < 3) return;
             for (int i = 0; i < bytesReceived.Count - 3; i++)
             {
@@ -101,7 +105,9 @@ namespace AGVsControlAndMonitoringSoftware
                         bytesReceived.RemoveRange(0, startIndex + AGVLineTrackErrorReceivePacketSize - 1);
 
                         // update Line tracking error value
-                        lineTrackError = receiveFrame.LineTrackError;
+                        if (AGVMonitoringForm.selectedAGVID == receiveFrame.AGVID)
+                            lineTrackError = receiveFrame.LineTrackError;
+                        else lineTrackError = 0;
                     }
                 }
             }
