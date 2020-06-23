@@ -32,7 +32,6 @@ namespace AGVsControlAndMonitoringSoftware
                     {
                         listViewTask.Items.Add(task.Name, 0);
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Type);
-                        listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Priority);
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.PalletCode);
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("AGV#" + task.AGVID.ToString());
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("Node " + task.PickNode.ToString() + "-" + task.PickLevel.ToString());
@@ -47,7 +46,6 @@ namespace AGVsControlAndMonitoringSoftware
                     {
                         listViewTask.Items.Add(task.Name, 0);
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Type);
-                        listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Priority);
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.PalletCode);
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("AGV#" + task.AGVID.ToString());
                         listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("Node " + task.PickNode.ToString() + "-" + task.PickLevel.ToString());
@@ -252,9 +250,8 @@ namespace AGVsControlAndMonitoringSoftware
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(txbTaskName.Text) || String.IsNullOrEmpty(cbbType.Text) ||
-                String.IsNullOrEmpty(cbbPriority.Text) || String.IsNullOrEmpty(txbPalletCode.Text) ||
-                String.IsNullOrEmpty(cbbAGV.Text) || String.IsNullOrEmpty(cbbPickNode.Text) ||
-                String.IsNullOrEmpty(cbbDropNode.Text))
+                String.IsNullOrEmpty(txbPalletCode.Text) || String.IsNullOrEmpty(cbbAGV.Text) || 
+                String.IsNullOrEmpty(cbbPickNode.Text) || String.IsNullOrEmpty(cbbDropNode.Text))
                 return;
 
             // Check whether TaskName exist in old and new list or not
@@ -312,7 +309,7 @@ namespace AGVsControlAndMonitoringSoftware
             if (agvID[0] == "Auto") agvID = new string[2]{"Auto", "-1"}; // mark -1 for auto select AGV
             string[] pickAt = cbbPickNode.Text.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
             string[] dropAt = cbbDropNode.Text.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-            Task task = new Task(txbTaskName.Text, cbbType.Text, cbbPriority.Text, txbPalletCode.Text, 
+            Task task = new Task(txbTaskName.Text, cbbType.Text, txbPalletCode.Text, 
                                  Convert.ToInt16(agvID[1]), Convert.ToInt16(pickAt[0]), Convert.ToInt16(dropAt[0]),
                                  Convert.ToInt16(pickAt[1]), Convert.ToInt16(dropAt[1]), "Waiting");
             listNewTask.Add(task);
@@ -320,7 +317,6 @@ namespace AGVsControlAndMonitoringSoftware
             // Put new Task in listView
             listViewTask.Items.Add(task.Name, 0);
             listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Type);
-            listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Priority);
             listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.PalletCode);
             listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("AGV#" + task.AGVID.ToString());
             listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("Node " + task.PickNode.ToString() + "-" + task.PickLevel.ToString());
@@ -361,7 +357,6 @@ namespace AGVsControlAndMonitoringSoftware
             {
                 listViewTask.Items.Add(task.Name, 0);
                 listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Type);
-                listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.Priority);
                 listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add(task.PalletCode);
                 listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("AGV#" + task.AGVID.ToString());
                 listViewTask.Items[listViewTask.Items.Count - 1].SubItems.Add("Node " + task.PickNode.ToString() + "-" + task.PickLevel.ToString());

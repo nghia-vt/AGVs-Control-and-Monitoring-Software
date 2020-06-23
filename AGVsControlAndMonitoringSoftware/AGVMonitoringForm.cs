@@ -205,6 +205,7 @@ namespace AGVsControlAndMonitoringSoftware
 
         private void UpdateMonitoringData(AGV agv, double linetrackingError)
         {
+            // update agv info
             lbStatus.Text = agv.Status;
             lbExitNode.Text = agv.ExitNode.ToString();
             lbOrient.Text = agv.Orientation.ToString();
@@ -212,7 +213,19 @@ namespace AGVsControlAndMonitoringSoftware
             lbVelocity.Text = Math.Round(agv.Velocity, 1).ToString() + " cm/s";
             lbBattery.Text = agv.Battery.ToString() + "%";
             prgrbBattery.Value = agv.Battery;
+            
+            // update current path and highlight current node
+            rtxtbCurrentPath.Clear();
+            if (agv.Path.Count == 0) rtxtbCurrentPath.SelectedText = "None";
+            foreach(int n in agv.Path)
+            {
+                if (n == agv.ExitNode) rtxtbCurrentPath.SelectionBackColor = Color.Yellow;
+                else rtxtbCurrentPath.SelectionBackColor = Color.Lavender;
+                if (n != agv.Path[agv.Path.Count - 1]) rtxtbCurrentPath.SelectedText = n.ToString() + "->";
+                else rtxtbCurrentPath.SelectedText = n.ToString();
+            }            
 
+            // update graph
             DrawGraph(zedGraphVelocity, agv.Velocity);
             DrawGraph(zedGraphLineTrack, linetrackingError);
         }

@@ -68,7 +68,6 @@
             this.TaskAGV = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PickNode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.DropNode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PalletCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.pnFloor = new System.Windows.Forms.Panel();
             this.cntxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -418,7 +417,6 @@
             this.TaskAGV,
             this.PickNode,
             this.DropNode,
-            this.Priority,
             this.PalletCode});
             this.listViewTasks.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewTasks.Font = new System.Drawing.Font("Segoe UI", 9.25F);
@@ -462,12 +460,6 @@
             // 
             this.DropNode.Text = "Drop Node";
             this.DropNode.Width = 75;
-            // 
-            // Priority
-            // 
-            this.Priority.Text = "Priority";
-            this.Priority.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.Priority.Width = 65;
             // 
             // PalletCode
             // 
@@ -605,7 +597,6 @@
         private System.Windows.Forms.ListView listViewTasks;
         private System.Windows.Forms.ColumnHeader TaskName;
         private System.Windows.Forms.ColumnHeader Type;
-        private System.Windows.Forms.ColumnHeader Priority;
         private System.Windows.Forms.ColumnHeader PalletCode;
         private System.Windows.Forms.ColumnHeader PickNode;
         private System.Windows.Forms.ColumnHeader DropNode;

@@ -35,8 +35,6 @@
             this.btnAdd = new System.Windows.Forms.Button();
             this.txbPalletCode = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.cbbPriority = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.cbbDropNode = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -51,7 +49,6 @@
             this.listViewTask = new System.Windows.Forms.ListView();
             this.TaskName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Type = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Priority = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PalletCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.AGVID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PickNode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -76,8 +73,6 @@
             this.groupBox1.Controls.Add(this.btnAdd);
             this.groupBox1.Controls.Add(this.txbPalletCode);
             this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.cbbPriority);
-            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.cbbDropNode);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label6);
@@ -93,7 +88,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox1.Location = new System.Drawing.Point(12, 10);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(368, 168);
+            this.groupBox1.Size = new System.Drawing.Size(368, 161);
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Add";
@@ -103,7 +98,7 @@
             this.checkBox.AutoSize = true;
             this.checkBox.Font = new System.Drawing.Font("Segoe UI", 8.25F);
             this.checkBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.checkBox.Location = new System.Drawing.Point(109, 142);
+            this.checkBox.Location = new System.Drawing.Point(109, 116);
             this.checkBox.Name = "checkBox";
             this.checkBox.Size = new System.Drawing.Size(106, 17);
             this.checkBox.TabIndex = 31;
@@ -116,7 +111,7 @@
             // 
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.btnAdd.ForeColor = System.Drawing.Color.DarkRed;
-            this.btnAdd.Location = new System.Drawing.Point(287, 135);
+            this.btnAdd.Location = new System.Drawing.Point(287, 125);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(71, 27);
             this.btnAdd.TabIndex = 30;
@@ -127,7 +122,7 @@
             // txbPalletCode
             // 
             this.txbPalletCode.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txbPalletCode.Location = new System.Drawing.Point(109, 115);
+            this.txbPalletCode.Location = new System.Drawing.Point(109, 85);
             this.txbPalletCode.Name = "txbPalletCode";
             this.txbPalletCode.Size = new System.Drawing.Size(72, 25);
             this.txbPalletCode.TabIndex = 24;
@@ -140,45 +135,12 @@
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.label8.ForeColor = System.Drawing.Color.Navy;
-            this.label8.Location = new System.Drawing.Point(15, 117);
+            this.label8.Location = new System.Drawing.Point(15, 87);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(81, 19);
             this.label8.TabIndex = 23;
             this.label8.Text = "Pallet Code:";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // cbbPriority
-            // 
-            this.cbbPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbbPriority.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbbPriority.FormattingEnabled = true;
-            this.cbbPriority.IntegralHeight = false;
-            this.cbbPriority.ItemHeight = 17;
-            this.cbbPriority.Items.AddRange(new object[] {
-            "Highest",
-            "High",
-            "Normal",
-            "Low",
-            "Lowest"});
-            this.cbbPriority.Location = new System.Drawing.Point(109, 85);
-            this.cbbPriority.MaxDropDownItems = 6;
-            this.cbbPriority.Name = "cbbPriority";
-            this.cbbPriority.Size = new System.Drawing.Size(72, 25);
-            this.cbbPriority.TabIndex = 22;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 10.25F);
-            this.label7.ForeColor = System.Drawing.Color.Navy;
-            this.label7.Location = new System.Drawing.Point(15, 87);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(91, 19);
-            this.label7.TabIndex = 21;
-            this.label7.Text = "Priority Level:";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // cbbDropNode
             // 
@@ -417,14 +379,13 @@
             this.listViewTask.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.TaskName,
             this.Type,
-            this.Priority,
             this.PalletCode,
             this.AGVID,
             this.PickNode,
             this.DropNode});
             this.listViewTask.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.listViewTask.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.listViewTask.Location = new System.Drawing.Point(12, 210);
+            this.listViewTask.Location = new System.Drawing.Point(12, 196);
             this.listViewTask.Name = "listViewTask";
             this.listViewTask.Size = new System.Drawing.Size(529, 144);
             this.listViewTask.SmallImageList = this.imageList;
@@ -435,40 +396,37 @@
             // TaskName
             // 
             this.TaskName.Text = "Task Name";
-            this.TaskName.Width = 80;
+            this.TaskName.Width = 95;
             // 
             // Type
             // 
             this.Type.Text = "Type";
             this.Type.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // Priority
-            // 
-            this.Priority.Text = "Priority";
-            this.Priority.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.Priority.Width = 65;
+            this.Type.Width = 65;
             // 
             // PalletCode
             // 
             this.PalletCode.Text = "Pallet Code";
             this.PalletCode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.PalletCode.Width = 80;
+            this.PalletCode.Width = 100;
             // 
             // AGVID
             // 
             this.AGVID.Text = "AGV";
             this.AGVID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.AGVID.Width = 65;
             // 
             // PickNode
             // 
             this.PickNode.Text = "Pick Node";
             this.PickNode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.PickNode.Width = 75;
+            this.PickNode.Width = 100;
             // 
             // DropNode
             // 
             this.DropNode.Text = "Drop Node";
-            this.DropNode.Width = 75;
+            this.DropNode.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.DropNode.Width = 100;
             // 
             // imageList
             // 
@@ -486,7 +444,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox2.Location = new System.Drawing.Point(386, 10);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(155, 168);
+            this.groupBox2.Size = new System.Drawing.Size(155, 161);
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Remove";
@@ -495,7 +453,7 @@
             // 
             this.btnRemove.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.btnRemove.ForeColor = System.Drawing.Color.DarkRed;
-            this.btnRemove.Location = new System.Drawing.Point(72, 135);
+            this.btnRemove.Location = new System.Drawing.Point(72, 125);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(77, 27);
             this.btnRemove.TabIndex = 31;
@@ -533,7 +491,7 @@
             // 
             this.btnOK.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.btnOK.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.btnOK.Location = new System.Drawing.Point(390, 359);
+            this.btnOK.Location = new System.Drawing.Point(390, 348);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(56, 27);
             this.btnOK.TabIndex = 28;
@@ -545,7 +503,7 @@
             // 
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.btnCancel.Location = new System.Drawing.Point(458, 359);
+            this.btnCancel.Location = new System.Drawing.Point(458, 348);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(83, 27);
             this.btnCancel.TabIndex = 29;
@@ -560,7 +518,7 @@
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.label10.ForeColor = System.Drawing.Color.Navy;
-            this.label10.Location = new System.Drawing.Point(15, 186);
+            this.label10.Location = new System.Drawing.Point(15, 172);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(86, 19);
             this.label10.TabIndex = 30;
@@ -578,7 +536,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lavender;
-            this.ClientSize = new System.Drawing.Size(553, 392);
+            this.ClientSize = new System.Drawing.Size(553, 384);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnCancel);
@@ -614,8 +572,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox cbbPriority;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cbbDropNode;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.ComboBox cbbPickNode;
@@ -624,7 +580,6 @@
         private System.Windows.Forms.ListView listViewTask;
         private System.Windows.Forms.ColumnHeader TaskName;
         private System.Windows.Forms.ColumnHeader Type;
-        private System.Windows.Forms.ColumnHeader Priority;
         private System.Windows.Forms.ColumnHeader PalletCode;
         private System.Windows.Forms.ColumnHeader AGVID;
         private System.Windows.Forms.ColumnHeader PickNode;

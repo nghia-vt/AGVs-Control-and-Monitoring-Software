@@ -55,6 +55,8 @@
             this.zedGraphLineTrack = new ZedGraph.ZedGraphControl();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerGraph = new System.Windows.Forms.Timer(this.components);
+            this.label5 = new System.Windows.Forms.Label();
+            this.rtxtbCurrentPath = new System.Windows.Forms.RichTextBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -325,7 +327,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.label11.ForeColor = System.Drawing.Color.Navy;
-            this.label11.Location = new System.Drawing.Point(767, 9);
+            this.label11.Location = new System.Drawing.Point(785, 9);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(50, 19);
             this.label11.TabIndex = 27;
@@ -339,7 +341,7 @@
             this.lbStatus.AutoSize = true;
             this.lbStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbStatus.ForeColor = System.Drawing.Color.Navy;
-            this.lbStatus.Location = new System.Drawing.Point(823, 11);
+            this.lbStatus.Location = new System.Drawing.Point(837, 11);
             this.lbStatus.Name = "lbStatus";
             this.lbStatus.Size = new System.Drawing.Size(48, 17);
             this.lbStatus.TabIndex = 11;
@@ -402,12 +404,41 @@
             this.timerGraph.Enabled = true;
             this.timerGraph.Tick += new System.EventHandler(this.timerGraph_Tick);
             // 
+            // label5
+            // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.label5.ForeColor = System.Drawing.Color.Navy;
+            this.label5.Location = new System.Drawing.Point(280, 9);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(95, 19);
+            this.label5.TabIndex = 29;
+            this.label5.Text = "Current path: ";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // rtxtbCurrentPath
+            // 
+            this.rtxtbCurrentPath.BackColor = System.Drawing.Color.Lavender;
+            this.rtxtbCurrentPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.rtxtbCurrentPath.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtxtbCurrentPath.ForeColor = System.Drawing.Color.Navy;
+            this.rtxtbCurrentPath.Location = new System.Drawing.Point(375, 10);
+            this.rtxtbCurrentPath.Name = "rtxtbCurrentPath";
+            this.rtxtbCurrentPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
+            this.rtxtbCurrentPath.Size = new System.Drawing.Size(400, 25);
+            this.rtxtbCurrentPath.TabIndex = 30;
+            this.rtxtbCurrentPath.Text = "";
+            // 
             // AGVMonitoringForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lavender;
             this.ClientSize = new System.Drawing.Size(908, 475);
+            this.Controls.Add(this.rtxtbCurrentPath);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.label11);
@@ -467,5 +498,7 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.Timer timerGraph;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.RichTextBox rtxtbCurrentPath;
     }
 }

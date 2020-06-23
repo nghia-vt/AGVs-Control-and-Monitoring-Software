@@ -10,7 +10,6 @@ namespace AGVsControlAndMonitoringSoftware
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Priority { get; set; }
         public string PalletCode { get; set; }
         public int AGVID { get; set; }
         public int PickNode { get; set; }
@@ -20,12 +19,11 @@ namespace AGVsControlAndMonitoringSoftware
         public string Status { get; set; }
 
         // Constructor of Task
-        public Task(string name, string type, string priority, string palletCode, int agvID,
+        public Task(string name, string type, string palletCode, int agvID,
                     int pickNode, int dropNode, int pickLevel, int dropLevel, string status)
         {
             this.Name = name;
             this.Type = type;
-            this.Priority = priority;
             this.PalletCode = palletCode;
             this.AGVID = agvID;
             this.PickNode = pickNode;

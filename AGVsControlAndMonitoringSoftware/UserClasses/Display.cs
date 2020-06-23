@@ -381,7 +381,6 @@ namespace AGVsControlAndMonitoringSoftware
                     listView.Items[listView.Items.Count - 1].SubItems.Add("AGV#" + task.AGVID.ToString());
                     listView.Items[listView.Items.Count - 1].SubItems.Add("Node " + task.PickNode.ToString() + "-" + task.PickLevel.ToString());
                     listView.Items[listView.Items.Count - 1].SubItems.Add("Node " + task.DropNode.ToString() + "-" + task.DropLevel.ToString());
-                    listView.Items[listView.Items.Count - 1].SubItems.Add(task.Priority);
                     listView.Items[listView.Items.Count - 1].SubItems.Add(task.PalletCode);     
                 }
                 else
@@ -392,8 +391,7 @@ namespace AGVsControlAndMonitoringSoftware
                     listView.Items[listData.IndexOf(task)].SubItems[3].Text = "AGV#" + task.AGVID.ToString();
                     listView.Items[listData.IndexOf(task)].SubItems[4].Text = "Node " + task.PickNode.ToString() + "-" + task.PickLevel.ToString();
                     listView.Items[listData.IndexOf(task)].SubItems[5].Text = "Node " + task.DropNode.ToString() + "-" + task.DropLevel.ToString();
-                    listView.Items[listData.IndexOf(task)].SubItems[6].Text = task.Priority;
-                    listView.Items[listData.IndexOf(task)].SubItems[7].Text = task.PalletCode;
+                    listView.Items[listData.IndexOf(task)].SubItems[6].Text = task.PalletCode;
 
                     if (task.Status == "Doing")
                         listView.Items[listData.IndexOf(task)].BackColor = Color.PaleGreen;
