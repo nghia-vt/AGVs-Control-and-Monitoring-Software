@@ -181,43 +181,38 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             if (!Communicator.SerialPort.IsOpen) return;
-            Communicator.SerialPort.Write(requestFrame.ToArray(), 0, requestFrame.ToArray().Length);
+            try { Communicator.SerialPort.Write(requestFrame.ToArray(), 0, requestFrame.ToArray().Length); }
+            catch { };
 
             // Display ComStatus
             Display.UpdateComStatus("send", requestFrame.AGVID, "Request AGV info", System.Drawing.Color.Blue);
 
-            // wait ack in new thread
-            System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_AGVInfoACK);
-            th.IsBackground = true;
-            th.Start(requestFrame);
+            // wait ack
+            System.Timers.Timer timer1 = new System.Timers.Timer(timeout);
+            timer1.Elapsed += (sender, e) => timer1_Elapsed(sender, e, requestFrame);
+            timer1.Start();
         }
 
-        private static void WaitingResponse_AGVInfoACK(object obj)
+        private static void timer1_Elapsed(object sender, System.Timers.ElapsedEventArgs e, AGVInfoRequestPacket requestFrame)
         {
-            AGVInfoRequestPacket resendFrame = (AGVInfoRequestPacket)obj;
-            
-            int startTime = Environment.TickCount;
-            while (Environment.TickCount - startTime < timeout)
+            AGVInfoRequestPacket resendFrame = requestFrame;
+
+            if (ackReceived.AGVID == resendFrame.AGVID &&
+                ackReceived.FunctionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO &&
+                ackReceived.ACK == (byte)'Y')
             {
-                if (ackReceived.AGVID != resendFrame.AGVID || ackReceived.FunctionCode != (byte)FUNC_CODE.RESP_ACK_AGV_INFO)
-                    continue;
-                if (ackReceived.ACK == (byte)'Y')
-                {
-                    ackReceived = default(AckReceivePacket);
-                    return;
-                }
+                ackReceived = default(AckReceivePacket);
+                ((System.Timers.Timer)sender).Dispose();
+                return;
             }
 
             if (Communicator.SerialPort.IsOpen == false) return;
-            Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length);
+            try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
+            catch { return; }
 
             // Display ComStatus
             Display.UpdateComStatus("timeout", resendFrame.AGVID, "Request AGV info", System.Drawing.Color.Red);
             Display.UpdateComStatus("send", resendFrame.AGVID, "Request AGV info", System.Drawing.Color.Blue);
-
-            //System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_AGVInfoACK);
-            //th.IsBackground = true;
-            //th.Start(resendFrame);
         }
 
         // Send path information packet
@@ -263,44 +258,38 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             if (!Communicator.SerialPort.IsOpen) return;
-            Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length);
+            try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
+            catch { };
 
             // Display ComStatus
             Display.UpdateComStatus("send", sendFrame.AGVID, "Write Path", System.Drawing.Color.Blue);
 
-            // wait ack in new thread
-            System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_PathACK);
-            th.IsBackground = true;
-            th.Start(sendFrame);
+            // wait ack
+            System.Timers.Timer timer2 = new System.Timers.Timer(timeout);
+            timer2.Elapsed += (sender, e) => timer2_Elapsed(sender, e, sendFrame);
+            timer2.Start();
         }
 
-        private static void WaitingResponse_PathACK(object obj)
+        private static void timer2_Elapsed(object sender, System.Timers.ElapsedEventArgs e, PathInfoSendPacket sendFrame)
         {
-            PathInfoSendPacket resendFrame = (PathInfoSendPacket)obj;
+            PathInfoSendPacket resendFrame = sendFrame;
 
-            int startTime = Environment.TickCount;
-            while (Environment.TickCount - startTime < timeout)
+            if (ackReceived.AGVID == resendFrame.AGVID &&
+                ackReceived.FunctionCode == (byte)FUNC_CODE.RESP_ACK_PATH &&
+                ackReceived.ACK == (byte)'Y')
             {
-                if (ackReceived.AGVID != resendFrame.AGVID || ackReceived.FunctionCode != (byte)FUNC_CODE.RESP_ACK_PATH)
-                    continue;
-                if (ackReceived.ACK == (byte)'Y')
-                {
-                    ackReceived = default(AckReceivePacket);
-                    return;
-                }
+                ackReceived = default(AckReceivePacket);
+                ((System.Timers.Timer)sender).Dispose();
+                return;
             }
 
             if (Communicator.SerialPort.IsOpen == false) return;
-            Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length);
+            try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
+            catch { return; }
 
-            // Display ComStatus
             // Display ComStatus
             Display.UpdateComStatus("timeout", resendFrame.AGVID, "Write Path", System.Drawing.Color.Red);
             Display.UpdateComStatus("send", resendFrame.AGVID, "Write Path", System.Drawing.Color.Blue);
-
-            //System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_PathACK);
-            //th.IsBackground = true;
-            //th.Start(resendFrame);
         }
 
         public static void SendInformWaiting(uint agvID, ushort waitingTime)
@@ -324,43 +313,38 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             if (!Communicator.SerialPort.IsOpen) return;
-            Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length);
+            try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
+            catch { };
 
             // Display ComStatus
             Display.UpdateComStatus("send", sendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Blue);
 
-            // wait ack in new thread
-            System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_InformWaitingACK);
-            th.IsBackground = true;
-            th.Start(sendFrame);
+            // wait ack
+            System.Timers.Timer timer3 = new System.Timers.Timer(timeout);
+            timer3.Elapsed += (sender, e) => timer3_Elapsed(sender, e, sendFrame);
+            timer3.Start();
         }
 
-        private static void WaitingResponse_InformWaitingACK(object obj)
+        private static void timer3_Elapsed(object sender, System.Timers.ElapsedEventArgs e, InformWaitingSendPacket sendFrame)
         {
-            InformWaitingSendPacket resendFrame = (InformWaitingSendPacket)obj;
-            Console.WriteLine("here");
-            int startTime = Environment.TickCount;
-            while (Environment.TickCount - startTime < timeout)
+            InformWaitingSendPacket resendFrame = sendFrame;
+
+            if (ackReceived.AGVID == resendFrame.AGVID &&
+                ackReceived.FunctionCode == (byte)FUNC_CODE.RESP_ACK_WAITING &&
+                ackReceived.ACK == (byte)'Y')
             {
-                if (ackReceived.AGVID != resendFrame.AGVID || ackReceived.FunctionCode != (byte)FUNC_CODE.RESP_ACK_WAITING)
-                    continue;
-                if (ackReceived.ACK == (byte)'Y')
-                {
-                    ackReceived = default(AckReceivePacket);
-                    return;
-                }
+                ackReceived = default(AckReceivePacket);
+                ((System.Timers.Timer)sender).Dispose();
+                return;
             }
 
             if (Communicator.SerialPort.IsOpen == false) return;
-            Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length);
+            try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
+            catch { return; }
 
             // Display ComStatus
             Display.UpdateComStatus("timeout", resendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Red);
-            Display.UpdateComStatus("send", resendFrame.AGVID, "Inform Waiting",System.Drawing.Color.Blue);
-
-            //System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_InformWaitingACK);
-            //th.IsBackground = true;
-            //th.Start(resendFrame);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Blue);
         }
     }
 
