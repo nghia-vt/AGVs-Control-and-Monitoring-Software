@@ -89,7 +89,7 @@ namespace AGVsControlAndMonitoringSoftware
         {
             // Display AGV in combobox if AGV exist
             cbbAGV.Items.Clear();
-            cbbAGV.Items.Add("Auto");
+            
             switch (Display.Mode)
             {
                 case "Real Time":

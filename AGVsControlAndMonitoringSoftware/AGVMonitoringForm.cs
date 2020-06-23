@@ -31,8 +31,6 @@ namespace AGVsControlAndMonitoringSoftware
                     {
                         cbbAGV.Text = "AGV#" + AGV.ListAGV[0].ID.ToString();
                         selectedAGVID = AGV.ListAGV[0].ID;
-                        // Send AGV Info Request to AGV (include Line tracking error)
-                        Communicator.SendAGVInfoRequest((uint)selectedAGVID, 'L');
                     }
                     break;
                 case "Simulation":
@@ -102,7 +100,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Set scale of axis
             velocityPane.XAxis.Scale.Min = 0;
-            velocityPane.XAxis.Scale.Max = 30;
+            velocityPane.XAxis.Scale.Max = 20;
             velocityPane.XAxis.Scale.MinorStep = 1;
             velocityPane.XAxis.Scale.MajorStep = 5;
 
@@ -151,7 +149,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Set scale of axis
             linetrackPane.XAxis.Scale.Min = 0;
-            linetrackPane.XAxis.Scale.Max = 30;
+            linetrackPane.XAxis.Scale.Max = 20;
             linetrackPane.XAxis.Scale.MinorStep = 1;
             linetrackPane.XAxis.Scale.MajorStep = 5;
 
@@ -197,7 +195,7 @@ namespace AGVsControlAndMonitoringSoftware
             if (time > xScale.Max - xScale.MajorStep)
             {
                 xScale.Max = time + xScale.MajorStep;
-                xScale.Min = xScale.Max - 30.0;
+                xScale.Min = xScale.Max - 20.0;
             }
 
             // re-draw graph
@@ -219,7 +217,7 @@ namespace AGVsControlAndMonitoringSoftware
             DrawGraph(zedGraphLineTrack, linetrackingError);
         }
 
-        private void cbbAGV_TextChanged(object sender, EventArgs e)
+        private void cbbAGV_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (String.IsNullOrEmpty(cbbAGV.Text)) return;
 
@@ -234,9 +232,10 @@ namespace AGVsControlAndMonitoringSoftware
             if (String.IsNullOrEmpty(cbbAGV.Text)) return;
             string[] arr = cbbAGV.Text.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
             selectedAGVID = Convert.ToInt16(arr[1]);
-
+            
             // Send AGV Info Request to AGV (include Line tracking error)
-            Communicator.SendAGVInfoRequest((uint)selectedAGVID, 'L');
+            if (Display.Mode == "Real Time")
+                Communicator.SendAGVInfoRequest((uint)selectedAGVID, 'L');
         }
 
         private void cbbAGV_KeyDown(object sender, KeyEventArgs e)
@@ -254,7 +253,7 @@ namespace AGVsControlAndMonitoringSoftware
         private void AGVMonitoringForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Send AGV Info Request to AGV (except Line tracking error)
-            if (Communicator.SerialPort.IsOpen)
+            if (Display.Mode == "Real Time" && Communicator.SerialPort.IsOpen == true)
             {
                 foreach(AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
             }

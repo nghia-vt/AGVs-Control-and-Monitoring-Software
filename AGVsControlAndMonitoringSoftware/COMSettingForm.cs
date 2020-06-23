@@ -70,6 +70,9 @@ namespace AGVsControlAndMonitoringSoftware
                     btnConnect.ImageIndex = 0;
                     btnConnect.ForeColor = Color.MediumBlue;
                     btnReScan.Enabled = true;
+
+                    Display.UpdateComStatus("status", 0, "Access to the port " + Communicator.SerialPort.PortName + " is denied", 
+                                            System.Drawing.Color.Red);
                 }
             }
             else
@@ -84,12 +87,15 @@ namespace AGVsControlAndMonitoringSoftware
                     btnReScan.Enabled = true;
 
                     Communicator.SerialPort.Close();
+
+                    Display.UpdateComStatus("status", 0, Communicator.SerialPort.PortName + " is closed", System.Drawing.Color.Red);
                 }
             }
 
             // Send AGV Info Request to AGV (except Line tracking error)
             if (Communicator.SerialPort.IsOpen)
             {
+                Display.UpdateComStatus("status", 0, Communicator.SerialPort.PortName + " is opened", System.Drawing.Color.Blue);
                 foreach (AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
             }
         }

@@ -85,7 +85,7 @@ namespace AGVsControlAndMonitoringSoftware
             pnFloor.Refresh();
         }
 
-        private void timer1_Tick(object sender, EventArgs e) // 100ms
+        private void timerGUI_Tick(object sender, EventArgs e)
         {
             // Show time now
             DateTime time = DateTime.Now;
@@ -93,6 +93,9 @@ namespace AGVsControlAndMonitoringSoftware
 
             if (Display.Mode == "Real Time")
             {
+                // Update serial port status
+                UpdateComStatus();
+
                 // Update data in listView AGVs
                 Display.UpdateListViewAGVs(listViewAGVs, AGV.ListAGV);
 
@@ -145,7 +148,7 @@ namespace AGVsControlAndMonitoringSoftware
                         Display.SimLabelAGV[agv.ID].BackColor = Color.CornflowerBlue;
                     else Display.SimLabelAGV[agv.ID].BackColor = Color.Silver;
                 }
-            }  
+            }
         }
 
         private void pnFloor_Paint(object sender, PaintEventArgs e)
@@ -310,6 +313,30 @@ namespace AGVsControlAndMonitoringSoftware
         {
             AGVMonitoringForm agvMonitoringForm = new AGVMonitoringForm();
             agvMonitoringForm.Show();
+        }
+
+
+        public static List<string> textComStatus = new List<string>();
+        public static List<Color> colorComStatus = new List<Color>();
+        private void UpdateComStatus()
+        {
+            if (textComStatus.Count != 0)
+            {
+                rtxtbComStatus.SelectionColor = colorComStatus[0];
+                rtxtbComStatus.SelectedText = textComStatus[0];
+
+                textComStatus.RemoveAt(0);
+                colorComStatus.RemoveAt(0);
+            }
+        }
+
+        private void rtxtbComStatus_TextChanged(object sender, EventArgs e)
+        {
+            // set the current caret position to the end
+            rtxtbComStatus.SelectionStart = rtxtbComStatus.Text.Length;
+
+            // scroll it automatically
+            rtxtbComStatus.ScrollToCaret();
         }
     }
 }

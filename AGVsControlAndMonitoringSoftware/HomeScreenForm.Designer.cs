@@ -74,7 +74,9 @@
             this.cntxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.timerGUI = new System.Windows.Forms.Timer(this.components);
+            this.rtxtbComStatus = new System.Windows.Forms.RichTextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.mnstrHomeScr.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -334,7 +336,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox2.Location = new System.Drawing.Point(757, 143);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(382, 187);
+            this.groupBox2.Size = new System.Drawing.Size(382, 151);
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "AGVs Monitoring";
@@ -353,7 +355,7 @@
             this.listViewAGVs.Font = new System.Drawing.Font("Segoe UI", 9.25F);
             this.listViewAGVs.Location = new System.Drawing.Point(3, 23);
             this.listViewAGVs.Name = "listViewAGVs";
-            this.listViewAGVs.Size = new System.Drawing.Size(376, 161);
+            this.listViewAGVs.Size = new System.Drawing.Size(376, 125);
             this.listViewAGVs.SmallImageList = this.imgList;
             this.listViewAGVs.TabIndex = 0;
             this.listViewAGVs.UseCompatibleStateImageBehavior = false;
@@ -399,9 +401,9 @@
             this.groupBox3.Controls.Add(this.listViewTasks);
             this.groupBox3.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.ForeColor = System.Drawing.Color.DarkRed;
-            this.groupBox3.Location = new System.Drawing.Point(757, 336);
+            this.groupBox3.Location = new System.Drawing.Point(757, 300);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(382, 231);
+            this.groupBox3.Size = new System.Drawing.Size(382, 215);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Tasks Monitoring";
@@ -423,7 +425,7 @@
             this.listViewTasks.ForeColor = System.Drawing.SystemColors.WindowText;
             this.listViewTasks.Location = new System.Drawing.Point(3, 23);
             this.listViewTasks.Name = "listViewTasks";
-            this.listViewTasks.Size = new System.Drawing.Size(376, 205);
+            this.listViewTasks.Size = new System.Drawing.Size(376, 189);
             this.listViewTasks.SmallImageList = this.imgList;
             this.listViewTasks.TabIndex = 27;
             this.listViewTasks.UseCompatibleStateImageBehavior = false;
@@ -509,10 +511,33 @@
             this.hidePathToolStripMenuItem.Text = "Hide current path";
             this.hidePathToolStripMenuItem.Click += new System.EventHandler(this.hidePathToolStripMenuItem_Click);
             // 
-            // timer1
+            // timerGUI
             // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.timerGUI.Enabled = true;
+            this.timerGUI.Tick += new System.EventHandler(this.timerGUI_Tick);
+            // 
+            // rtxtbComStatus
+            // 
+            this.rtxtbComStatus.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.rtxtbComStatus.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.rtxtbComStatus.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.rtxtbComStatus.Location = new System.Drawing.Point(760, 540);
+            this.rtxtbComStatus.Name = "rtxtbComStatus";
+            this.rtxtbComStatus.Size = new System.Drawing.Size(380, 137);
+            this.rtxtbComStatus.TabIndex = 4;
+            this.rtxtbComStatus.Text = "";
+            this.rtxtbComStatus.TextChanged += new System.EventHandler(this.rtxtbComStatus_TextChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.Navy;
+            this.label3.Location = new System.Drawing.Point(762, 518);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(155, 19);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Communication Status:";
             // 
             // HomeScreenForm
             // 
@@ -520,6 +545,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lavender;
             this.ClientSize = new System.Drawing.Size(1159, 689);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.rtxtbComStatus);
             this.Controls.Add(this.pnFloor);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -563,7 +590,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Timer timerGUI;
         private System.Windows.Forms.RadioButton rdbtnSimulation;
         private System.Windows.Forms.RadioButton rdbtnRealTime;
         private System.Windows.Forms.Panel pnFloor;
@@ -590,6 +617,8 @@
         private System.Windows.Forms.Label lbTime;
         private System.Windows.Forms.Button btnPauseRun;
         private System.Windows.Forms.Label lbModeStatus;
+        private System.Windows.Forms.RichTextBox rtxtbComStatus;
+        private System.Windows.Forms.Label label3;
     }
 }
 

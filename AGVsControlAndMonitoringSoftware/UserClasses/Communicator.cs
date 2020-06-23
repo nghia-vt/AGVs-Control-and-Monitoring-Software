@@ -19,7 +19,11 @@ namespace AGVsControlAndMonitoringSoftware
         private static List<byte> bytesReceived = new List<byte>();
         private const ushort AGVInfoReceivePacketSize = 21;
         private const ushort AGVLineTrackErrorReceivePacketSize = 12;
+        private const ushort AckReceivePacketSize = 9;
         public static float lineTrackError; // temp value to draw graph (in AGV Monitoring Form)
+
+        private const int timeout = 300; // ms 
+        private static AckReceivePacket ackReceived = new AckReceivePacket();
 
         public static void GetData()
         {
@@ -42,7 +46,7 @@ namespace AGVsControlAndMonitoringSoftware
                     startIndex = i;
                     functionCode = bytesReceived[i + 2];
 
-                    if (functionCode == 0x01) // receive AGV info except line tracking error
+                    if (functionCode == (byte)FUNC_CODE.RESP_AGV_INFO) // receive AGV info except line tracking error
                     {
                         // waitting for receive enough frame data of this function code
                         if (bytesReceived.Count - startIndex < AGVInfoReceivePacketSize) return;
@@ -84,7 +88,7 @@ namespace AGVsControlAndMonitoringSoftware
                         agv.Velocity = receiveFrame.Velocity;
                         agv.Battery = receiveFrame.Battery;
                     }
-                    else if (functionCode == 0x11) // receive Line tracking error
+                    else if (functionCode == (byte)FUNC_CODE.RESP_LINE_TRACK_ERR) // receive Line tracking error
                     {
                         // waitting for receive enough frame data of this function code
                         if (bytesReceived.Count - startIndex < AGVLineTrackErrorReceivePacketSize) return;
@@ -109,6 +113,48 @@ namespace AGVsControlAndMonitoringSoftware
                             lineTrackError = receiveFrame.LineTrackError;
                         else lineTrackError = 0;
                     }
+                    else if (functionCode == (byte)FUNC_CODE.RESP_ACK_PATH ||
+                             functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO ||
+                             functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) // receive ack
+                    {
+                        // waitting for receive enough frame data of this function code
+                        if (bytesReceived.Count - startIndex < AckReceivePacketSize) return;
+
+                        // get data and take it out of the queue
+                        byte[] data = new byte[AckReceivePacketSize];
+                        for (int j = 0; j < AckReceivePacketSize; j++)
+                            data[j] = bytesReceived[startIndex + j];
+
+                        AckReceivePacket receiveFrame = AckReceivePacket.FromArray(data);
+
+                        // check sum
+                        ushort crc = 0;
+                        for (int j = 0; j < AckReceivePacketSize - 4; j++)
+                            crc += data[j];
+                        if (crc != receiveFrame.CheckSum) continue;
+
+                        bytesReceived.RemoveRange(0, startIndex + AckReceivePacketSize - 1);
+
+                        // update received ack
+                        ackReceived = receiveFrame;
+
+                        // Display ComStatus
+                        string message = "";
+                        if (receiveFrame.ACK == (byte)'Y')
+                        {
+                            if (functionCode == (byte)FUNC_CODE.RESP_ACK_PATH) message = "ACK (path)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO) message = "ACK (request AGV info)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) message = "ACK (waiting)";
+                            Display.UpdateComStatus("receive", receiveFrame.AGVID, message, System.Drawing.Color.Green);
+                        }
+                        else if (receiveFrame.ACK == (byte)'N')
+                        {
+                            if (functionCode == (byte)FUNC_CODE.RESP_ACK_PATH) message = "NACK (path)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO) message = "NACK (request AGV info)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) message = "NACK (waiting)";
+                            Display.UpdateComStatus("receive", receiveFrame.AGVID, message, System.Drawing.Color.Red);
+                        }
+                    }
                 }
             }
 
@@ -120,7 +166,7 @@ namespace AGVsControlAndMonitoringSoftware
             AGVInfoRequestPacket requestFrame = new AGVInfoRequestPacket();
 
             requestFrame.Header = new byte[2] { 0xAA, 0xFF };
-            requestFrame.FunctionCode = 0xA0;
+            requestFrame.FunctionCode = (byte)FUNC_CODE.REQ_AGV_INFO;
             requestFrame.AGVID = Convert.ToByte(agvID);
             requestFrame.InformationType = (byte)InfoType;
             // calculate check sum
@@ -136,6 +182,42 @@ namespace AGVsControlAndMonitoringSoftware
             // send data via serial port
             if (!Communicator.SerialPort.IsOpen) return;
             Communicator.SerialPort.Write(requestFrame.ToArray(), 0, requestFrame.ToArray().Length);
+
+            // Display ComStatus
+            Display.UpdateComStatus("send", requestFrame.AGVID, "Request AGV info", System.Drawing.Color.Blue);
+
+            // wait ack in new thread
+            System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_AGVInfoACK);
+            th.IsBackground = true;
+            th.Start(requestFrame);
+        }
+
+        private static void WaitingResponse_AGVInfoACK(object obj)
+        {
+            AGVInfoRequestPacket resendFrame = (AGVInfoRequestPacket)obj;
+            
+            int startTime = Environment.TickCount;
+            while (Environment.TickCount - startTime < timeout)
+            {
+                if (ackReceived.AGVID != resendFrame.AGVID || ackReceived.FunctionCode != (byte)FUNC_CODE.RESP_ACK_AGV_INFO)
+                    continue;
+                if (ackReceived.ACK == (byte)'Y')
+                {
+                    ackReceived = default(AckReceivePacket);
+                    return;
+                }
+            }
+
+            if (Communicator.SerialPort.IsOpen == false) return;
+            Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length);
+
+            // Display ComStatus
+            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Request AGV info", System.Drawing.Color.Red);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Request AGV info", System.Drawing.Color.Blue);
+
+            //System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_AGVInfoACK);
+            //th.IsBackground = true;
+            //th.Start(resendFrame);
         }
 
         // Send path information packet
@@ -164,7 +246,7 @@ namespace AGVsControlAndMonitoringSoftware
             // set frame to send as struct
             // note: send reversed Header and End-of-frame because of Intel processors (in my laptop) use little endian
             sendFrame.Header = new byte[2] { 0xAA, 0xFF };
-            sendFrame.FunctionCode = 0xA1;
+            sendFrame.FunctionCode = (byte)FUNC_CODE.WR_PATH;
             sendFrame.AGVID = Convert.ToByte(agvID);
             sendFrame.PathByteCount = Convert.ToByte(arrPathFrame.Length);
             sendFrame.Path = arrPathFrame;
@@ -182,6 +264,103 @@ namespace AGVsControlAndMonitoringSoftware
             // send data via serial port
             if (!Communicator.SerialPort.IsOpen) return;
             Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length);
+
+            // Display ComStatus
+            Display.UpdateComStatus("send", sendFrame.AGVID, "Write Path", System.Drawing.Color.Blue);
+
+            // wait ack in new thread
+            System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_PathACK);
+            th.IsBackground = true;
+            th.Start(sendFrame);
+        }
+
+        private static void WaitingResponse_PathACK(object obj)
+        {
+            PathInfoSendPacket resendFrame = (PathInfoSendPacket)obj;
+
+            int startTime = Environment.TickCount;
+            while (Environment.TickCount - startTime < timeout)
+            {
+                if (ackReceived.AGVID != resendFrame.AGVID || ackReceived.FunctionCode != (byte)FUNC_CODE.RESP_ACK_PATH)
+                    continue;
+                if (ackReceived.ACK == (byte)'Y')
+                {
+                    ackReceived = default(AckReceivePacket);
+                    return;
+                }
+            }
+
+            if (Communicator.SerialPort.IsOpen == false) return;
+            Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length);
+
+            // Display ComStatus
+            // Display ComStatus
+            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Write Path", System.Drawing.Color.Red);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Write Path", System.Drawing.Color.Blue);
+
+            //System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_PathACK);
+            //th.IsBackground = true;
+            //th.Start(resendFrame);
+        }
+
+        public static void SendInformWaiting(uint agvID, ushort waitingTime)
+        {
+            InformWaitingSendPacket sendFrame = new InformWaitingSendPacket();
+
+            sendFrame.Header = new byte[2] { 0xAA, 0xFF };
+            sendFrame.FunctionCode = (byte)FUNC_CODE.WR_WAITING;
+            sendFrame.AGVID = Convert.ToByte(agvID);
+            sendFrame.WaitingTime = waitingTime;
+            // calculate check sum
+            ushort crc = 0;
+            crc += sendFrame.Header[0];
+            crc += sendFrame.Header[1];
+            crc += sendFrame.FunctionCode;
+            crc += sendFrame.AGVID;
+            crc += BitConverter.GetBytes(sendFrame.WaitingTime)[0];
+            crc += BitConverter.GetBytes(sendFrame.WaitingTime)[1];
+            sendFrame.CheckSum = crc;
+            sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
+
+            // send data via serial port
+            if (!Communicator.SerialPort.IsOpen) return;
+            Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length);
+
+            // Display ComStatus
+            Display.UpdateComStatus("send", sendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Blue);
+
+            // wait ack in new thread
+            System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_InformWaitingACK);
+            th.IsBackground = true;
+            th.Start(sendFrame);
+        }
+
+        private static void WaitingResponse_InformWaitingACK(object obj)
+        {
+            InformWaitingSendPacket resendFrame = (InformWaitingSendPacket)obj;
+            Console.WriteLine("here");
+            int startTime = Environment.TickCount;
+            while (Environment.TickCount - startTime < timeout)
+            {
+                if (ackReceived.AGVID != resendFrame.AGVID || ackReceived.FunctionCode != (byte)FUNC_CODE.RESP_ACK_WAITING)
+                    continue;
+                if (ackReceived.ACK == (byte)'Y')
+                {
+                    ackReceived = default(AckReceivePacket);
+                    return;
+                }
+            }
+
+            if (Communicator.SerialPort.IsOpen == false) return;
+            Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length);
+
+            // Display ComStatus
+            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Red);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Inform Waiting",System.Drawing.Color.Blue);
+
+            //System.Threading.Thread th = new System.Threading.Thread(WaitingResponse_InformWaitingACK);
+            //th.IsBackground = true;
+            //th.Start(resendFrame);
         }
     }
 
@@ -362,15 +541,15 @@ namespace AGVsControlAndMonitoringSoftware
         }
     }
 
-    /* Path information response packet (receive):
+    /* Ack response packet (receive):
      * Header           2 byte  -> 0xFFAA
-     * FunctionCode	    1 byte  -> 0x02
+     * FunctionCode	    1 byte
      * AGVID 		    1 byte		
      * ACK              1 byte  -> 'Y' or 'N'		
      * CheckSum	        2 byte  -> sum of bytes from Header to ACK
      * EndOfFrame	    2 byte  -> 0x0D0A
      */
-    public struct PathInfoACKReceivePacket
+    public struct AckReceivePacket
     {
         public byte[] Header;
         public byte FunctionCode;
@@ -380,11 +559,11 @@ namespace AGVsControlAndMonitoringSoftware
         public byte[] EndOfFrame;
 
         // Convert Byte Arrays to Structs
-        public static PathInfoACKReceivePacket FromArray(byte[] bytes)
+        public static AckReceivePacket FromArray(byte[] bytes)
         {
             var reader = new System.IO.BinaryReader(new System.IO.MemoryStream(bytes));
 
-            var s = default(PathInfoACKReceivePacket);
+            var s = default(AckReceivePacket);
 
             s.Header = reader.ReadBytes(2);
             s.FunctionCode = reader.ReadByte();
@@ -397,5 +576,51 @@ namespace AGVsControlAndMonitoringSoftware
         }
     }
 
+    /* Inform waiting packet (send):
+     * Header           2 byte  -> 0xFFAA
+     * FunctionCode	    1 byte  -> 0xA2
+     * AGVID 		    1 byte		
+     * WaitingTime      2 byte		
+     * CheckSum	        2 byte  -> sum of bytes from Header to WaitingTime
+     * EndOfFrame	    2 byte  -> 0x0D0A
+     */
+    public struct InformWaitingSendPacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public ushort WaitingTime;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Structs to Byte Arrays
+        public byte[] ToArray()
+        {
+            var stream = new System.IO.MemoryStream();
+            var writer = new System.IO.BinaryWriter(stream);
+
+            writer.Write(this.Header);
+            writer.Write(this.FunctionCode);
+            writer.Write(this.AGVID);
+            writer.Write(this.WaitingTime);
+            writer.Write(this.CheckSum);
+            writer.Write(this.EndOfFrame);
+
+            return stream.ToArray();
+        }
+    }
+
     #endregion
+
+    public enum FUNC_CODE
+    {
+        REQ_AGV_INFO = 0xA0,
+        RESP_AGV_INFO = 0x01,
+        RESP_LINE_TRACK_ERR = 0x11,
+        RESP_ACK_AGV_INFO = 0x21,
+        WR_PATH = 0xA1,
+        RESP_ACK_PATH = 0x02,
+        WR_WAITING = 0xA2,
+        RESP_ACK_WAITING = 0x03
+    }
 }

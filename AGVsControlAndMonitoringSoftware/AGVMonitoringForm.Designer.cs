@@ -210,7 +210,7 @@
             this.cbbAGV.Size = new System.Drawing.Size(65, 25);
             this.cbbAGV.TabIndex = 26;
             this.cbbAGV.DropDown += new System.EventHandler(this.cbbAGV_DropDown);
-            this.cbbAGV.TextChanged += new System.EventHandler(this.cbbAGV_TextChanged);
+            this.cbbAGV.SelectedIndexChanged += new System.EventHandler(this.cbbAGV_SelectedIndexChanged);
             this.cbbAGV.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cbbAGV_KeyDown);
             this.cbbAGV.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbbAGV_KeyPress);
             // 

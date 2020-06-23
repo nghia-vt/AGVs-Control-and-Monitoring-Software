@@ -402,5 +402,21 @@ namespace AGVsControlAndMonitoringSoftware
                 }
             }
         }
+
+        // Updata communication status
+        public static void UpdateComStatus(string type, int agvID, string message, Color messageColor)
+        {
+            string timeNow = DateTime.Now.ToString(" h:mm:ss.fff tt");
+
+            HomeScreenForm.colorComStatus.Add(messageColor);
+            if (type == "send")
+                HomeScreenForm.textComStatus.Add(timeNow + "\t-> to AGV#" + agvID.ToString() + ":\t" + message + "\n");
+            else if (type == "receive")
+                HomeScreenForm.textComStatus.Add(timeNow + "\t<- from AGV#" + agvID.ToString() + ":\t" + message + "\n");
+            else if (type == "timeout")
+                HomeScreenForm.textComStatus.Add(timeNow + "\t...  timeout\tAGV#" + agvID.ToString() + "\n");
+            else if (type == "status")
+                HomeScreenForm.textComStatus.Add(timeNow + "\t" + message + "\n");
+        }
     }
 }
