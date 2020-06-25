@@ -306,18 +306,6 @@ namespace AGVsControlAndMonitoringSoftware
             }
         }
 
-        private void rtxtbCurrentPath_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            // This will discard the keypress (can also use e.Handled = true)
-            e.KeyChar = (char)Keys.None;
-        }
-
-        private void rtxtbCurrentPath_KeyDown(object sender, KeyEventArgs e)
-        {
-            // This will discard the delete keypress (can also use e.Handled = true)
-            if (e.KeyCode == Keys.Delete) e.Handled = true;
-        }
-
         private void txtbSetVelocity_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsDigit(e.KeyChar) && (e.KeyChar != 46) && !char.IsControl(e.KeyChar))

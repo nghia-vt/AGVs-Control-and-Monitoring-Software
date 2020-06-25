@@ -15,7 +15,7 @@ namespace AGVsControlAndMonitoringSoftware
         public string LocationCode { get; set; }
 
         // List of nodes (get from database). Note: listNode[i].ID = i so instead of using ID, use i 
-        public static List<Node> ListNode = DBUtility.GetDataFromDB<List<Node>>("NodeInfoTable");
+        public static List<Node> ListNode = DBUtility.GetNodeInfoFromDB<List<Node>>("NodeInfoTable");
 
         // Adjacency Matrix of nodes
         public static int[,] MatrixNodeDistance = Node.CreateAdjacencyMatrix(ListNode);

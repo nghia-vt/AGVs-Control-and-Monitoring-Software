@@ -155,7 +155,7 @@ namespace AGVsControlAndMonitoringSoftware
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO) message = "ACK (request AGV info)";
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) message = "ACK (waiting)";
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_VELOCITY) message = "ACK (velocity setting)";
-                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_INIT) message = "ACK (initialize)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_INIT) message = "ACK (initialized)";
                             Display.UpdateComStatus("receive", receiveFrame.AGVID, message, System.Drawing.Color.Green);
                         }
                         else if (receiveFrame.ACK == (byte)'N')
@@ -449,7 +449,7 @@ namespace AGVsControlAndMonitoringSoftware
             catch { };
 
             // Display ComStatus
-            Display.UpdateComStatus("send", sendFrame.AGVID, "Initialized", System.Drawing.Color.Blue);
+            Display.UpdateComStatus("send", sendFrame.AGVID, "Initialize", System.Drawing.Color.Blue);
 
             // wait ack
             System.Timers.Timer timer5 = new System.Timers.Timer(timeout);
@@ -476,8 +476,8 @@ namespace AGVsControlAndMonitoringSoftware
             catch { return; }
 
             // Display ComStatus
-            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Initialized", System.Drawing.Color.Red);
-            Display.UpdateComStatus("send", resendFrame.AGVID, "Initialized", System.Drawing.Color.Blue);
+            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Initialize", System.Drawing.Color.Red);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Initialize", System.Drawing.Color.Blue);
         }
     }
 

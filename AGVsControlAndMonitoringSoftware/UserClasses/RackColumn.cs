@@ -88,5 +88,51 @@ namespace AGVsControlAndMonitoringSoftware
             var label = panel.Controls.OfType<Label>().FirstOrDefault(lb => lb.Name == "ColumnAtNode" + col.AtNode.ToString());
             if (label != null) panel.Controls.Remove(label);
         }
+
+        public static void InitializePallet(List<RackColumn> listColumn, List<Pallet> listPallet)
+        {
+            foreach (Pallet pallet in listPallet)
+            {
+                // find location of this pallet
+                RackColumn col = listColumn.Find(c => (c.Block == pallet.AtBlock) && (c.Number == pallet.AtColumn));
+                if (col == null) continue;
+
+                // add to level at this column
+                col.PalletCodes[pallet.AtLevel - 1] = pallet.Code;
+            }
+        }
+    }
+
+    class Pallet
+    {
+        public string Code { get; set; }
+        public bool InStock { get; set; }
+        public string StoreTime { get; set; }
+        public string DeliverTime { get; set; }
+        public string AtBlock { get; set; }
+        public int AtColumn { get; set; }
+        public int AtLevel { get; set; }
+
+        public Pallet(string code, bool isInWarehouse, string storeTime, string block, int column, int level)
+        {
+            this.Code = code;
+            this.StoreTime = storeTime;
+            this.InStock = isInWarehouse;
+            this.AtBlock = block;
+            this.AtColumn = column;
+            this.AtLevel = level;
+        }
+
+        // Save pallet info (the present and the past)
+        public static List<Pallet> ListPallet = new List<Pallet>();
+        public static List<Pallet> SimListPallet = new List<Pallet>();
+
+        public static void SaveDeliveryTime(string palletCode, List<Pallet> listPallet)
+        {
+            Pallet pallet = listPallet.Find(p => p.Code == palletCode);
+            if (pallet == null) return;
+            pallet.DeliverTime = DateTime.Now.ToString("dddd, MMMM dd, yyyy  h:mm:ss tt");
+            pallet.InStock = false;
+        }
     }
 }

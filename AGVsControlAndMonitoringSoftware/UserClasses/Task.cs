@@ -82,9 +82,18 @@ namespace AGVsControlAndMonitoringSoftware
             // Remove old task
             if (agv.Tasks.Count != 0 && agv.ExitNode == agv.Tasks[0].DropNode)
             {
-                // Store pallet code to ListColumn at this goal node
+                // Store pallet code to ListColumn at this goal node and save this time
                 RackColumn column = RackColumn.ListColumn.Find(c => c.AtNode == agv.ExitNode);
                 column.PalletCodes[agv.Tasks[0].DropLevel - 1] = agv.Tasks[0].PalletCode;
+                if (column.AtNode != 51 & column.AtNode != 52)
+                {
+                    Pallet pallet = new Pallet(agv.Tasks[0].PalletCode, true, 
+                                               DateTime.Now.ToString("dddd, MMMM dd, yyyy  h:mm:ss tt"),
+                                               column.Block, column.Number, agv.Tasks[0].DropLevel);
+                    Pallet.ListPallet.Add(pallet);
+                    DBUtility.InsertNewPalletToDB("PalletInfoTable", pallet.Code, pallet.InStock, pallet.StoreTime,
+                                                   pallet.AtBlock, pallet.AtColumn, pallet.AtLevel);
+                }
 
                 // Note: remove task in agv.Tasks and also in Task.ListTask
                 Task.ListTask.Remove(Task.ListTask.Find(a => a.Name == agv.Tasks[0].Name));
@@ -179,7 +188,16 @@ namespace AGVsControlAndMonitoringSoftware
                 // Store pallet code to SimListColumn at this goal node
                 RackColumn column = RackColumn.SimListColumn.Find(c => c.AtNode == agv.ExitNode);
                 column.PalletCodes[agv.Tasks[0].DropLevel - 1] = agv.Tasks[0].PalletCode;
-
+                if (column.AtNode != 51 & column.AtNode != 52)
+                {
+                    Pallet pallet = new Pallet(agv.Tasks[0].PalletCode, true,
+                                               DateTime.Now.ToString("dddd, MMMM dd, yyyy  h:mm:ss tt"),
+                                               column.Block, column.Number, agv.Tasks[0].DropLevel);
+                    Pallet.SimListPallet.Add(pallet);
+                    DBUtility.InsertNewPalletToDB("SimPalletInfoTable", pallet.Code, pallet.InStock, pallet.StoreTime,
+                                                   pallet.AtBlock, pallet.AtColumn, pallet.AtLevel);
+                }
+                
                 // Note: remove task in agv.Tasks and also in Task.SimListTask
                 Task.SimListTask.Remove(Task.SimListTask.Find(a => a.Name == agv.Tasks[0].Name));
                 agv.Tasks.RemoveAt(0);

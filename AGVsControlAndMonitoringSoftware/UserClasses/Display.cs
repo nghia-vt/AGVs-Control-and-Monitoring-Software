@@ -109,7 +109,20 @@ namespace AGVsControlAndMonitoringSoftware
             var index = AGV.ListAGV.FindIndex(a => a.ID == agvID);
             AGV agv = AGV.ListAGV[index];
             Point position = new Point();
-            
+ 
+            // If this node is pick node, remove pallet code that was picked and save this time
+            if (agv.Tasks.Count != 0 && agv.ExitNode == agv.Tasks[0].PickNode)
+            {
+                RackColumn column = RackColumn.ListColumn.Find(c => c.AtNode == agv.ExitNode);
+
+                Pallet.SaveDeliveryTime(column.PalletCodes[agv.Tasks[0].PickLevel - 1], Pallet.ListPallet);
+                DBUtility.UpdatePalletDB("PalletInfoTable", column.PalletCodes[agv.Tasks[0].PickLevel - 1], false,
+                                          DateTime.Now.ToString("dddd, MMMM dd, yyyy  h:mm:ss tt"), Pallet.ListPallet);
+
+                column.PalletCodes[agv.Tasks[0].PickLevel - 1] = null;
+            }
+
+            // Update label position
             List<Node> Nodes = Node.ListNode;
             int pixelDistance = (int)Math.Round(agv.DistanceToExitNode * Display.Scale);
             int x = Nodes[agv.ExitNode].X - Display.LabelAGV[agvID].Size.Width / 2;
@@ -228,10 +241,15 @@ namespace AGVsControlAndMonitoringSoftware
                         break;
                 }
 
-                // If this node is pick node, remove pallet code that was picked
+                // If this node is pick node, remove pallet code that was picked and save this time
                 if (agv.Tasks.Count != 0 && node.ID == agv.Tasks[0].PickNode)
                 {
                     RackColumn column = RackColumn.SimListColumn.Find(c => c.AtNode == agv.ExitNode);
+
+                    Pallet.SaveDeliveryTime(column.PalletCodes[agv.Tasks[0].PickLevel - 1], Pallet.SimListPallet);
+                    DBUtility.UpdatePalletDB("SimPalletInfoTable", column.PalletCodes[agv.Tasks[0].PickLevel - 1], false,
+                                          DateTime.Now.ToString("dddd, MMMM dd, yyyy  h:mm:ss tt"), Pallet.SimListPallet);
+
                     column.PalletCodes[agv.Tasks[0].PickLevel - 1] = null;
                 }
             }
@@ -357,6 +375,11 @@ namespace AGVsControlAndMonitoringSoftware
                     
                     if (agv.Status == "Running")
                         listView.Items[listData.IndexOf(agv)].BackColor = Color.PaleGreen;
+                    else if (!agv.IsInitialized)
+                    {
+                        agv.Status = "No initialize";
+                        listView.Items[listData.IndexOf(agv)].BackColor = Color.LightGray;
+                    }
                     else
                         listView.Items[listData.IndexOf(agv)].BackColor = Color.White;
                 }

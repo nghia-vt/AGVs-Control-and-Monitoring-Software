@@ -98,6 +98,12 @@
     <Compile Include="UserClasses\Node.cs" />
     <Compile Include="UserClasses\RackColumn.cs" />
     <Compile Include="UserClasses\Task.cs" />
+    <Compile Include="WarehouseDataForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WarehouseDataForm.Designer.cs">
+      <DependentUpon>WarehouseDataForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddRemoveAGVForm.resx">
       <DependentUpon>AddRemoveAGVForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -122,6 +128,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="WarehouseDataForm.resx">
+      <DependentUpon>WarehouseDataForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

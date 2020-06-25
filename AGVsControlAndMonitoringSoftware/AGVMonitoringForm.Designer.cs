@@ -41,6 +41,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbbAGV = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.txtbSetVelocity = new System.Windows.Forms.TextBox();
             this.btnSetVelocity = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
@@ -59,7 +60,6 @@
             this.timerGraph = new System.Windows.Forms.Timer(this.components);
             this.label5 = new System.Windows.Forms.Label();
             this.rtxtbCurrentPath = new System.Windows.Forms.RichTextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -236,6 +236,20 @@
             this.groupBox2.TabIndex = 26;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "      Velocity";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.label6.ForeColor = System.Drawing.Color.Navy;
+            this.label6.Location = new System.Drawing.Point(206, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(101, 19);
+            this.label6.TabIndex = 29;
+            this.label6.Text = "Set for all AGV:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtbSetVelocity
             // 
@@ -461,26 +475,11 @@
             this.rtxtbCurrentPath.ForeColor = System.Drawing.Color.Navy;
             this.rtxtbCurrentPath.Location = new System.Drawing.Point(375, 10);
             this.rtxtbCurrentPath.Name = "rtxtbCurrentPath";
+            this.rtxtbCurrentPath.ReadOnly = true;
             this.rtxtbCurrentPath.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Horizontal;
             this.rtxtbCurrentPath.Size = new System.Drawing.Size(400, 25);
             this.rtxtbCurrentPath.TabIndex = 30;
             this.rtxtbCurrentPath.Text = "";
-            this.rtxtbCurrentPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtxtbCurrentPath_KeyDown);
-            this.rtxtbCurrentPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.rtxtbCurrentPath_KeyPress);
-            // 
-            // label6
-            // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Segoe UI", 10.25F);
-            this.label6.ForeColor = System.Drawing.Color.Navy;
-            this.label6.Location = new System.Drawing.Point(206, 20);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(101, 19);
-            this.label6.TabIndex = 29;
-            this.label6.Text = "Set for all AGV:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AGVMonitoringForm
             // 

@@ -59,6 +59,7 @@ namespace AGVsControlAndMonitoringSoftware
             // If not exist, add new AGV into listNewAGV
             AGV agv = new AGV(Convert.ToInt16(txbID.Text), Convert.ToInt16(cbbExitNode.Text),
                               Convert.ToChar(cbbOrientation.Text), Convert.ToSingle(txbDistance.Text), "Stop");
+            if (Display.Mode == "Simulation") agv.IsInitialized = true;
             listNewAGV.Add(agv);
 
             // Put new AGV ID in listView

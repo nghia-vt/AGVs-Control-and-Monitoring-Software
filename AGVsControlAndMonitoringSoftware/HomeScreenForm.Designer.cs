@@ -73,6 +73,7 @@
             this.cntxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerGUI = new System.Windows.Forms.Timer(this.components);
             this.rtxtbComStatus = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -81,7 +82,9 @@
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.pnFloor.SuspendLayout();
             this.cntxMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // mnstrHomeScr
@@ -167,6 +170,7 @@
             this.warehouseDataToolStripMenuItem.Name = "warehouseDataToolStripMenuItem";
             this.warehouseDataToolStripMenuItem.Size = new System.Drawing.Size(139, 23);
             this.warehouseDataToolStripMenuItem.Text = "&Warehouse Data";
+            this.warehouseDataToolStripMenuItem.Click += new System.EventHandler(this.warehouseDataToolStripMenuItem_Click);
             // 
             // reportToolStripMenuItem
             // 
@@ -474,6 +478,7 @@
             this.pnFloor.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnFloor.BackgroundImage")));
             this.pnFloor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pnFloor.ContextMenuStrip = this.cntxMenuStrip;
+            this.pnFloor.Controls.Add(this.pictureBox1);
             this.pnFloor.Location = new System.Drawing.Point(15, 35);
             this.pnFloor.Name = "pnFloor";
             this.pnFloor.Size = new System.Drawing.Size(725, 645);
@@ -503,6 +508,16 @@
             this.hidePathToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.hidePathToolStripMenuItem.Text = "Hide current path";
             this.hidePathToolStripMenuItem.Click += new System.EventHandler(this.hidePathToolStripMenuItem_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(249, 585);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(52, 53);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // timerGUI
             // 
@@ -562,7 +577,9 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
+            this.pnFloor.ResumeLayout(false);
             this.cntxMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -617,6 +634,7 @@
         private System.Windows.Forms.RichTextBox rtxtbComStatus;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timerComStatus;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

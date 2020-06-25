@@ -21,9 +21,12 @@ namespace AGVsControlAndMonitoringSoftware
 
         private void HomeScreenForm_Load(object sender, EventArgs e)
         {
+            // Update existing pallets in stock and add to RackColumn
+            Pallet.ListPallet = DBUtility.GetPalletInfoFromDB<List<Pallet>>("PalletInfoTable");
+            RackColumn.InitializePallet(RackColumn.ListColumn, Pallet.ListPallet);
 
-            // View data on DataGridView 
-            //dgv_ThongTin.DataSource = DBUtility.GetDataFromDB<DataTable>("NodeInfoTable");
+            Pallet.SimListPallet = DBUtility.GetPalletInfoFromDB<List<Pallet>>("SimPalletInfoTable");
+            RackColumn.InitializePallet(RackColumn.SimListColumn, Pallet.SimListPallet);
         }
 
         private void rdbtnRealTime_CheckedChanged(object sender, EventArgs e)
@@ -339,6 +342,12 @@ namespace AGVsControlAndMonitoringSoftware
                 textComStatus.RemoveAt(0);
                 colorComStatus.RemoveAt(0);
             }
+        }
+
+        private void warehouseDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WarehouseDataForm warehouseDataForm = new WarehouseDataForm();
+            warehouseDataForm.Show();
         }
     }
 }
