@@ -43,6 +43,7 @@ namespace AGVsControlAndMonitoringSoftware
             else lbModeStatus.Text = "     Please set communication to run.";
 
             Display.Mode = "Real Time";
+            timerComStatus.Enabled = true;
 
             // Add label of columns at node
             RackColumn.SimListColumn.ForEach(col => RackColumn.RemoveLabelColumn(pnFloor, col));
@@ -69,6 +70,7 @@ namespace AGVsControlAndMonitoringSoftware
             lbModeStatus.Text = "     Simulation mode is running.";
 
             Display.Mode = "Simulation";
+            timerComStatus.Enabled = false;
 
             // Add label of columns at node
             RackColumn.ListColumn.ForEach(col => RackColumn.RemoveLabelColumn(pnFloor, col));          
@@ -93,9 +95,6 @@ namespace AGVsControlAndMonitoringSoftware
 
             if (Display.Mode == "Real Time")
             {
-                // Update serial port status
-                UpdateComStatus();
-
                 // Update data in listView AGVs
                 Display.UpdateListViewAGVs(listViewAGVs, AGV.ListAGV);
 
@@ -191,9 +190,12 @@ namespace AGVsControlAndMonitoringSoftware
                     {
                         Display.AddLabelAGV(pnFloor, agv.ID, agv.ExitNode, agv.Orientation, agv.DistanceToExitNode);
 
-                        // Send AGV Info Request to AGV (except Line tracking error)
+                        // Send AGV Init/Info Request to AGV (except Line tracking error)
                         if (Communicator.SerialPort.IsOpen)
-                            Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+                        {
+                            if (agv.IsInitialized == true) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+                            else Communicator.SendAGVInitRequest((uint)agv.ID);
+                        }
                     }
                     break;
                 case "Simulation":
@@ -315,11 +317,20 @@ namespace AGVsControlAndMonitoringSoftware
             agvMonitoringForm.Show();
         }
 
+        private void rtxtbComStatus_TextChanged(object sender, EventArgs e)
+        {
+            // set the current caret position to the end
+            rtxtbComStatus.SelectionStart = rtxtbComStatus.Text.Length;
+
+            // scroll it automatically
+            rtxtbComStatus.ScrollToCaret();
+        }
 
         public static List<string> textComStatus = new List<string>();
         public static List<Color> colorComStatus = new List<Color>();
-        private void UpdateComStatus()
+        private void timerComStatus_Tick(object sender, EventArgs e)
         {
+            // Update serial port status
             if (textComStatus.Count != 0)
             {
                 rtxtbComStatus.SelectionColor = colorComStatus[0];
@@ -328,15 +339,6 @@ namespace AGVsControlAndMonitoringSoftware
                 textComStatus.RemoveAt(0);
                 colorComStatus.RemoveAt(0);
             }
-        }
-
-        private void rtxtbComStatus_TextChanged(object sender, EventArgs e)
-        {
-            // set the current caret position to the end
-            rtxtbComStatus.SelectionStart = rtxtbComStatus.Text.Length;
-
-            // scroll it automatically
-            rtxtbComStatus.ScrollToCaret();
         }
     }
 }

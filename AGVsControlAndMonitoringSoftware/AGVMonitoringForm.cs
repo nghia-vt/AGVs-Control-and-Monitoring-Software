@@ -59,14 +59,16 @@ namespace AGVsControlAndMonitoringSoftware
             if (Display.Mode == "Real Time")
             {
                 if (AGV.ListAGV.Count == 0) return;
-                AGV agv = AGV.ListAGV.Find(a => a.ID == selectedAGVID);
+                var agv = AGV.ListAGV.Find(a => a.ID == selectedAGVID);
+                if (agv == null) return;
 
                 UpdateMonitoringData(agv, Communicator.lineTrackError);
             }
             else if (Display.Mode == "Simulation")
             {
                 if (AGV.SimListAGV.Count == 0) return;
-                AGV agv = AGV.SimListAGV.Find(a => a.ID == selectedAGVID);
+                var agv = AGV.SimListAGV.Find(a => a.ID == selectedAGVID);
+                if (agv == null) return;
                 agv.Battery = 95;
 
                 Random random = new Random();
@@ -81,6 +83,9 @@ namespace AGVsControlAndMonitoringSoftware
 
             RollingPointPairList velocityPointBuffer = new RollingPointPairList(10000);
             LineItem velocityCurve = velocityPane.AddCurve("velocity", velocityPointBuffer, Color.Red, SymbolType.None);
+
+            RollingPointPairList setPointBuffer = new RollingPointPairList(10000);
+            LineItem setPointCurve = velocityPane.AddCurve("desired velocity", setPointBuffer, Color.Blue, SymbolType.None);
 
             // Add titles
             velocityPane.Title.Text = "Velocity of AGV";
@@ -112,9 +117,11 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Make both curves thicker
             velocityCurve.Line.Width = 2.0F;
+            setPointCurve.Line.Width = 2.0F;
 
-            // Fill the area under the curves
-            velocityCurve.Line.Fill = new Fill(Color.White, Color.FromArgb(255, 175, 175), -90F);
+            //// Fill the area under the curves
+            //velocityCurve.Line.Fill = new Fill(Color.White, Color.FromArgb(255, 175, 175), -90F);
+            //setPointCurve.Line.Fill = new Fill(Color.White, Color.FromArgb(255, 175, 175), -90F);
 
             // Fill the Axis and Pane backgrounds
             velocityPane.Chart.Fill = new Fill(Color.White, Color.FromArgb(255, 255, 210), -45F);
@@ -162,8 +169,8 @@ namespace AGVsControlAndMonitoringSoftware
             // Make both curves thicker
             linetrackCurve.Line.Width = 2.0F;
 
-            // Fill the area under the curves
-            linetrackCurve.Line.Fill = new Fill(Color.White, Color.FromArgb(255, 175, 175), -90F);
+            //// Fill the area under the curves
+            //linetrackCurve.Line.Fill = new Fill(Color.White, Color.FromArgb(255, 175, 175), -90F);
 
             // Fill the Axis and Pane backgrounds
             linetrackPane.Chart.Fill = new Fill(Color.White, Color.FromArgb(255, 255, 210), -45F);
@@ -180,15 +187,23 @@ namespace AGVsControlAndMonitoringSoftware
         private void DrawGraph(ZedGraphControl zedGraphControl, double value)
         {
             if (zedGraphControl.GraphPane.CurveList.Count <= 0) return;
-            LineItem curve = zedGraphControl.GraphPane.CurveList[0] as LineItem;
-
-            IPointListEdit pointBuffer = curve.Points as IPointListEdit;
 
             // time is measure in seconds
             double time = (Environment.TickCount - tickStart) / 1000.0;
 
+            LineItem curve = zedGraphControl.GraphPane.CurveList[0] as LineItem;
+            IPointListEdit pointBuffer = curve.Points as IPointListEdit;
             // add point to buffer to draw
             pointBuffer.Add(time, value);
+
+            if (zedGraphControl == zedGraphVelocity)
+            {
+                LineItem curve1 = zedGraphControl.GraphPane.CurveList[1] as LineItem;
+                IPointListEdit pointBuffer1 = curve1.Points as IPointListEdit;
+                // add point to buffer to draw
+                if (Display.Mode == "Real Time") pointBuffer1.Add(time, AGV.Speed);
+                else if (Display.Mode == "Simulation") pointBuffer1.Add(time, AGV.SimSpeed);
+            }
 
             // make xAxis scroll
             Scale xScale = zedGraphControl.GraphPane.XAxis.Scale;
@@ -251,6 +266,25 @@ namespace AGVsControlAndMonitoringSoftware
                 Communicator.SendAGVInfoRequest((uint)selectedAGVID, 'L');
         }
 
+        private void btnSetVelocity_Click(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(txtbSetVelocity.Text)) return;
+            float sendVelocity = Convert.ToSingle(txtbSetVelocity.Text);
+            if (Display.Mode == "Real Time")
+            {
+                AGV.Speed = sendVelocity;
+                foreach (AGV agv in AGV.ListAGV)
+                {
+                    Communicator.SendVelocitySetting((uint)agv.ID, sendVelocity);
+                }
+            }
+            else if (Display.Mode == "Simulation")
+            {
+                AGV.SimSpeed = sendVelocity;
+            }
+            
+        }
+
         private void cbbAGV_KeyDown(object sender, KeyEventArgs e)
         {
             // This will discard the delete keypress (can also use e.Handled = true)
@@ -269,6 +303,33 @@ namespace AGVsControlAndMonitoringSoftware
             if (Display.Mode == "Real Time" && Communicator.SerialPort.IsOpen == true)
             {
                 foreach(AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+            }
+        }
+
+        private void rtxtbCurrentPath_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // This will discard the keypress (can also use e.Handled = true)
+            e.KeyChar = (char)Keys.None;
+        }
+
+        private void rtxtbCurrentPath_KeyDown(object sender, KeyEventArgs e)
+        {
+            // This will discard the delete keypress (can also use e.Handled = true)
+            if (e.KeyCode == Keys.Delete) e.Handled = true;
+        }
+
+        private void txtbSetVelocity_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && (e.KeyChar != 46) && !char.IsControl(e.KeyChar))
+            {
+                e.Handled = true;
+                MessageBox.Show("Only allow a float number.", "Velocity Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            // checks to make sure only 1 point is allowed
+            if (e.KeyChar == 46)
+            {
+                if ((sender as TextBox).Text.IndexOf(e.KeyChar) != -1)
+                    e.Handled = true;
             }
         }
     }

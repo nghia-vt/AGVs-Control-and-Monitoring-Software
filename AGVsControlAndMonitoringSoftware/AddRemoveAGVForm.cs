@@ -140,7 +140,7 @@ namespace AGVsControlAndMonitoringSoftware
             if (!char.IsDigit(e.KeyChar) && (e.KeyChar != 46) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
-                MessageBox.Show("Only allow a decimal number.", "Distance Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Only allow a float number.", "Distance Type", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             // checks to make sure only 1 decimal is allowed
             if (e.KeyChar == 46)

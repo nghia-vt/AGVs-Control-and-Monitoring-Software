@@ -15,6 +15,7 @@ namespace AGVsControlAndMonitoringSoftware
         public string Status { get; set; }
         public float Velocity { get; set; } // unit: cm/s
         public int Battery { get; set; }  // uint: %
+        public bool IsInitialized = false; // only use in Real Time mode
         
         // List of tasks, current task is Task[0], next tasks is after Task[0]
         public List<Task> Tasks = new List<Task>();
@@ -39,7 +40,7 @@ namespace AGVsControlAndMonitoringSoftware
         public static float Length = 30;
 
         // Desire speed of AGVs (unit: cm/s)
-        public static float Speed = 10f;
+        public static float Speed = 20f;
         public static float SimSpeed = 20f;
 
         // Assume that max mumber of AGV is 100

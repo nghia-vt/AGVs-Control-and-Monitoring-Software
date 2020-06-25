@@ -76,6 +76,7 @@
             this.timerGUI = new System.Windows.Forms.Timer(this.components);
             this.rtxtbComStatus = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.timerComStatus = new System.Windows.Forms.Timer(this.components);
             this.mnstrHomeScr.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -531,6 +532,11 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Communication Status:";
             // 
+            // timerComStatus
+            // 
+            this.timerComStatus.Interval = 1;
+            this.timerComStatus.Tick += new System.EventHandler(this.timerComStatus_Tick);
+            // 
             // HomeScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -610,6 +616,7 @@
         private System.Windows.Forms.Label lbModeStatus;
         private System.Windows.Forms.RichTextBox rtxtbComStatus;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Timer timerComStatus;
     }
 }
 

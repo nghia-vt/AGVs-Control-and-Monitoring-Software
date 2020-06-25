@@ -412,7 +412,7 @@ namespace AGVsControlAndMonitoringSoftware
             else if (type == "receive")
                 HomeScreenForm.textComStatus.Add(timeNow + "\t<- from AGV#" + agvID.ToString() + ":\t" + message + "\n");
             else if (type == "timeout")
-                HomeScreenForm.textComStatus.Add(timeNow + "\t...  timeout\tAGV#" + agvID.ToString() + "\n");
+                HomeScreenForm.textComStatus.Add(timeNow + "\t...  AGV#" + agvID.ToString() + "\ttimeout" + "\n");
             else if (type == "status")
                 HomeScreenForm.textComStatus.Add(timeNow + "\t" + message + "\n");
         }

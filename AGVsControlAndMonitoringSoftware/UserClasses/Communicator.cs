@@ -115,7 +115,9 @@ namespace AGVsControlAndMonitoringSoftware
                     }
                     else if (functionCode == (byte)FUNC_CODE.RESP_ACK_PATH ||
                              functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO ||
-                             functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) // receive ack
+                             functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING ||
+                             functionCode == (byte)FUNC_CODE.RESP_ACK_VELOCITY ||
+                             functionCode == (byte)FUNC_CODE.RESP_ACK_INIT) // receive ack
                     {
                         // waitting for receive enough frame data of this function code
                         if (bytesReceived.Count - startIndex < AckReceivePacketSize) return;
@@ -138,6 +140,13 @@ namespace AGVsControlAndMonitoringSoftware
                         // update received ack
                         ackReceived = receiveFrame;
 
+                        // if receive ACK of Initialization, set agv.Initialization = true
+                        if (functionCode == (byte)FUNC_CODE.RESP_ACK_INIT && receiveFrame.ACK == (byte)'Y')
+                        {
+                            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)receiveFrame.AGVID);
+                            agv.IsInitialized = true;
+                        }
+
                         // Display ComStatus
                         string message = "";
                         if (receiveFrame.ACK == (byte)'Y')
@@ -145,6 +154,8 @@ namespace AGVsControlAndMonitoringSoftware
                             if (functionCode == (byte)FUNC_CODE.RESP_ACK_PATH) message = "ACK (path)";
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO) message = "ACK (request AGV info)";
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) message = "ACK (waiting)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_VELOCITY) message = "ACK (velocity setting)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_INIT) message = "ACK (initialize)";
                             Display.UpdateComStatus("receive", receiveFrame.AGVID, message, System.Drawing.Color.Green);
                         }
                         else if (receiveFrame.ACK == (byte)'N')
@@ -152,6 +163,8 @@ namespace AGVsControlAndMonitoringSoftware
                             if (functionCode == (byte)FUNC_CODE.RESP_ACK_PATH) message = "NACK (path)";
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_AGV_INFO) message = "NACK (request AGV info)";
                             else if (functionCode == (byte)FUNC_CODE.RESP_ACK_WAITING) message = "NACK (waiting)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_VELOCITY) message = "NACK (velocity setting)";
+                            else if (functionCode == (byte)FUNC_CODE.RESP_ACK_INIT) message = "NACK (initialize)";
                             Display.UpdateComStatus("receive", receiveFrame.AGVID, message, System.Drawing.Color.Red);
                         }
                     }
@@ -180,7 +193,8 @@ namespace AGVsControlAndMonitoringSoftware
             requestFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
 
             // send data via serial port
-            if (!Communicator.SerialPort.IsOpen) return;
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(requestFrame.ToArray(), 0, requestFrame.ToArray().Length); }
             catch { };
 
@@ -206,7 +220,8 @@ namespace AGVsControlAndMonitoringSoftware
                 return;
             }
 
-            if (Communicator.SerialPort.IsOpen == false) return;
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -257,7 +272,8 @@ namespace AGVsControlAndMonitoringSoftware
             sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
 
             // send data via serial port
-            if (!Communicator.SerialPort.IsOpen) return;
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
             catch { };
 
@@ -283,7 +299,8 @@ namespace AGVsControlAndMonitoringSoftware
                 return;
             }
 
-            if (Communicator.SerialPort.IsOpen == false) return;
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -312,7 +329,8 @@ namespace AGVsControlAndMonitoringSoftware
             sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
 
             // send data via serial port
-            if (!Communicator.SerialPort.IsOpen) return;
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
             catch { };
 
@@ -338,7 +356,8 @@ namespace AGVsControlAndMonitoringSoftware
                 return;
             }
 
-            if (Communicator.SerialPort.IsOpen == false) return;
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -346,9 +365,157 @@ namespace AGVsControlAndMonitoringSoftware
             Display.UpdateComStatus("timeout", resendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Red);
             Display.UpdateComStatus("send", resendFrame.AGVID, "Inform Waiting", System.Drawing.Color.Blue);
         }
+
+        public static void SendVelocitySetting(uint agvID, float velocity)
+        {
+            SetVelocityPacket sendFrame = new SetVelocityPacket();
+
+            sendFrame.Header = new byte[2] { 0xAA, 0xFF };
+            sendFrame.FunctionCode = (byte)FUNC_CODE.WR_VELOCITY;
+            sendFrame.AGVID = Convert.ToByte(agvID);
+            sendFrame.Velocity = velocity;
+            // calculate check sum
+            ushort crc = 0;
+            crc += sendFrame.Header[0];
+            crc += sendFrame.Header[1];
+            crc += sendFrame.FunctionCode;
+            crc += sendFrame.AGVID;
+            crc += BitConverter.GetBytes(sendFrame.Velocity)[0];
+            crc += BitConverter.GetBytes(sendFrame.Velocity)[1];
+            crc += BitConverter.GetBytes(sendFrame.Velocity)[2];
+            crc += BitConverter.GetBytes(sendFrame.Velocity)[3];
+            sendFrame.CheckSum = crc;
+            sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
+
+            // send data via serial port
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
+            catch { };
+
+            // Display ComStatus
+            Display.UpdateComStatus("send", sendFrame.AGVID, "Set Velocity", System.Drawing.Color.Blue);
+
+            // wait ack
+            System.Timers.Timer timer4 = new System.Timers.Timer(timeout);
+            timer4.Elapsed += (sender, e) => timer4_Elapsed(sender, e, sendFrame);
+            timer4.Start();
+        }
+
+        private static void timer4_Elapsed(object sender, System.Timers.ElapsedEventArgs e, SetVelocityPacket sendFrame)
+        {
+            SetVelocityPacket resendFrame = sendFrame;
+
+            if (ackReceived.AGVID == resendFrame.AGVID &&
+                ackReceived.FunctionCode == (byte)FUNC_CODE.RESP_ACK_VELOCITY &&
+                ackReceived.ACK == (byte)'Y')
+            {
+                ackReceived = default(AckReceivePacket);
+                ((System.Timers.Timer)sender).Dispose();
+                return;
+            }
+
+            AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
+            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
+            catch { return; }
+
+            // Display ComStatus
+            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Set Velocity", System.Drawing.Color.Red);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Set Velocity", System.Drawing.Color.Blue);
+        }
+
+        public static void SendAGVInitRequest(uint agvID)
+        {
+            AGVInitPacket sendFrame = new AGVInitPacket();
+
+            sendFrame.Header = new byte[2] { 0xAA, 0xFF };
+            sendFrame.FunctionCode = (byte)FUNC_CODE.REQ_AGV_INIT;
+            sendFrame.AGVID = Convert.ToByte(agvID);
+            sendFrame.Initialization = (byte)'I';
+            // calculate check sum
+            ushort crc = 0;
+            crc += sendFrame.Header[0];
+            crc += sendFrame.Header[1];
+            crc += sendFrame.FunctionCode;
+            crc += sendFrame.AGVID;
+            crc += sendFrame.Initialization;
+            sendFrame.CheckSum = crc;
+            sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
+
+            // send data via serial port
+            if (!Communicator.SerialPort.IsOpen) return;
+            try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
+            catch { };
+
+            // Display ComStatus
+            Display.UpdateComStatus("send", sendFrame.AGVID, "Initialized", System.Drawing.Color.Blue);
+
+            // wait ack
+            System.Timers.Timer timer5 = new System.Timers.Timer(timeout);
+            timer5.Elapsed += (sender, e) => timer5_Elapsed(sender, e, sendFrame);
+            timer5.Start();
+        }
+
+        private static void timer5_Elapsed(object sender, System.Timers.ElapsedEventArgs e, AGVInitPacket sendFrame)
+        {
+            AGVInitPacket resendFrame = sendFrame;
+
+            if (ackReceived.AGVID == resendFrame.AGVID &&
+                ackReceived.FunctionCode == (byte)FUNC_CODE.RESP_ACK_INIT &&
+                ackReceived.ACK == (byte)'Y')
+            {
+                ackReceived = default(AckReceivePacket);
+                ((System.Timers.Timer)sender).Dispose();
+                return;
+            }
+
+            var agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
+            if (!Communicator.SerialPort.IsOpen || agv == null) return;
+            try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
+            catch { return; }
+
+            // Display ComStatus
+            Display.UpdateComStatus("timeout", resendFrame.AGVID, "Initialized", System.Drawing.Color.Red);
+            Display.UpdateComStatus("send", resendFrame.AGVID, "Initialized", System.Drawing.Color.Blue);
+        }
     }
 
     #region Receive and Send Packet Structure
+
+    /* AGV Initialization request packet (send):
+     * Header		    2 byte  -> 0xFFAA
+     * FunctionCode	    1 byte  -> 0xA4
+     * AGVID 		    1 byte
+     * Initialization   1 byte
+     * CheckSum	        2 byte  -> sum of bytes from Header to Initialization
+     * EndOfFrame	    2 byte  -> 0x0D0A
+     */
+    public struct AGVInitPacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public byte Initialization;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Structs to Byte Arrays
+        public byte[] ToArray()
+        {
+            var stream = new System.IO.MemoryStream();
+            var writer = new System.IO.BinaryWriter(stream);
+
+            writer.Write(this.Header);
+            writer.Write(this.FunctionCode);
+            writer.Write(this.AGVID);
+            writer.Write(this.Initialization);
+            writer.Write(this.CheckSum);
+            writer.Write(this.EndOfFrame);
+
+            return stream.ToArray();
+        }
+    }
 
     /* AGV information request packet (send):
      * Header		    2 byte  -> 0xFFAA
@@ -594,10 +761,46 @@ namespace AGVsControlAndMonitoringSoftware
         }
     }
 
+    /* Write velocity packet (send):
+     * Header		    2 byte  -> 0xFFAA
+     * FunctionCode	    1 byte  -> 0xA3
+     * AGVID 		    1 byte
+     * Velocity         4 byte
+     * CheckSum	        2 byte  -> sum of bytes from Header to Velocity
+     * EndOfFrame	    2 byte  -> 0x0D0A
+     */
+    public struct SetVelocityPacket
+    {
+        public byte[] Header;
+        public byte FunctionCode;
+        public byte AGVID;
+        public float Velocity;
+        public ushort CheckSum;
+        public byte[] EndOfFrame;
+
+        // Convert Structs to Byte Arrays
+        public byte[] ToArray()
+        {
+            var stream = new System.IO.MemoryStream();
+            var writer = new System.IO.BinaryWriter(stream);
+
+            writer.Write(this.Header);
+            writer.Write(this.FunctionCode);
+            writer.Write(this.AGVID);
+            writer.Write(this.Velocity);
+            writer.Write(this.CheckSum);
+            writer.Write(this.EndOfFrame);
+
+            return stream.ToArray();
+        }
+    }
+
     #endregion
 
     public enum FUNC_CODE
     {
+        REQ_AGV_INIT = 0xA4,
+        RESP_ACK_INIT = 0x05,
         REQ_AGV_INFO = 0xA0,
         RESP_AGV_INFO = 0x01,
         RESP_LINE_TRACK_ERR = 0x11,
@@ -605,6 +808,8 @@ namespace AGVsControlAndMonitoringSoftware
         WR_PATH = 0xA1,
         RESP_ACK_PATH = 0x02,
         WR_WAITING = 0xA2,
-        RESP_ACK_WAITING = 0x03
+        RESP_ACK_WAITING = 0x03,
+        WR_VELOCITY = 0xA3,
+        RESP_ACK_VELOCITY = 0x04
     }
 }

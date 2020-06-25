@@ -41,6 +41,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cbbAGV = new System.Windows.Forms.ComboBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtbSetVelocity = new System.Windows.Forms.TextBox();
+            this.btnSetVelocity = new System.Windows.Forms.Button();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.lbVelocity = new System.Windows.Forms.Label();
             this.zedGraphVelocity = new ZedGraph.ZedGraphControl();
@@ -57,6 +59,7 @@
             this.timerGraph = new System.Windows.Forms.Timer(this.components);
             this.label5 = new System.Windows.Forms.Label();
             this.rtxtbCurrentPath = new System.Windows.Forms.RichTextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -219,6 +222,9 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.txtbSetVelocity);
+            this.groupBox2.Controls.Add(this.btnSetVelocity);
             this.groupBox2.Controls.Add(this.pictureBox4);
             this.groupBox2.Controls.Add(this.lbVelocity);
             this.groupBox2.Controls.Add(this.zedGraphVelocity);
@@ -230,6 +236,35 @@
             this.groupBox2.TabIndex = 26;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "      Velocity";
+            // 
+            // txtbSetVelocity
+            // 
+            this.txtbSetVelocity.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.txtbSetVelocity.Location = new System.Drawing.Point(311, 17);
+            this.txtbSetVelocity.Name = "txtbSetVelocity";
+            this.txtbSetVelocity.Size = new System.Drawing.Size(65, 25);
+            this.txtbSetVelocity.TabIndex = 32;
+            this.txtbSetVelocity.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtbSetVelocity_KeyPress);
+            // 
+            // btnSetVelocity
+            // 
+            this.btnSetVelocity.BackColor = System.Drawing.Color.LightSteelBlue;
+            this.btnSetVelocity.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnSetVelocity.FlatAppearance.BorderColor = System.Drawing.Color.Lavender;
+            this.btnSetVelocity.FlatAppearance.BorderSize = 0;
+            this.btnSetVelocity.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSetVelocity.Font = new System.Drawing.Font("Segoe UI", 9.25F);
+            this.btnSetVelocity.ForeColor = System.Drawing.Color.Navy;
+            this.btnSetVelocity.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnSetVelocity.ImageIndex = 3;
+            this.btnSetVelocity.Location = new System.Drawing.Point(380, 17);
+            this.btnSetVelocity.Name = "btnSetVelocity";
+            this.btnSetVelocity.Size = new System.Drawing.Size(54, 25);
+            this.btnSetVelocity.TabIndex = 31;
+            this.btnSetVelocity.Text = "Set";
+            this.btnSetVelocity.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnSetVelocity.UseVisualStyleBackColor = false;
+            this.btnSetVelocity.Click += new System.EventHandler(this.btnSetVelocity_Click);
             // 
             // pictureBox4
             // 
@@ -327,7 +362,7 @@
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.label11.ForeColor = System.Drawing.Color.Navy;
-            this.label11.Location = new System.Drawing.Point(785, 9);
+            this.label11.Location = new System.Drawing.Point(783, 9);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(50, 19);
             this.label11.TabIndex = 27;
@@ -341,7 +376,7 @@
             this.lbStatus.AutoSize = true;
             this.lbStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbStatus.ForeColor = System.Drawing.Color.Navy;
-            this.lbStatus.Location = new System.Drawing.Point(837, 11);
+            this.lbStatus.Location = new System.Drawing.Point(835, 11);
             this.lbStatus.Name = "lbStatus";
             this.lbStatus.Size = new System.Drawing.Size(48, 17);
             this.lbStatus.TabIndex = 11;
@@ -430,6 +465,22 @@
             this.rtxtbCurrentPath.Size = new System.Drawing.Size(400, 25);
             this.rtxtbCurrentPath.TabIndex = 30;
             this.rtxtbCurrentPath.Text = "";
+            this.rtxtbCurrentPath.KeyDown += new System.Windows.Forms.KeyEventHandler(this.rtxtbCurrentPath_KeyDown);
+            this.rtxtbCurrentPath.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.rtxtbCurrentPath_KeyPress);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.label6.ForeColor = System.Drawing.Color.Navy;
+            this.label6.Location = new System.Drawing.Point(206, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(101, 19);
+            this.label6.TabIndex = 29;
+            this.label6.Text = "Set for all AGV:";
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AGVMonitoringForm
             // 
@@ -500,5 +551,8 @@
         private System.Windows.Forms.Timer timerGraph;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.RichTextBox rtxtbCurrentPath;
+        private System.Windows.Forms.TextBox txtbSetVelocity;
+        private System.Windows.Forms.Button btnSetVelocity;
+        private System.Windows.Forms.Label label6;
     }
 }

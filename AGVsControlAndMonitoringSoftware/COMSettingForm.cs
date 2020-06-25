@@ -92,11 +92,15 @@ namespace AGVsControlAndMonitoringSoftware
                 }
             }
 
-            // Send AGV Info Request to AGV (except Line tracking error)
+            // Send AGV Info Init/Request to AGV (except Line tracking error)
             if (Communicator.SerialPort.IsOpen)
             {
                 Display.UpdateComStatus("status", 0, Communicator.SerialPort.PortName + " is opened", System.Drawing.Color.Blue);
-                foreach (AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+                foreach (AGV agv in AGV.ListAGV)
+                {
+                    if (agv.IsInitialized == true) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+                    else Communicator.SendAGVInitRequest((uint)agv.ID);
+                }
             }
         }
 
