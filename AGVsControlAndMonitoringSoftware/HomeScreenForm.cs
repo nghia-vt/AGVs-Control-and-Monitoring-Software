@@ -121,6 +121,18 @@ namespace AGVsControlAndMonitoringSoftware
                     if (agv.Path.Count == 0) continue;
                     if (agv.ExitNode == agv.Path.LastOrDefault()) Task.AddNextPathOfAGV(agv);
                 }
+
+                // Update button add pallet
+                if (isPickPalletInput1 == true)
+                {
+                    btnAddPallet1.Text = "Add";
+                    btnAddPallet1.BackColor = Color.WhiteSmoke;
+                }
+                if (isPickPalletInput2 == true)
+                {
+                    btnAddPallet2.Text = "Add";
+                    btnAddPallet2.BackColor = Color.WhiteSmoke;
+                }
             }
             else if (Display.Mode == "Simulation")
             {
@@ -149,6 +161,18 @@ namespace AGVsControlAndMonitoringSoftware
                     if (agv.Tasks.Count != 0 && agv.Tasks[0].Status == "Doing")
                         Display.SimLabelAGV[agv.ID].BackColor = Color.CornflowerBlue;
                     else Display.SimLabelAGV[agv.ID].BackColor = Color.Silver;
+                }
+
+                // Update button add pallet
+                if (isPickSimPalletInput1 == true)
+                {
+                    btnAddPallet1.Text = "Add";
+                    btnAddPallet1.BackColor = Color.WhiteSmoke;
+                }
+                if (isPickSimPalletInput2 == true)
+                {
+                    btnAddPallet2.Text = "Add";
+                    btnAddPallet2.BackColor = Color.WhiteSmoke;
                 }
             }
         }
@@ -348,6 +372,80 @@ namespace AGVsControlAndMonitoringSoftware
         {
             WarehouseDataForm warehouseDataForm = new WarehouseDataForm();
             warehouseDataForm.Show();
+        }
+
+        int autoPalletNumber = 0;
+        int autoSimPalletNumber = 0;
+        public static bool isPickPalletInput1 = true;
+        public static bool isPickPalletInput2 = true;
+        public static bool isPickSimPalletInput1 = true;
+        public static bool isPickSimPalletInput2 = true;
+        private void btnAddPallet1_Click(object sender, EventArgs e)
+        {
+            if (isPickPalletInput1 == false || isPickSimPalletInput1 == false) return;
+
+            if (Display.Mode == "Real Time")
+            {
+                if (AGV.ListAGV.Count == 0) return;
+                // add new task
+                autoPalletNumber++;
+                string palletCode = "PL" + autoPalletNumber.ToString("0000");
+                Task.InputAutoAdd(palletCode, 53, Task.ListTask, AGV.ListAGV, RackColumn.ListColumn);
+                Task.AddFirstPathOfAGVs();
+
+                // display pallet code
+                btnAddPallet1.Text = palletCode;
+                btnAddPallet1.BackColor = Color.CornflowerBlue;
+                isPickPalletInput1 = false;
+            }
+            else if (Display.Mode == "Simulation")
+            {
+                if (AGV.SimListAGV.Count == 0) return;
+                autoSimPalletNumber++;
+                string palletCode = "PL" + autoSimPalletNumber.ToString("0000");
+                Task.InputAutoAdd(palletCode, 53, Task.SimListTask, AGV.SimListAGV, RackColumn.SimListColumn);
+                Task.AddFirstPathOfSimAGVs();
+
+                btnAddPallet1.Text = palletCode;
+                btnAddPallet1.BackColor = Color.CornflowerBlue;
+                isPickSimPalletInput1 = false;
+            }            
+        }
+
+        private void btnAddPallet2_Click(object sender, EventArgs e)
+        {
+            if (isPickPalletInput2 == false || isPickSimPalletInput2 == false) return;
+
+            if (Display.Mode == "Real Time")
+            {
+                if (AGV.ListAGV.Count == 0) return;
+                autoPalletNumber++;
+                string palletCode = "PL" + autoPalletNumber.ToString("0000");
+                Task.InputAutoAdd(palletCode, 54, Task.ListTask, AGV.ListAGV, RackColumn.ListColumn);
+                Task.AddFirstPathOfAGVs();
+
+                btnAddPallet2.Text = palletCode;
+                btnAddPallet2.BackColor = Color.CornflowerBlue;
+                isPickPalletInput2 = false;
+            }
+            else if (Display.Mode == "Simulation")
+            {
+                if (AGV.SimListAGV.Count == 0) return;
+                autoSimPalletNumber++;
+                string palletCode = "PL" + autoSimPalletNumber.ToString("0000");
+                Task.InputAutoAdd(palletCode, 54, Task.SimListTask, AGV.SimListAGV, RackColumn.SimListColumn);
+                Task.AddFirstPathOfSimAGVs();
+
+                btnAddPallet2.Text = palletCode;
+                btnAddPallet2.BackColor = Color.CornflowerBlue;
+                isPickSimPalletInput2 = false;
+            }
+        }
+
+        private void orderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OrderForm orderForm = new OrderForm();
+            orderForm.Show();
         }
     }
 }

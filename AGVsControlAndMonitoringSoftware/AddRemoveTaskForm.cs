@@ -154,11 +154,16 @@ namespace AGVsControlAndMonitoringSoftware
         private void cbbDropNode_DropDown(object sender, EventArgs e)
         {
             List<RackColumn> listColumn = new List<RackColumn>();
+            List<Task> listTask = new List<Task>();
             switch (Display.Mode)
             {
-                case "Real Time": listColumn = RackColumn.ListColumn;
+                case "Real Time":
+                    listColumn = RackColumn.ListColumn;
+                    listTask = Task.ListTask;
                     break;
-                case "Simulation": listColumn = RackColumn.SimListColumn;
+                case "Simulation":
+                    listColumn = RackColumn.SimListColumn;
+                    listTask = Task.SimListTask;
                     break;
             }
 
@@ -172,7 +177,9 @@ namespace AGVsControlAndMonitoringSoftware
                     if (column.AtNode == 51 || column.AtNode == 52 || column.AtNode == 53 || column.AtNode == 54) continue;
                     for (int i = 0; i < column.PalletCodes.Length; i++)
                     {
-                        if (column.PalletCodes[i] != null) continue;
+                        // exclude the level existing or having in task list
+                        List<int> onGoingDropLevel = Task.PalletOnGoing<List<int>>(column, listTask);
+                        if (column.PalletCodes[i] != null || onGoingDropLevel.Contains(i + 1)) continue;
                         cbbDropNode.Items.Add(column.AtNode.ToString() + "-" + (i + 1).ToString());
                     }
                 }
@@ -306,7 +313,6 @@ namespace AGVsControlAndMonitoringSoftware
 
             // If not exist, add new Task into listNewTask
             string[] agvID = cbbAGV.Text.Split(new char[] { '#' }, StringSplitOptions.RemoveEmptyEntries);
-            if (agvID[0] == "Auto") agvID = new string[2]{"Auto", "-1"}; // mark -1 for auto select AGV
             string[] pickAt = cbbPickNode.Text.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
             string[] dropAt = cbbDropNode.Text.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
             Task task = new Task(txbTaskName.Text, cbbType.Text, txbPalletCode.Text, 

@@ -34,9 +34,10 @@
             this.myTabControl = new System.Windows.Forms.TabControl();
             this.tpNodeInfo = new System.Windows.Forms.TabPage();
             this.tpPalletInfo = new System.Windows.Forms.TabPage();
-            this.myImageList = new System.Windows.Forms.ImageList(this.components);
-            this.dgvPalletInfo = new System.Windows.Forms.DataGridView();
             this.btnUpdate = new System.Windows.Forms.Button();
+            this.dgvPalletInfo = new System.Windows.Forms.DataGridView();
+            this.myImageList = new System.Windows.Forms.ImageList(this.components);
+            this.btnDelete = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvNodeInfo)).BeginInit();
             this.myTabControl.SuspendLayout();
             this.tpNodeInfo.SuspendLayout();
@@ -83,6 +84,7 @@
             // 
             // tpPalletInfo
             // 
+            this.tpPalletInfo.Controls.Add(this.btnDelete);
             this.tpPalletInfo.Controls.Add(this.btnUpdate);
             this.tpPalletInfo.Controls.Add(this.dgvPalletInfo);
             this.tpPalletInfo.Font = new System.Drawing.Font("Segoe UI", 9.25F);
@@ -95,12 +97,19 @@
             this.tpPalletInfo.Text = "Pallet Information";
             this.tpPalletInfo.UseVisualStyleBackColor = true;
             // 
-            // myImageList
+            // btnUpdate
             // 
-            this.myImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("myImageList.ImageStream")));
-            this.myImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.myImageList.Images.SetKeyName(0, "icon_nodeMap.png");
-            this.myImageList.Images.SetKeyName(1, "icon_pallet.png");
+            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.btnUpdate.ForeColor = System.Drawing.Color.MediumBlue;
+            this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
+            this.btnUpdate.Location = new System.Drawing.Point(582, 28);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(95, 27);
+            this.btnUpdate.TabIndex = 18;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
             // 
             // dgvPalletInfo
             // 
@@ -114,19 +123,26 @@
             this.dgvPalletInfo.TabIndex = 0;
             this.dgvPalletInfo.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvPalletInfo_ColumnHeaderMouseClick);
             // 
-            // btnUpdate
+            // myImageList
             // 
-            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 10.25F);
-            this.btnUpdate.ForeColor = System.Drawing.Color.MediumBlue;
-            this.btnUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnUpdate.Image")));
-            this.btnUpdate.Location = new System.Drawing.Point(582, 17);
-            this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(95, 27);
-            this.btnUpdate.TabIndex = 18;
-            this.btnUpdate.Text = "Update";
-            this.btnUpdate.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
-            this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.myImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("myImageList.ImageStream")));
+            this.myImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.myImageList.Images.SetKeyName(0, "icon_nodeMap.png");
+            this.myImageList.Images.SetKeyName(1, "icon_pallet.png");
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 10.25F);
+            this.btnDelete.ForeColor = System.Drawing.Color.MediumBlue;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.Location = new System.Drawing.Point(582, 75);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(95, 27);
+            this.btnDelete.TabIndex = 19;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // WarehouseDataForm
             // 
@@ -139,6 +155,7 @@
             this.Name = "WarehouseDataForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Warehouse Data";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.WarehouseDataForm_FormClosed);
             this.Load += new System.EventHandler(this.WarehouseDataForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvNodeInfo)).EndInit();
             this.myTabControl.ResumeLayout(false);
@@ -158,5 +175,6 @@
         private System.Windows.Forms.ImageList myImageList;
         private System.Windows.Forms.DataGridView dgvPalletInfo;
         private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

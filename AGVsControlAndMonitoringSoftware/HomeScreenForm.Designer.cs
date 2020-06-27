@@ -32,12 +32,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HomeScreenForm));
             this.mnstrHomeScr = new System.Windows.Forms.MenuStrip();
             this.communicationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.taskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addRemoveTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.taskManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aGVsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addRemoveAGVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.agvMonitoringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.taskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addRemoveTaskToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.taskManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.orderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.warehouseDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,6 +74,8 @@
             this.cntxMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.showPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hidePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnAddPallet2 = new System.Windows.Forms.Button();
+            this.btnAddPallet1 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.timerGUI = new System.Windows.Forms.Timer(this.components);
             this.rtxtbComStatus = new System.Windows.Forms.RichTextBox();
@@ -93,8 +96,9 @@
             this.mnstrHomeScr.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.mnstrHomeScr.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.communicationToolStripMenuItem,
-            this.taskToolStripMenuItem,
             this.aGVsToolStripMenuItem,
+            this.taskToolStripMenuItem,
+            this.orderToolStripMenuItem,
             this.warehouseDataToolStripMenuItem,
             this.reportToolStripMenuItem,
             this.helpToolStripMenuItem});
@@ -112,31 +116,6 @@
             this.communicationToolStripMenuItem.Size = new System.Drawing.Size(134, 23);
             this.communicationToolStripMenuItem.Text = "&Communication";
             this.communicationToolStripMenuItem.Click += new System.EventHandler(this.communicationToolStripMenuItem_Click);
-            // 
-            // taskToolStripMenuItem
-            // 
-            this.taskToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addRemoveTaskToolStripMenuItem,
-            this.taskManagementToolStripMenuItem});
-            this.taskToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("taskToolStripMenuItem.Image")));
-            this.taskToolStripMenuItem.Name = "taskToolStripMenuItem";
-            this.taskToolStripMenuItem.Size = new System.Drawing.Size(70, 23);
-            this.taskToolStripMenuItem.Text = "&Tasks";
-            // 
-            // addRemoveTaskToolStripMenuItem
-            // 
-            this.addRemoveTaskToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addRemoveTaskToolStripMenuItem.Image")));
-            this.addRemoveTaskToolStripMenuItem.Name = "addRemoveTaskToolStripMenuItem";
-            this.addRemoveTaskToolStripMenuItem.Size = new System.Drawing.Size(188, 24);
-            this.addRemoveTaskToolStripMenuItem.Text = "&Add/Remove Task";
-            this.addRemoveTaskToolStripMenuItem.Click += new System.EventHandler(this.addRemoveTaskToolStripMenuItem_Click);
-            // 
-            // taskManagementToolStripMenuItem
-            // 
-            this.taskManagementToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("taskManagementToolStripMenuItem.Image")));
-            this.taskManagementToolStripMenuItem.Name = "taskManagementToolStripMenuItem";
-            this.taskManagementToolStripMenuItem.Size = new System.Drawing.Size(188, 24);
-            this.taskManagementToolStripMenuItem.Text = "&Monitoring";
             // 
             // aGVsToolStripMenuItem
             // 
@@ -163,6 +142,39 @@
             this.agvMonitoringToolStripMenuItem.Size = new System.Drawing.Size(189, 24);
             this.agvMonitoringToolStripMenuItem.Text = "&Monitoring";
             this.agvMonitoringToolStripMenuItem.Click += new System.EventHandler(this.agvMonitoringToolStripMenuItem_Click);
+            // 
+            // taskToolStripMenuItem
+            // 
+            this.taskToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addRemoveTaskToolStripMenuItem,
+            this.taskManagementToolStripMenuItem});
+            this.taskToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("taskToolStripMenuItem.Image")));
+            this.taskToolStripMenuItem.Name = "taskToolStripMenuItem";
+            this.taskToolStripMenuItem.Size = new System.Drawing.Size(70, 23);
+            this.taskToolStripMenuItem.Text = "&Tasks";
+            // 
+            // addRemoveTaskToolStripMenuItem
+            // 
+            this.addRemoveTaskToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addRemoveTaskToolStripMenuItem.Image")));
+            this.addRemoveTaskToolStripMenuItem.Name = "addRemoveTaskToolStripMenuItem";
+            this.addRemoveTaskToolStripMenuItem.Size = new System.Drawing.Size(188, 24);
+            this.addRemoveTaskToolStripMenuItem.Text = "&Add/Remove Task";
+            this.addRemoveTaskToolStripMenuItem.Click += new System.EventHandler(this.addRemoveTaskToolStripMenuItem_Click);
+            // 
+            // taskManagementToolStripMenuItem
+            // 
+            this.taskManagementToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("taskManagementToolStripMenuItem.Image")));
+            this.taskManagementToolStripMenuItem.Name = "taskManagementToolStripMenuItem";
+            this.taskManagementToolStripMenuItem.Size = new System.Drawing.Size(188, 24);
+            this.taskManagementToolStripMenuItem.Text = "&Monitoring";
+            // 
+            // orderToolStripMenuItem
+            // 
+            this.orderToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("orderToolStripMenuItem.Image")));
+            this.orderToolStripMenuItem.Name = "orderToolStripMenuItem";
+            this.orderToolStripMenuItem.Size = new System.Drawing.Size(73, 23);
+            this.orderToolStripMenuItem.Text = "Order";
+            this.orderToolStripMenuItem.Click += new System.EventHandler(this.orderToolStripMenuItem_Click);
             // 
             // warehouseDataToolStripMenuItem
             // 
@@ -478,6 +490,8 @@
             this.pnFloor.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnFloor.BackgroundImage")));
             this.pnFloor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pnFloor.ContextMenuStrip = this.cntxMenuStrip;
+            this.pnFloor.Controls.Add(this.btnAddPallet2);
+            this.pnFloor.Controls.Add(this.btnAddPallet1);
             this.pnFloor.Controls.Add(this.pictureBox1);
             this.pnFloor.Location = new System.Drawing.Point(15, 35);
             this.pnFloor.Name = "pnFloor";
@@ -508,6 +522,44 @@
             this.hidePathToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.hidePathToolStripMenuItem.Text = "Hide current path";
             this.hidePathToolStripMenuItem.Click += new System.EventHandler(this.hidePathToolStripMenuItem_Click);
+            // 
+            // btnAddPallet2
+            // 
+            this.btnAddPallet2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnAddPallet2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnAddPallet2.FlatAppearance.BorderColor = System.Drawing.Color.Lavender;
+            this.btnAddPallet2.FlatAppearance.BorderSize = 0;
+            this.btnAddPallet2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddPallet2.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.btnAddPallet2.ForeColor = System.Drawing.Color.Navy;
+            this.btnAddPallet2.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnAddPallet2.Location = new System.Drawing.Point(656, 600);
+            this.btnAddPallet2.Name = "btnAddPallet2";
+            this.btnAddPallet2.Size = new System.Drawing.Size(59, 33);
+            this.btnAddPallet2.TabIndex = 9;
+            this.btnAddPallet2.Text = "Add";
+            this.btnAddPallet2.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddPallet2.UseVisualStyleBackColor = false;
+            this.btnAddPallet2.Click += new System.EventHandler(this.btnAddPallet2_Click);
+            // 
+            // btnAddPallet1
+            // 
+            this.btnAddPallet1.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.btnAddPallet1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.btnAddPallet1.FlatAppearance.BorderColor = System.Drawing.Color.Lavender;
+            this.btnAddPallet1.FlatAppearance.BorderSize = 0;
+            this.btnAddPallet1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddPallet1.Font = new System.Drawing.Font("Segoe UI", 8.5F);
+            this.btnAddPallet1.ForeColor = System.Drawing.Color.Navy;
+            this.btnAddPallet1.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btnAddPallet1.Location = new System.Drawing.Point(569, 600);
+            this.btnAddPallet1.Name = "btnAddPallet1";
+            this.btnAddPallet1.Size = new System.Drawing.Size(59, 33);
+            this.btnAddPallet1.TabIndex = 9;
+            this.btnAddPallet1.Text = "Add";
+            this.btnAddPallet1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
+            this.btnAddPallet1.UseVisualStyleBackColor = false;
+            this.btnAddPallet1.Click += new System.EventHandler(this.btnAddPallet1_Click);
             // 
             // pictureBox1
             // 
@@ -635,6 +687,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Timer timerComStatus;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnAddPallet2;
+        private System.Windows.Forms.Button btnAddPallet1;
+        private System.Windows.Forms.ToolStripMenuItem orderToolStripMenuItem;
     }
 }
 
