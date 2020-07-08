@@ -27,6 +27,21 @@ namespace AGVsControlAndMonitoringSoftware
 
             Pallet.SimListPallet = DBUtility.GetPalletInfoFromDB<List<Pallet>>("SimPalletInfoTable");
             RackColumn.InitializePallet(RackColumn.SimListColumn, Pallet.SimListPallet);
+
+            foreach (Node n in Node.ListNode)
+            {
+                string str = "new string[]{";
+                foreach (string it in n.AdjacentNode)
+                {
+                    if (it == n.AdjacentNode.LastOrDefault()) str += it;
+                    else str += it + ",";
+                }
+                str += "}";
+                Console.Write("Node.ListNode.Add(new Node(){");
+                Console.Write("ID = {0}, X = {1}, Y = {2}, AdjacentNode = '{3}', LocationCode = '{4}'",
+                                    n.ID, n.X, n.Y, str, n.LocationCode);
+                Console.WriteLine("}");
+            }
         }
 
         private void rdbtnRealTime_CheckedChanged(object sender, EventArgs e)
@@ -446,18 +461,6 @@ namespace AGVsControlAndMonitoringSoftware
         {
             OrderForm orderForm = new OrderForm();
             orderForm.Show();
-        }
-
-        private void taskManagementToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TaskMonitoringForm taskMonitoringForm = new TaskMonitoringForm();
-            taskMonitoringForm.Show();
-        }
-
-        private void reportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ReportForm reportForm = new ReportForm();
-            reportForm.ShowDialog();
         }
     }
 }

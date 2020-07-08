@@ -77,8 +77,8 @@ namespace AGVsControlAndMonitoringSoftware
             }
             else
             {
-                DialogResult result = MessageBox.Show("This action will probably stop the AGVs are runnig.\nDo you want to Disconnect ?",
-                                                      "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+                string mess = "This action will stop monitoring, controlling & detecting collision.\nMake sure AGVs have no task.\nDo you really want to Disconnect ?";
+                DialogResult result = MessageBox.Show(mess, "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
                     btnConnect.Text = "Connect";

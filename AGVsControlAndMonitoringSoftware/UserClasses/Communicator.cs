@@ -145,6 +145,7 @@ namespace AGVsControlAndMonitoringSoftware
                         {
                             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)receiveFrame.AGVID);
                             agv.IsInitialized = true;
+                            agv.Status = "Initialized";
                         }
 
                         // Display ComStatus

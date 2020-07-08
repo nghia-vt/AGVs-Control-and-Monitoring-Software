@@ -293,9 +293,8 @@ namespace AGVsControlAndMonitoringSoftware
             int pickNode = col.AtNode;
             int pickLevel = Array.IndexOf(col.PalletCodes, palletCode) + 1;
 
-            // random drop node (output1 or output2)
-            Random random = new Random();
-            int dropNode = random.Next(51, 52);
+            // select drop node (output1 or output2)
+            int dropNode = agvID % 2 == 1 ? 51 : 52;
 
             Task newTask = new Task("Auto " + palletCode, "Output", palletCode, agvID, pickNode, dropNode, pickLevel, 1, "Waiting");
             listTaskToAdd.Add(newTask);

@@ -221,6 +221,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.txtbSetVelocity);
@@ -232,19 +235,18 @@
             this.groupBox2.ForeColor = System.Drawing.Color.DarkRed;
             this.groupBox2.Location = new System.Drawing.Point(443, 45);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(457, 418);
+            this.groupBox2.Size = new System.Drawing.Size(483, 418);
             this.groupBox2.TabIndex = 26;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "      Velocity";
             // 
             // label6
             // 
-            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.label6.ForeColor = System.Drawing.Color.Navy;
-            this.label6.Location = new System.Drawing.Point(206, 20);
+            this.label6.Location = new System.Drawing.Point(232, 20);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(101, 19);
             this.label6.TabIndex = 29;
@@ -253,8 +255,9 @@
             // 
             // txtbSetVelocity
             // 
+            this.txtbSetVelocity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtbSetVelocity.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.txtbSetVelocity.Location = new System.Drawing.Point(311, 17);
+            this.txtbSetVelocity.Location = new System.Drawing.Point(337, 17);
             this.txtbSetVelocity.Name = "txtbSetVelocity";
             this.txtbSetVelocity.Size = new System.Drawing.Size(65, 25);
             this.txtbSetVelocity.TabIndex = 32;
@@ -262,6 +265,7 @@
             // 
             // btnSetVelocity
             // 
+            this.btnSetVelocity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSetVelocity.BackColor = System.Drawing.Color.LightSteelBlue;
             this.btnSetVelocity.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.btnSetVelocity.FlatAppearance.BorderColor = System.Drawing.Color.Lavender;
@@ -271,7 +275,7 @@
             this.btnSetVelocity.ForeColor = System.Drawing.Color.Navy;
             this.btnSetVelocity.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.btnSetVelocity.ImageIndex = 3;
-            this.btnSetVelocity.Location = new System.Drawing.Point(380, 17);
+            this.btnSetVelocity.Location = new System.Drawing.Point(406, 17);
             this.btnSetVelocity.Name = "btnSetVelocity";
             this.btnSetVelocity.Size = new System.Drawing.Size(54, 25);
             this.btnSetVelocity.TabIndex = 31;
@@ -307,6 +311,9 @@
             // 
             // zedGraphVelocity
             // 
+            this.zedGraphVelocity.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.zedGraphVelocity.Location = new System.Drawing.Point(16, 49);
             this.zedGraphVelocity.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.zedGraphVelocity.Name = "zedGraphVelocity";
@@ -317,7 +324,7 @@
             this.zedGraphVelocity.ScrollMinX = 0D;
             this.zedGraphVelocity.ScrollMinY = 0D;
             this.zedGraphVelocity.ScrollMinY2 = 0D;
-            this.zedGraphVelocity.Size = new System.Drawing.Size(434, 358);
+            this.zedGraphVelocity.Size = new System.Drawing.Size(460, 358);
             this.zedGraphVelocity.TabIndex = 0;
             // 
             // groupBox3
@@ -371,12 +378,11 @@
             // 
             // label11
             // 
-            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Segoe UI", 10.25F);
             this.label11.ForeColor = System.Drawing.Color.Navy;
-            this.label11.Location = new System.Drawing.Point(783, 9);
+            this.label11.Location = new System.Drawing.Point(809, 9);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(50, 19);
             this.label11.TabIndex = 27;
@@ -385,12 +391,11 @@
             // 
             // lbStatus
             // 
-            this.lbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lbStatus.AutoSize = true;
             this.lbStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbStatus.ForeColor = System.Drawing.Color.Navy;
-            this.lbStatus.Location = new System.Drawing.Point(835, 11);
+            this.lbStatus.Location = new System.Drawing.Point(861, 11);
             this.lbStatus.Name = "lbStatus";
             this.lbStatus.Size = new System.Drawing.Size(48, 17);
             this.lbStatus.TabIndex = 11;
@@ -399,6 +404,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.groupBox4.BackColor = System.Drawing.Color.WhiteSmoke;
             this.groupBox4.Controls.Add(this.pictureBox5);
             this.groupBox4.Controls.Add(this.zedGraphLineTrack);
@@ -424,6 +431,8 @@
             // 
             // zedGraphLineTrack
             // 
+            this.zedGraphLineTrack.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.zedGraphLineTrack.Location = new System.Drawing.Point(9, 28);
             this.zedGraphLineTrack.Margin = new System.Windows.Forms.Padding(6, 8, 6, 8);
             this.zedGraphLineTrack.Name = "zedGraphLineTrack";
@@ -486,7 +495,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Lavender;
-            this.ClientSize = new System.Drawing.Size(908, 475);
+            this.ClientSize = new System.Drawing.Size(934, 475);
             this.Controls.Add(this.rtxtbCurrentPath);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.pictureBox1);

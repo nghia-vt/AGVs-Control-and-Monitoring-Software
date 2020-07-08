@@ -31,17 +31,20 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OrderForm));
             this.lstvwPalletInStock = new System.Windows.Forms.ListView();
-            this.label5 = new System.Windows.Forms.Label();
-            this.btnOK = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.pallet_code = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.stored_time = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.location = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lstvwPalletInStock
             // 
+            this.lstvwPalletInStock.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstvwPalletInStock.CheckBoxes = true;
             this.lstvwPalletInStock.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.pallet_code,
@@ -56,6 +59,28 @@
             this.lstvwPalletInStock.TabIndex = 27;
             this.lstvwPalletInStock.UseCompatibleStateImageBehavior = false;
             this.lstvwPalletInStock.View = System.Windows.Forms.View.Details;
+            // 
+            // pallet_code
+            // 
+            this.pallet_code.Text = "Pallet Code";
+            this.pallet_code.Width = 90;
+            // 
+            // stored_time
+            // 
+            this.stored_time.Text = "Stored Time";
+            this.stored_time.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.stored_time.Width = 210;
+            // 
+            // location
+            // 
+            this.location.Text = "Location";
+            this.location.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "icon_pallet.png");
             // 
             // label5
             // 
@@ -73,6 +98,7 @@
             // 
             // btnOK
             // 
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnOK.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.btnOK.ForeColor = System.Drawing.SystemColors.Desktop;
             this.btnOK.Location = new System.Drawing.Point(230, 320);
@@ -85,6 +111,7 @@
             // 
             // btnCancel
             // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnCancel.Font = new System.Drawing.Font("Segoe UI Semibold", 10.25F, System.Drawing.FontStyle.Bold);
             this.btnCancel.ForeColor = System.Drawing.SystemColors.Desktop;
             this.btnCancel.Location = new System.Drawing.Point(317, 320);
@@ -94,28 +121,6 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "icon_pallet.png");
-            // 
-            // pallet_code
-            // 
-            this.pallet_code.Text = "Pallet Code";
-            this.pallet_code.Width = 90;
-            // 
-            // stored_time
-            // 
-            this.stored_time.Text = "Stored Time";
-            this.stored_time.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.stored_time.Width = 210;
-            // 
-            // location
-            // 
-            this.location.Text = "Location";
-            this.location.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // OrderForm
             // 

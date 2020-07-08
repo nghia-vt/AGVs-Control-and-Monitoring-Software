@@ -167,6 +167,7 @@
             this.taskManagementToolStripMenuItem.Name = "taskManagementToolStripMenuItem";
             this.taskManagementToolStripMenuItem.Size = new System.Drawing.Size(188, 24);
             this.taskManagementToolStripMenuItem.Text = "&Monitoring";
+            this.taskManagementToolStripMenuItem.Click += new System.EventHandler(this.taskManagementToolStripMenuItem_Click);
             // 
             // orderToolStripMenuItem
             // 
@@ -190,6 +191,7 @@
             this.reportToolStripMenuItem.Name = "reportToolStripMenuItem";
             this.reportToolStripMenuItem.Size = new System.Drawing.Size(78, 23);
             this.reportToolStripMenuItem.Text = "&Report";
+            this.reportToolStripMenuItem.Click += new System.EventHandler(this.reportToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -578,6 +580,8 @@
             // 
             // rtxtbComStatus
             // 
+            this.rtxtbComStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtxtbComStatus.BackColor = System.Drawing.Color.WhiteSmoke;
             this.rtxtbComStatus.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.rtxtbComStatus.Font = new System.Drawing.Font("Segoe UI", 9.25F);
