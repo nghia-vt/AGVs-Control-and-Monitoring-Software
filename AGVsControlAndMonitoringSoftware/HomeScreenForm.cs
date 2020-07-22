@@ -374,8 +374,8 @@ namespace AGVsControlAndMonitoringSoftware
             warehouseDataForm.Show();
         }
 
+        private static List<int> existedPalletCode = new List<int>();
         int autoPalletNumber = 0;
-        int autoSimPalletNumber = 0;
         public static bool isPickPalletInput1 = true;
         public static bool isPickPalletInput2 = true;
         public static bool isPickSimPalletInput1 = true;
@@ -388,7 +388,20 @@ namespace AGVsControlAndMonitoringSoftware
             {
                 if (AGV.ListAGV.Count == 0) return;
                 // add new task
-                autoPalletNumber++;
+                foreach (Pallet pallet in Pallet.ListPallet)
+                    existedPalletCode.Add(Convert.ToInt16(pallet.Code.Substring(2)));
+                foreach (Task task in Task.ListTask)
+                    existedPalletCode.Add(Convert.ToInt16(task.PalletCode.Substring(2)));
+                for (int i = 1; i < 10000; i++)
+                {
+                    if (existedPalletCode.Contains(i)) continue;
+                    else
+                    {
+                        autoPalletNumber = i;
+                        break;
+                    }
+                }
+                existedPalletCode.Clear();
                 string palletCode = "PL" + autoPalletNumber.ToString("0000");
                 Task.InputAutoAdd(palletCode, 53, Task.ListTask, AGV.ListAGV, RackColumn.ListColumn);
                 Task.AddFirstPathOfAGVs();
@@ -401,8 +414,21 @@ namespace AGVsControlAndMonitoringSoftware
             else if (Display.Mode == "Simulation")
             {
                 if (AGV.SimListAGV.Count == 0) return;
-                autoSimPalletNumber++;
-                string palletCode = "PL" + autoSimPalletNumber.ToString("0000");
+                foreach (Pallet pallet in Pallet.SimListPallet)
+                    existedPalletCode.Add(Convert.ToInt16(pallet.Code.Substring(2)));
+                foreach (Task task in Task.SimListTask)
+                    existedPalletCode.Add(Convert.ToInt16(task.PalletCode.Substring(2)));
+                for (int i = 1; i < 10000; i++)
+                {
+                    if (existedPalletCode.Contains(i)) continue;
+                    else
+                    {
+                        autoPalletNumber = i;
+                        break;
+                    }
+                }
+                existedPalletCode.Clear();
+                string palletCode = "PL" + autoPalletNumber.ToString("0000");
                 Task.InputAutoAdd(palletCode, 53, Task.SimListTask, AGV.SimListAGV, RackColumn.SimListColumn);
                 Task.AddFirstPathOfSimAGVs();
 
@@ -419,7 +445,20 @@ namespace AGVsControlAndMonitoringSoftware
             if (Display.Mode == "Real Time")
             {
                 if (AGV.ListAGV.Count == 0) return;
-                autoPalletNumber++;
+                foreach (Pallet pallet in Pallet.ListPallet)
+                    existedPalletCode.Add(Convert.ToInt16(pallet.Code.Substring(2)));
+                foreach (Task task in Task.ListTask)
+                    existedPalletCode.Add(Convert.ToInt16(task.PalletCode.Substring(2)));
+                for (int i = 1; i < 10000; i++)
+                {
+                    if (existedPalletCode.Contains(i)) continue;
+                    else
+                    {
+                        autoPalletNumber = i;
+                        break;
+                    }
+                }
+                existedPalletCode.Clear();
                 string palletCode = "PL" + autoPalletNumber.ToString("0000");
                 Task.InputAutoAdd(palletCode, 54, Task.ListTask, AGV.ListAGV, RackColumn.ListColumn);
                 Task.AddFirstPathOfAGVs();
@@ -431,8 +470,21 @@ namespace AGVsControlAndMonitoringSoftware
             else if (Display.Mode == "Simulation")
             {
                 if (AGV.SimListAGV.Count == 0) return;
-                autoSimPalletNumber++;
-                string palletCode = "PL" + autoSimPalletNumber.ToString("0000");
+                foreach (Pallet pallet in Pallet.SimListPallet)
+                    existedPalletCode.Add(Convert.ToInt16(pallet.Code.Substring(2)));
+                foreach (Task task in Task.SimListTask)
+                    existedPalletCode.Add(Convert.ToInt16(task.PalletCode.Substring(2)));
+                for (int i = 1; i < 10000; i++)
+                {
+                    if (existedPalletCode.Contains(i)) continue;
+                    else
+                    {
+                        autoPalletNumber = i;
+                        break;
+                    }
+                }
+                existedPalletCode.Clear();
+                string palletCode = "PL" + autoPalletNumber.ToString("0000");
                 Task.InputAutoAdd(palletCode, 54, Task.SimListTask, AGV.SimListAGV, RackColumn.SimListColumn);
                 Task.AddFirstPathOfSimAGVs();
 
@@ -458,6 +510,62 @@ namespace AGVsControlAndMonitoringSoftware
         {
             ReportForm reportForm = new ReportForm();
             reportForm.ShowDialog();
+        }
+
+        private void ShowHideLabelLocationCode(bool isShow)
+        {
+            lbA.Visible = isShow;
+            lbA1.Visible = isShow;
+            lbA2.Visible = isShow;
+            lbA3.Visible = isShow;
+            lbA4.Visible = isShow;
+            lbA5.Visible = isShow;
+            lbA6.Visible = isShow;
+            lbB.Visible = isShow;
+            lbB1.Visible = isShow;
+            lbB2.Visible = isShow;
+            lbB3.Visible = isShow;
+            lbB4.Visible = isShow;
+            lbB5.Visible = isShow;
+            lbB6.Visible = isShow;
+            lbC.Visible = isShow;
+            lbC1.Visible = isShow;
+            lbC2.Visible = isShow;
+            lbC3.Visible = isShow;
+            lbC4.Visible = isShow;
+            lbC5.Visible = isShow;
+            lbC6.Visible = isShow;
+            lbD.Visible = isShow;
+            lbD1.Visible = isShow;
+            lbD2.Visible = isShow;
+            lbD3.Visible = isShow;
+            lbD4.Visible = isShow;
+            lbD5.Visible = isShow;
+            lbD6.Visible = isShow;
+        }
+
+        private void showBlockColumnToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (showBlockColumnToolStripMenuItem.Checked == false)
+            {
+                showBlockColumnToolStripMenuItem.Checked = true;
+                ShowHideLabelLocationCode(true);
+            }
+            else
+            {
+                showBlockColumnToolStripMenuItem.Checked = false;
+                ShowHideLabelLocationCode(false);
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string message = "This software is designed for a Thesis Project:" + 
+                             "\nMonitoring & Controlling of Automated Guided Vehicles (AGVs) System in Warehouse." +
+                             "\nAt Ho Chi Minh City University of Technology (HCMUT)." + 
+                             "\n\nDesigned by Vo Trong Nghia." +
+                             "\nGithub: votronghia/AGVs-Control-and-Monitoring-Software.";
+            MessageBox.Show(message, "About this software", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

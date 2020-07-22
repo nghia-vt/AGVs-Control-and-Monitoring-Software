@@ -20,6 +20,11 @@ namespace AGVsControlAndMonitoringSoftware
         {
             InitializeComponent();
             InitZedGraph();
+            switch (Display.Mode)
+            {
+                case "Simulation": txtbSetVelocity.Text = AGV.SimSpeed.ToString(); break;
+                case "Real Time": txtbSetVelocity.Text = AGV.Speed.ToString(); break;
+            }
         }
 
         private void AGVMonitoringForm_Load(object sender, EventArgs e)
@@ -105,7 +110,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Set scale of axis
             velocityPane.XAxis.Scale.Min = 0;
-            velocityPane.XAxis.Scale.Max = 20;
+            velocityPane.XAxis.Scale.Max = 30;
             velocityPane.XAxis.Scale.MinorStep = 1;
             velocityPane.XAxis.Scale.MajorStep = 5;
 
@@ -156,7 +161,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // Set scale of axis
             linetrackPane.XAxis.Scale.Min = 0;
-            linetrackPane.XAxis.Scale.Max = 20;
+            linetrackPane.XAxis.Scale.Max = 30;
             linetrackPane.XAxis.Scale.MinorStep = 1;
             linetrackPane.XAxis.Scale.MajorStep = 5;
 
@@ -210,7 +215,7 @@ namespace AGVsControlAndMonitoringSoftware
             if (time > xScale.Max - xScale.MajorStep)
             {
                 xScale.Max = time + xScale.MajorStep;
-                xScale.Min = xScale.Max - 20.0;
+                xScale.Min = xScale.Max - 30.0;
             }
 
             // re-draw graph

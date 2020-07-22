@@ -81,6 +81,35 @@
             this.rtxtbComStatus = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.timerComStatus = new System.Windows.Forms.Timer(this.components);
+            this.lbA = new System.Windows.Forms.Label();
+            this.lbB = new System.Windows.Forms.Label();
+            this.lbC = new System.Windows.Forms.Label();
+            this.lbD = new System.Windows.Forms.Label();
+            this.lbA1 = new System.Windows.Forms.Label();
+            this.lbA2 = new System.Windows.Forms.Label();
+            this.lbA3 = new System.Windows.Forms.Label();
+            this.lbA4 = new System.Windows.Forms.Label();
+            this.lbA5 = new System.Windows.Forms.Label();
+            this.lbA6 = new System.Windows.Forms.Label();
+            this.lbB1 = new System.Windows.Forms.Label();
+            this.lbB2 = new System.Windows.Forms.Label();
+            this.lbB4 = new System.Windows.Forms.Label();
+            this.lbB3 = new System.Windows.Forms.Label();
+            this.lbB5 = new System.Windows.Forms.Label();
+            this.lbB6 = new System.Windows.Forms.Label();
+            this.lbC1 = new System.Windows.Forms.Label();
+            this.lbC2 = new System.Windows.Forms.Label();
+            this.lbC4 = new System.Windows.Forms.Label();
+            this.lbC3 = new System.Windows.Forms.Label();
+            this.lbC5 = new System.Windows.Forms.Label();
+            this.lbC6 = new System.Windows.Forms.Label();
+            this.lbD1 = new System.Windows.Forms.Label();
+            this.lbD2 = new System.Windows.Forms.Label();
+            this.lbD4 = new System.Windows.Forms.Label();
+            this.lbD3 = new System.Windows.Forms.Label();
+            this.lbD5 = new System.Windows.Forms.Label();
+            this.lbD6 = new System.Windows.Forms.Label();
+            this.showBlockColumnToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnstrHomeScr.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -216,6 +245,7 @@
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(190, 24);
             this.aboutToolStripMenuItem.Text = "&About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -492,6 +522,34 @@
             this.pnFloor.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnFloor.BackgroundImage")));
             this.pnFloor.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pnFloor.ContextMenuStrip = this.cntxMenuStrip;
+            this.pnFloor.Controls.Add(this.lbD);
+            this.pnFloor.Controls.Add(this.lbC);
+            this.pnFloor.Controls.Add(this.lbD6);
+            this.pnFloor.Controls.Add(this.lbC6);
+            this.pnFloor.Controls.Add(this.lbB6);
+            this.pnFloor.Controls.Add(this.lbD5);
+            this.pnFloor.Controls.Add(this.lbC5);
+            this.pnFloor.Controls.Add(this.lbB5);
+            this.pnFloor.Controls.Add(this.lbA6);
+            this.pnFloor.Controls.Add(this.lbD3);
+            this.pnFloor.Controls.Add(this.lbC3);
+            this.pnFloor.Controls.Add(this.lbB3);
+            this.pnFloor.Controls.Add(this.lbD4);
+            this.pnFloor.Controls.Add(this.lbA5);
+            this.pnFloor.Controls.Add(this.lbC4);
+            this.pnFloor.Controls.Add(this.lbD2);
+            this.pnFloor.Controls.Add(this.lbB4);
+            this.pnFloor.Controls.Add(this.lbC2);
+            this.pnFloor.Controls.Add(this.lbA3);
+            this.pnFloor.Controls.Add(this.lbD1);
+            this.pnFloor.Controls.Add(this.lbB2);
+            this.pnFloor.Controls.Add(this.lbC1);
+            this.pnFloor.Controls.Add(this.lbA4);
+            this.pnFloor.Controls.Add(this.lbB1);
+            this.pnFloor.Controls.Add(this.lbA2);
+            this.pnFloor.Controls.Add(this.lbA1);
+            this.pnFloor.Controls.Add(this.lbB);
+            this.pnFloor.Controls.Add(this.lbA);
             this.pnFloor.Controls.Add(this.btnAddPallet2);
             this.pnFloor.Controls.Add(this.btnAddPallet1);
             this.pnFloor.Controls.Add(this.pictureBox1);
@@ -505,23 +563,24 @@
             // 
             this.cntxMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.showPathToolStripMenuItem,
-            this.hidePathToolStripMenuItem});
+            this.hidePathToolStripMenuItem,
+            this.showBlockColumnToolStripMenuItem});
             this.cntxMenuStrip.Name = "cntxMenuStrip";
-            this.cntxMenuStrip.Size = new System.Drawing.Size(172, 48);
+            this.cntxMenuStrip.Size = new System.Drawing.Size(216, 70);
             this.cntxMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cntxMenuStrip_Opening);
             // 
             // showPathToolStripMenuItem
             // 
             this.showPathToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("showPathToolStripMenuItem.Image")));
             this.showPathToolStripMenuItem.Name = "showPathToolStripMenuItem";
-            this.showPathToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.showPathToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.showPathToolStripMenuItem.Text = "Show current path";
             // 
             // hidePathToolStripMenuItem
             // 
             this.hidePathToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("hidePathToolStripMenuItem.Image")));
             this.hidePathToolStripMenuItem.Name = "hidePathToolStripMenuItem";
-            this.hidePathToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
+            this.hidePathToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.hidePathToolStripMenuItem.Text = "Hide current path";
             this.hidePathToolStripMenuItem.Click += new System.EventHandler(this.hidePathToolStripMenuItem_Click);
             // 
@@ -608,6 +667,377 @@
             this.timerComStatus.Interval = 1;
             this.timerComStatus.Tick += new System.EventHandler(this.timerComStatus_Tick);
             // 
+            // lbA
+            // 
+            this.lbA.AutoSize = true;
+            this.lbA.BackColor = System.Drawing.Color.Transparent;
+            this.lbA.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA.ForeColor = System.Drawing.Color.Blue;
+            this.lbA.Location = new System.Drawing.Point(70, 144);
+            this.lbA.Name = "lbA";
+            this.lbA.Size = new System.Drawing.Size(18, 19);
+            this.lbA.TabIndex = 9;
+            this.lbA.Text = "A";
+            this.lbA.Visible = false;
+            // 
+            // lbB
+            // 
+            this.lbB.AutoSize = true;
+            this.lbB.BackColor = System.Drawing.Color.Transparent;
+            this.lbB.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB.ForeColor = System.Drawing.Color.Blue;
+            this.lbB.Location = new System.Drawing.Point(398, 144);
+            this.lbB.Name = "lbB";
+            this.lbB.Size = new System.Drawing.Size(17, 19);
+            this.lbB.TabIndex = 9;
+            this.lbB.Text = "B";
+            this.lbB.Visible = false;
+            // 
+            // lbC
+            // 
+            this.lbC.AutoSize = true;
+            this.lbC.BackColor = System.Drawing.Color.Transparent;
+            this.lbC.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC.ForeColor = System.Drawing.Color.Blue;
+            this.lbC.Location = new System.Drawing.Point(70, 364);
+            this.lbC.Name = "lbC";
+            this.lbC.Size = new System.Drawing.Size(18, 19);
+            this.lbC.TabIndex = 9;
+            this.lbC.Text = "C";
+            this.lbC.Visible = false;
+            // 
+            // lbD
+            // 
+            this.lbD.AutoSize = true;
+            this.lbD.BackColor = System.Drawing.Color.Transparent;
+            this.lbD.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD.ForeColor = System.Drawing.Color.Blue;
+            this.lbD.Location = new System.Drawing.Point(398, 364);
+            this.lbD.Name = "lbD";
+            this.lbD.Size = new System.Drawing.Size(19, 19);
+            this.lbD.TabIndex = 9;
+            this.lbD.Text = "D";
+            this.lbD.Visible = false;
+            // 
+            // lbA1
+            // 
+            this.lbA1.AutoSize = true;
+            this.lbA1.BackColor = System.Drawing.Color.Transparent;
+            this.lbA1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA1.ForeColor = System.Drawing.Color.Blue;
+            this.lbA1.Location = new System.Drawing.Point(142, 95);
+            this.lbA1.Name = "lbA1";
+            this.lbA1.Size = new System.Drawing.Size(15, 19);
+            this.lbA1.TabIndex = 9;
+            this.lbA1.Text = "1";
+            this.lbA1.Visible = false;
+            // 
+            // lbA2
+            // 
+            this.lbA2.AutoSize = true;
+            this.lbA2.BackColor = System.Drawing.Color.Transparent;
+            this.lbA2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA2.ForeColor = System.Drawing.Color.Blue;
+            this.lbA2.Location = new System.Drawing.Point(216, 95);
+            this.lbA2.Name = "lbA2";
+            this.lbA2.Size = new System.Drawing.Size(17, 19);
+            this.lbA2.TabIndex = 9;
+            this.lbA2.Text = "2";
+            this.lbA2.Visible = false;
+            // 
+            // lbA3
+            // 
+            this.lbA3.AutoSize = true;
+            this.lbA3.BackColor = System.Drawing.Color.Transparent;
+            this.lbA3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA3.ForeColor = System.Drawing.Color.Blue;
+            this.lbA3.Location = new System.Drawing.Point(290, 95);
+            this.lbA3.Name = "lbA3";
+            this.lbA3.Size = new System.Drawing.Size(17, 19);
+            this.lbA3.TabIndex = 9;
+            this.lbA3.Text = "3";
+            this.lbA3.Visible = false;
+            // 
+            // lbA4
+            // 
+            this.lbA4.AutoSize = true;
+            this.lbA4.BackColor = System.Drawing.Color.Transparent;
+            this.lbA4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA4.ForeColor = System.Drawing.Color.Blue;
+            this.lbA4.Location = new System.Drawing.Point(142, 190);
+            this.lbA4.Name = "lbA4";
+            this.lbA4.Size = new System.Drawing.Size(17, 19);
+            this.lbA4.TabIndex = 9;
+            this.lbA4.Text = "4";
+            this.lbA4.Visible = false;
+            // 
+            // lbA5
+            // 
+            this.lbA5.AutoSize = true;
+            this.lbA5.BackColor = System.Drawing.Color.Transparent;
+            this.lbA5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA5.ForeColor = System.Drawing.Color.Blue;
+            this.lbA5.Location = new System.Drawing.Point(216, 190);
+            this.lbA5.Name = "lbA5";
+            this.lbA5.Size = new System.Drawing.Size(17, 19);
+            this.lbA5.TabIndex = 9;
+            this.lbA5.Text = "5";
+            this.lbA5.Visible = false;
+            // 
+            // lbA6
+            // 
+            this.lbA6.AutoSize = true;
+            this.lbA6.BackColor = System.Drawing.Color.Transparent;
+            this.lbA6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbA6.ForeColor = System.Drawing.Color.Blue;
+            this.lbA6.Location = new System.Drawing.Point(290, 190);
+            this.lbA6.Name = "lbA6";
+            this.lbA6.Size = new System.Drawing.Size(17, 19);
+            this.lbA6.TabIndex = 9;
+            this.lbA6.Text = "6";
+            this.lbA6.Visible = false;
+            // 
+            // lbB1
+            // 
+            this.lbB1.AutoSize = true;
+            this.lbB1.BackColor = System.Drawing.Color.Transparent;
+            this.lbB1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB1.ForeColor = System.Drawing.Color.Blue;
+            this.lbB1.Location = new System.Drawing.Point(463, 95);
+            this.lbB1.Name = "lbB1";
+            this.lbB1.Size = new System.Drawing.Size(15, 19);
+            this.lbB1.TabIndex = 9;
+            this.lbB1.Text = "1";
+            this.lbB1.Visible = false;
+            // 
+            // lbB2
+            // 
+            this.lbB2.AutoSize = true;
+            this.lbB2.BackColor = System.Drawing.Color.Transparent;
+            this.lbB2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB2.ForeColor = System.Drawing.Color.Blue;
+            this.lbB2.Location = new System.Drawing.Point(537, 95);
+            this.lbB2.Name = "lbB2";
+            this.lbB2.Size = new System.Drawing.Size(17, 19);
+            this.lbB2.TabIndex = 9;
+            this.lbB2.Text = "2";
+            this.lbB2.Visible = false;
+            // 
+            // lbB4
+            // 
+            this.lbB4.AutoSize = true;
+            this.lbB4.BackColor = System.Drawing.Color.Transparent;
+            this.lbB4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB4.ForeColor = System.Drawing.Color.Blue;
+            this.lbB4.Location = new System.Drawing.Point(463, 190);
+            this.lbB4.Name = "lbB4";
+            this.lbB4.Size = new System.Drawing.Size(17, 19);
+            this.lbB4.TabIndex = 9;
+            this.lbB4.Text = "4";
+            this.lbB4.Visible = false;
+            // 
+            // lbB3
+            // 
+            this.lbB3.AutoSize = true;
+            this.lbB3.BackColor = System.Drawing.Color.Transparent;
+            this.lbB3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB3.ForeColor = System.Drawing.Color.Blue;
+            this.lbB3.Location = new System.Drawing.Point(611, 95);
+            this.lbB3.Name = "lbB3";
+            this.lbB3.Size = new System.Drawing.Size(17, 19);
+            this.lbB3.TabIndex = 9;
+            this.lbB3.Text = "3";
+            this.lbB3.Visible = false;
+            // 
+            // lbB5
+            // 
+            this.lbB5.AutoSize = true;
+            this.lbB5.BackColor = System.Drawing.Color.Transparent;
+            this.lbB5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB5.ForeColor = System.Drawing.Color.Blue;
+            this.lbB5.Location = new System.Drawing.Point(537, 190);
+            this.lbB5.Name = "lbB5";
+            this.lbB5.Size = new System.Drawing.Size(17, 19);
+            this.lbB5.TabIndex = 9;
+            this.lbB5.Text = "5";
+            this.lbB5.Visible = false;
+            // 
+            // lbB6
+            // 
+            this.lbB6.AutoSize = true;
+            this.lbB6.BackColor = System.Drawing.Color.Transparent;
+            this.lbB6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbB6.ForeColor = System.Drawing.Color.Blue;
+            this.lbB6.Location = new System.Drawing.Point(611, 190);
+            this.lbB6.Name = "lbB6";
+            this.lbB6.Size = new System.Drawing.Size(17, 19);
+            this.lbB6.TabIndex = 9;
+            this.lbB6.Text = "6";
+            this.lbB6.Visible = false;
+            // 
+            // lbC1
+            // 
+            this.lbC1.AutoSize = true;
+            this.lbC1.BackColor = System.Drawing.Color.Transparent;
+            this.lbC1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC1.ForeColor = System.Drawing.Color.Blue;
+            this.lbC1.Location = new System.Drawing.Point(142, 318);
+            this.lbC1.Name = "lbC1";
+            this.lbC1.Size = new System.Drawing.Size(15, 19);
+            this.lbC1.TabIndex = 9;
+            this.lbC1.Text = "1";
+            this.lbC1.Visible = false;
+            // 
+            // lbC2
+            // 
+            this.lbC2.AutoSize = true;
+            this.lbC2.BackColor = System.Drawing.Color.Transparent;
+            this.lbC2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC2.ForeColor = System.Drawing.Color.Blue;
+            this.lbC2.Location = new System.Drawing.Point(216, 318);
+            this.lbC2.Name = "lbC2";
+            this.lbC2.Size = new System.Drawing.Size(17, 19);
+            this.lbC2.TabIndex = 9;
+            this.lbC2.Text = "2";
+            this.lbC2.Visible = false;
+            // 
+            // lbC4
+            // 
+            this.lbC4.AutoSize = true;
+            this.lbC4.BackColor = System.Drawing.Color.Transparent;
+            this.lbC4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC4.ForeColor = System.Drawing.Color.Blue;
+            this.lbC4.Location = new System.Drawing.Point(142, 413);
+            this.lbC4.Name = "lbC4";
+            this.lbC4.Size = new System.Drawing.Size(17, 19);
+            this.lbC4.TabIndex = 9;
+            this.lbC4.Text = "4";
+            this.lbC4.Visible = false;
+            // 
+            // lbC3
+            // 
+            this.lbC3.AutoSize = true;
+            this.lbC3.BackColor = System.Drawing.Color.Transparent;
+            this.lbC3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC3.ForeColor = System.Drawing.Color.Blue;
+            this.lbC3.Location = new System.Drawing.Point(290, 318);
+            this.lbC3.Name = "lbC3";
+            this.lbC3.Size = new System.Drawing.Size(17, 19);
+            this.lbC3.TabIndex = 9;
+            this.lbC3.Text = "3";
+            this.lbC3.Visible = false;
+            // 
+            // lbC5
+            // 
+            this.lbC5.AutoSize = true;
+            this.lbC5.BackColor = System.Drawing.Color.Transparent;
+            this.lbC5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC5.ForeColor = System.Drawing.Color.Blue;
+            this.lbC5.Location = new System.Drawing.Point(216, 413);
+            this.lbC5.Name = "lbC5";
+            this.lbC5.Size = new System.Drawing.Size(17, 19);
+            this.lbC5.TabIndex = 9;
+            this.lbC5.Text = "5";
+            this.lbC5.Visible = false;
+            // 
+            // lbC6
+            // 
+            this.lbC6.AutoSize = true;
+            this.lbC6.BackColor = System.Drawing.Color.Transparent;
+            this.lbC6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbC6.ForeColor = System.Drawing.Color.Blue;
+            this.lbC6.Location = new System.Drawing.Point(290, 413);
+            this.lbC6.Name = "lbC6";
+            this.lbC6.Size = new System.Drawing.Size(17, 19);
+            this.lbC6.TabIndex = 9;
+            this.lbC6.Text = "6";
+            this.lbC6.Visible = false;
+            // 
+            // lbD1
+            // 
+            this.lbD1.AutoSize = true;
+            this.lbD1.BackColor = System.Drawing.Color.Transparent;
+            this.lbD1.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD1.ForeColor = System.Drawing.Color.Blue;
+            this.lbD1.Location = new System.Drawing.Point(463, 318);
+            this.lbD1.Name = "lbD1";
+            this.lbD1.Size = new System.Drawing.Size(15, 19);
+            this.lbD1.TabIndex = 9;
+            this.lbD1.Text = "1";
+            this.lbD1.Visible = false;
+            // 
+            // lbD2
+            // 
+            this.lbD2.AutoSize = true;
+            this.lbD2.BackColor = System.Drawing.Color.Transparent;
+            this.lbD2.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD2.ForeColor = System.Drawing.Color.Blue;
+            this.lbD2.Location = new System.Drawing.Point(537, 318);
+            this.lbD2.Name = "lbD2";
+            this.lbD2.Size = new System.Drawing.Size(17, 19);
+            this.lbD2.TabIndex = 9;
+            this.lbD2.Text = "2";
+            this.lbD2.Visible = false;
+            // 
+            // lbD4
+            // 
+            this.lbD4.AutoSize = true;
+            this.lbD4.BackColor = System.Drawing.Color.Transparent;
+            this.lbD4.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD4.ForeColor = System.Drawing.Color.Blue;
+            this.lbD4.Location = new System.Drawing.Point(463, 413);
+            this.lbD4.Name = "lbD4";
+            this.lbD4.Size = new System.Drawing.Size(17, 19);
+            this.lbD4.TabIndex = 9;
+            this.lbD4.Text = "4";
+            this.lbD4.Visible = false;
+            // 
+            // lbD3
+            // 
+            this.lbD3.AutoSize = true;
+            this.lbD3.BackColor = System.Drawing.Color.Transparent;
+            this.lbD3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD3.ForeColor = System.Drawing.Color.Blue;
+            this.lbD3.Location = new System.Drawing.Point(611, 318);
+            this.lbD3.Name = "lbD3";
+            this.lbD3.Size = new System.Drawing.Size(17, 19);
+            this.lbD3.TabIndex = 9;
+            this.lbD3.Text = "3";
+            this.lbD3.Visible = false;
+            // 
+            // lbD5
+            // 
+            this.lbD5.AutoSize = true;
+            this.lbD5.BackColor = System.Drawing.Color.Transparent;
+            this.lbD5.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD5.ForeColor = System.Drawing.Color.Blue;
+            this.lbD5.Location = new System.Drawing.Point(537, 413);
+            this.lbD5.Name = "lbD5";
+            this.lbD5.Size = new System.Drawing.Size(17, 19);
+            this.lbD5.TabIndex = 9;
+            this.lbD5.Text = "5";
+            this.lbD5.Visible = false;
+            // 
+            // lbD6
+            // 
+            this.lbD6.AutoSize = true;
+            this.lbD6.BackColor = System.Drawing.Color.Transparent;
+            this.lbD6.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.lbD6.ForeColor = System.Drawing.Color.Blue;
+            this.lbD6.Location = new System.Drawing.Point(611, 413);
+            this.lbD6.Name = "lbD6";
+            this.lbD6.Size = new System.Drawing.Size(17, 19);
+            this.lbD6.TabIndex = 9;
+            this.lbD6.Text = "6";
+            this.lbD6.Visible = false;
+            // 
+            // showBlockColumnToolStripMenuItem
+            // 
+            this.showBlockColumnToolStripMenuItem.Name = "showBlockColumnToolStripMenuItem";
+            this.showBlockColumnToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.showBlockColumnToolStripMenuItem.Text = "Show block - column label";
+            this.showBlockColumnToolStripMenuItem.Click += new System.EventHandler(this.showBlockColumnToolStripMenuItem_Click);
+            // 
             // HomeScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -634,6 +1064,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.pnFloor.ResumeLayout(false);
+            this.pnFloor.PerformLayout();
             this.cntxMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
@@ -694,6 +1125,35 @@
         private System.Windows.Forms.Button btnAddPallet2;
         private System.Windows.Forms.Button btnAddPallet1;
         private System.Windows.Forms.ToolStripMenuItem orderToolStripMenuItem;
+        private System.Windows.Forms.Label lbD;
+        private System.Windows.Forms.Label lbC;
+        private System.Windows.Forms.Label lbD6;
+        private System.Windows.Forms.Label lbC6;
+        private System.Windows.Forms.Label lbB6;
+        private System.Windows.Forms.Label lbD5;
+        private System.Windows.Forms.Label lbC5;
+        private System.Windows.Forms.Label lbB5;
+        private System.Windows.Forms.Label lbA6;
+        private System.Windows.Forms.Label lbD3;
+        private System.Windows.Forms.Label lbC3;
+        private System.Windows.Forms.Label lbB3;
+        private System.Windows.Forms.Label lbD4;
+        private System.Windows.Forms.Label lbA5;
+        private System.Windows.Forms.Label lbC4;
+        private System.Windows.Forms.Label lbD2;
+        private System.Windows.Forms.Label lbB4;
+        private System.Windows.Forms.Label lbC2;
+        private System.Windows.Forms.Label lbA3;
+        private System.Windows.Forms.Label lbD1;
+        private System.Windows.Forms.Label lbB2;
+        private System.Windows.Forms.Label lbC1;
+        private System.Windows.Forms.Label lbA4;
+        private System.Windows.Forms.Label lbB1;
+        private System.Windows.Forms.Label lbA2;
+        private System.Windows.Forms.Label lbA1;
+        private System.Windows.Forms.Label lbB;
+        private System.Windows.Forms.Label lbA;
+        private System.Windows.Forms.ToolStripMenuItem showBlockColumnToolStripMenuItem;
     }
 }
 

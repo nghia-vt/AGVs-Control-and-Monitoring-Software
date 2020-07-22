@@ -64,7 +64,7 @@ namespace AGVsControlAndMonitoringSoftware
             using (SqlConnection connection = new SqlConnection(connectionStr))
             {
                 //SqlComnection
-                connection.Open();
+                connection.Open(); // don't need because using SqlDataAdapter
 
                 //SqlCommand
                 SqlCommand command = connection.CreateCommand();
@@ -76,7 +76,7 @@ namespace AGVsControlAndMonitoringSoftware
                 //Get data
                 table.Clear();
                 adapter.Fill(table);
-                connection.Close();
+                connection.Close(); // don't need because using SqlDataAdapter
             }
 
             // Store DataTable into a List

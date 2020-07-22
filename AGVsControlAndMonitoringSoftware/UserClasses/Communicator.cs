@@ -222,7 +222,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!Communicator.SerialPort.IsOpen || agv == null || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 

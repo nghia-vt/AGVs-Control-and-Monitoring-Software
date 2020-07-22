@@ -372,8 +372,8 @@ namespace AGVsControlAndMonitoringSoftware
                     listView.Items[listData.IndexOf(agv)].SubItems[3].Text = agv.Orientation.ToString();
                     listView.Items[listData.IndexOf(agv)].SubItems[4].Text = Math.Round(agv.DistanceToExitNode, 1).ToString() + " cm";
                     listView.Items[listData.IndexOf(agv)].SubItems[5].Text = agv.Velocity.ToString() + " cm/s";
-                    
-                    if (agv.Status == "Running")
+
+                    if (agv.Status == "Running" || agv.Status == "Picking" || agv.Status == "Dropping")
                         listView.Items[listData.IndexOf(agv)].BackColor = Color.PaleGreen;
                     else if (!agv.IsInitialized)
                     {

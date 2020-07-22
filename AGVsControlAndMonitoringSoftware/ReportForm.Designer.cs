@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ReportForm));
             this.label2 = new System.Windows.Forms.Label();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.btnLoadTemplate = new System.Windows.Forms.Button();
             this.txbTemplatePath = new System.Windows.Forms.TextBox();
@@ -41,7 +42,6 @@
             this.loadTemplateDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveReportDialog = new System.Windows.Forms.SaveFileDialog();
             this.btnSaveAs = new System.Windows.Forms.Button();
-            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.label3 = new System.Windows.Forms.Label();
             this.txbEmail = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -63,6 +63,17 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "     Supervisor Name:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            this.imageList1.Images.SetKeyName(0, "icon_preview.png");
+            this.imageList1.Images.SetKeyName(1, "icon_save.png");
+            this.imageList1.Images.SetKeyName(2, "icon_template.png");
+            this.imageList1.Images.SetKeyName(3, "icon_email.png");
+            this.imageList1.Images.SetKeyName(4, "icon_person.png");
+            this.imageList1.Images.SetKeyName(5, "icon_phone.png");
             // 
             // label1
             // 
@@ -130,7 +141,7 @@
             this.rtxbTemplate.Name = "rtxbTemplate";
             this.rtxbTemplate.ReadOnly = true;
             this.rtxbTemplate.Size = new System.Drawing.Size(633, 334);
-            this.rtxbTemplate.TabIndex = 34;
+            this.rtxbTemplate.TabIndex = 36;
             this.rtxbTemplate.Text = "";
             // 
             // btnPreview
@@ -167,17 +178,6 @@
             this.btnSaveAs.UseVisualStyleBackColor = true;
             this.btnSaveAs.Click += new System.EventHandler(this.btnSaveAs_Click);
             // 
-            // imageList1
-            // 
-            this.imageList1.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("imageList1.ImageStream")));
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            this.imageList1.Images.SetKeyName(0, "icon_preview.png");
-            this.imageList1.Images.SetKeyName(1, "icon_save.png");
-            this.imageList1.Images.SetKeyName(2, "icon_template.png");
-            this.imageList1.Images.SetKeyName(3, "icon_email.png");
-            this.imageList1.Images.SetKeyName(4, "icon_person.png");
-            this.imageList1.Images.SetKeyName(5, "icon_phone.png");
-            // 
             // label3
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -201,7 +201,7 @@
             this.txbEmail.Location = new System.Drawing.Point(406, 43);
             this.txbEmail.Name = "txbEmail";
             this.txbEmail.Size = new System.Drawing.Size(186, 25);
-            this.txbEmail.TabIndex = 33;
+            this.txbEmail.TabIndex = 35;
             // 
             // ReportForm
             // 
