@@ -218,11 +218,8 @@ namespace AGVsControlAndMonitoringSoftware
                         Display.AddLabelAGV(pnFloor, agv.ID, agv.ExitNode, agv.Orientation, agv.DistanceToExitNode);
 
                         // Send AGV Init/Info Request to AGV (except Line tracking error)
-                        if (Communicator.SerialPort.IsOpen)
-                        {
-                            if (agv.IsInitialized == true) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
-                            else Communicator.SendAGVInitRequest((uint)agv.ID);
-                        }
+                        if (agv.IsInitialized == true) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
+                        else Communicator.SendAGVInitRequest((uint)agv.ID);
                     }
                     break;
                 case "Simulation":
@@ -566,6 +563,27 @@ namespace AGVsControlAndMonitoringSoftware
                              "\n\nDesigned by Vo Trong Nghia." +
                              "\nGithub: votronghia/AGVs-Control-and-Monitoring-Software.";
             MessageBox.Show(message, "About this software", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void timerCheckConn_Tick(object sender, EventArgs e)
+        {            
+            if (!Communicator.SerialPort.IsOpen && COMSettingForm.btnConnClicked)
+            {
+                try { Communicator.SerialPort.Open(); }
+                catch (Exception err)
+                {
+                    if (Communicator.isReconnecting == false)
+                    {
+                        Display.UpdateComStatus("status", 0, err.Message, System.Drawing.Color.Red);
+                        Communicator.isReconnecting = true;
+                    }
+                }
+                if (Communicator.SerialPort.IsOpen)
+                {
+                    Display.UpdateComStatus("status", 0, "Reconnection OK (" + Communicator.SerialPort.PortName + ")", System.Drawing.Color.Blue);
+                    Communicator.isReconnecting = false;
+                }
+            }
         }
     }
 }

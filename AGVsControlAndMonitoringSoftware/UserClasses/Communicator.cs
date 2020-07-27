@@ -22,6 +22,7 @@ namespace AGVsControlAndMonitoringSoftware
         private const ushort AckReceivePacketSize = 9;
         public static float lineTrackError; // temp value to draw graph (in AGV Monitoring Form)
 
+        public static bool isReconnecting = false;
         private const int timeout = 300; // ms 
         private static AckReceivePacket ackReceived = new AckReceivePacket();
 
@@ -195,7 +196,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(requestFrame.ToArray(), 0, requestFrame.ToArray().Length); }
             catch { };
 
@@ -222,7 +223,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
-            if (!Communicator.SerialPort.IsOpen || agv == null || !agv.IsInitialized) return;
+            if (agv == null || !agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -274,7 +275,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
             catch { };
 
@@ -301,7 +302,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -331,7 +332,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
             catch { };
 
@@ -358,7 +359,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -390,7 +391,7 @@ namespace AGVsControlAndMonitoringSoftware
 
             // send data via serial port
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)agvID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
             catch { };
 
@@ -417,7 +418,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             AGV agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
-            if (!Communicator.SerialPort.IsOpen || !agv.IsInitialized) return;
+            if (!agv.IsInitialized) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 
@@ -445,7 +446,6 @@ namespace AGVsControlAndMonitoringSoftware
             sendFrame.EndOfFrame = new byte[2] { 0x0A, 0x0D };
 
             // send data via serial port
-            if (!Communicator.SerialPort.IsOpen) return;
             try { Communicator.SerialPort.Write(sendFrame.ToArray(), 0, sendFrame.ToArray().Length); }
             catch { };
 
@@ -472,7 +472,7 @@ namespace AGVsControlAndMonitoringSoftware
             }
 
             var agv = AGV.ListAGV.Find(a => a.ID == (int)resendFrame.AGVID);
-            if (!Communicator.SerialPort.IsOpen || agv == null) return;
+            if (agv == null) return;
             try { Communicator.SerialPort.Write(resendFrame.ToArray(), 0, resendFrame.ToArray().Length); }
             catch { return; }
 

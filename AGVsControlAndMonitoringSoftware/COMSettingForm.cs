@@ -18,6 +18,8 @@ namespace AGVsControlAndMonitoringSoftware
             InitializeComponent();
         }
 
+        public static bool btnConnClicked = false;
+
         private void COMSettingForm_Load(object sender, EventArgs e)
         {
             string[] ports = SerialPort.GetPortNames();
@@ -61,6 +63,7 @@ namespace AGVsControlAndMonitoringSoftware
                     Communicator.SerialPort.Parity = (Parity)Enum.Parse(typeof(Parity), cbbParity.Text);
 
                     Communicator.SerialPort.Open();
+                    btnConnClicked = true;
 
                 }
                 catch (Exception error)
@@ -70,6 +73,8 @@ namespace AGVsControlAndMonitoringSoftware
                     btnConnect.ImageIndex = 0;
                     btnConnect.ForeColor = Color.MediumBlue;
                     btnReScan.Enabled = true;
+
+                    btnConnClicked = false;
 
                     Display.UpdateComStatus("status", 0, "Access to the port " + Communicator.SerialPort.PortName + " is denied", 
                                             System.Drawing.Color.Red);
@@ -87,6 +92,7 @@ namespace AGVsControlAndMonitoringSoftware
                     btnReScan.Enabled = true;
 
                     Communicator.SerialPort.Close();
+                    btnConnClicked = false;
 
                     Display.UpdateComStatus("status", 0, Communicator.SerialPort.PortName + " is closed", System.Drawing.Color.Red);
                 }

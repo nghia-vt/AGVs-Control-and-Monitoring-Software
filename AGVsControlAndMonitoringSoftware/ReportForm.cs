@@ -153,7 +153,7 @@ namespace AGVsControlAndMonitoringSoftware
                 String.IsNullOrEmpty(txbPhoneNumber.Text) ||
                 String.IsNullOrEmpty(txbTemplatePath.Text))
             {
-                MessageBox.Show("Do not enough information to save the report", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Do not enough information to preview the report", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -220,7 +220,7 @@ namespace AGVsControlAndMonitoringSoftware
                 String.IsNullOrEmpty(txbPhoneNumber.Text) ||
                 String.IsNullOrEmpty(txbTemplatePath.Text))
             {
-                MessageBox.Show("Do not enough information to preview the report", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Do not enough information to save the report", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

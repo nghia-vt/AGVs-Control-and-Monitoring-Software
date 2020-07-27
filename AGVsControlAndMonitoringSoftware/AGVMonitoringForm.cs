@@ -305,7 +305,7 @@ namespace AGVsControlAndMonitoringSoftware
         private void AGVMonitoringForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             // Send AGV Info Request to AGV (except Line tracking error)
-            if (Display.Mode == "Real Time" && Communicator.SerialPort.IsOpen == true)
+            if (Display.Mode == "Real Time")
             {
                 foreach(AGV agv in AGV.ListAGV) Communicator.SendAGVInfoRequest((uint)agv.ID, 'A');
             }
