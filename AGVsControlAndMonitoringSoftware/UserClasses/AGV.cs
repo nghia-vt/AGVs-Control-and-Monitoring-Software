@@ -37,7 +37,7 @@ namespace AGVsControlAndMonitoringSoftware
         }
 
         // Length of AGV (unit: cm)
-        public static float Length = 35;
+        public static float Length = 32;
 
         // Desire speed of AGVs (unit: cm/s)
         public static float Speed = 20f;
