@@ -15,6 +15,7 @@ AGVs Monitoring area: monitor basic parameters of AGV:
 + Position (ExitNode, Orient, DistanceToExitNode)
 + Velocity
 + AGV is running, the information row will be green
+
 Tasks Monitoring area: display AGV's task information:
 + Status
 + Type
